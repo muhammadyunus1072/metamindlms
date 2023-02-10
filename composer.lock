@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fe33f98a750b8c5a51b30c78bd3fab21",
+    "content-hash": "d42deb0020bfc2f68deb727f378c11f8",
     "packages": [
         {
             "name": "brick/math",
@@ -2941,6 +2941,40 @@
                 }
             ],
             "time": "2023-01-12T18:13:24+00:00"
+        },
+        {
+            "name": "sis/track-history",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/smartintegratedsistem/TrackHistory.git",
+                "reference": "3cf2c9baac97295fced0fd6c658b268d93730a7c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/smartintegratedsistem/TrackHistory/zipball/3cf2c9baac97295fced0fd6c658b268d93730a7c",
+                "reference": "3cf2c9baac97295fced0fd6c658b268d93730a7c",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Sis\\TrackHistory\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "bhagaskara",
+                    "email": "bhagaskaraliancer@gmail.com"
+                }
+            ],
+            "description": "Laravel Model Track History",
+            "support": {
+                "issues": "https://github.com/smartintegratedsistem/TrackHistory/issues",
+                "source": "https://github.com/smartintegratedsistem/TrackHistory/tree/v1.0.0"
+            },
+            "time": "2022-12-11T09:01:22+00:00"
         },
         {
             "name": "symfony/console",
@@ -7938,5 +7972,5 @@
         "php": "^8.0.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.3.0"
 }
