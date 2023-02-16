@@ -96,7 +96,7 @@ class AuthController extends Controller
                     "response" => [
                         'type'      => 'error',
                         'title'     => 'Login gagal!',
-                        'message'   => 'Email atau password salah.' . $e->getMessage()
+                        'message'   => 'Email atau password salah.'
                     ]
                 ]);
             }

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Sis\TrackHistory\HasTrackHistory;
 
-class Admin extends Model
+class CourseLearnDescription extends Model
 {
     use HasFactory, SoftDeletes, HasTrackHistory;
 }
