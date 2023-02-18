@@ -197,7 +197,7 @@
                                             </span>
                                         </a>
 
-                                        <span class="corner-ribbon corner-ribbon--default-right-top corner-ribbon--shadow bg-accent text-white">NEW</span>
+                                        <span class="corner-ribbon corner-ribbon--default-right-top corner-ribbon--shadow bg-accent text-white">BARU</span>
 
                                         <div class="card-body flex">
                                             <div class="d-flex">

@@ -4,8 +4,10 @@
 
 @section('content')
 
-    <div class="mdk-box bg-primary js-mdk-box mb-0"
+    <div class="mdk-box bg-primary js-mdk-box mb-0" 
+        style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),url({{ $data['files_course'] . $results_data->url_image }}); background-size: cover;"
             data-effects="blend-background">
+
         <div class="mdk-box__content">
             <div class="hero py-64pt text-center text-sm-left">
                 <div class="container page__container">
@@ -69,71 +71,33 @@
 
                     <div class="accordion js-accordion accordion--boxed list-group-flush"
                             id="parent">
-                        <div class="accordion__item open">
-                            <a href="#"
-                                class="accordion__toggle"
-                                data-toggle="collapse"
-                                data-target="#course-toc-1"
-                                data-parent="#parent">
-                                <span class="flex">Getting Started with Angular</span>
-                                <span class="accordion__toggle-icon material-icons">keyboard_arrow_down</span>
-                            </a>
-                            <div class="accordion__menu collapse show"
-                                    id="course-toc-1">
-                                <div class="accordion__menu-link">
-                                    <span class="icon-holder icon-holder--small icon-holder--dark rounded-circle d-inline-flex icon--left">
-                                        <i class="material-icons icon-16pt">check_circle</i>
-                                    </span>
-                                    <a class="flex"
-                                        href="student-lesson.html">Introduction</a>
-                                    <span class="text-muted">8m 42s</span>
-                                </div>
-                                <div class="accordion__menu-link active">
-                                    <span class="icon-holder icon-holder--small icon-holder--primary rounded-circle d-inline-flex icon--left">
-                                        <i class="material-icons icon-16pt">play_circle_outline</i>
-                                    </span>
-                                    <a class="flex"
-                                        href="student-lesson.html">Introduction to TypeScript</a>
-                                    <span class="text-muted">50m 13s</span>
-                                </div>
-                                <div class="accordion__menu-link">
-                                    <span class="icon-holder icon-holder--small icon-holder--light rounded-circle d-inline-flex icon--left">
-                                        <i class="material-icons icon-16pt">lock</i>
-                                    </span>
-                                    <a class="flex"
-                                        href="student-lesson.html">Comparing Angular to AngularJS</a>
-                                    <span class="text-muted">12m 10s</span>
-                                </div>
-                                <div class="accordion__menu-link">
-                                    <span class="icon-holder icon-holder--small icon-holder--light rounded-circle d-inline-flex icon--left">
-                                        <i class="material-icons icon-16pt">hourglass_empty</i>
-                                    </span>
-                                    <a class="flex"
-                                        href="student-take-quiz.html">Quiz: Getting Started With Angular</a>
-                                </div>
-                            </div>
-                        </div>
 
                         @foreach ($section_data as $k=>$v)
+                            <?php $index = $k+1; ?>
                             <div class="accordion__item">
                                 <a href="#"
                                     class="accordion__toggle collapsed"
                                     data-toggle="collapse"
-                                    data-target="#course-toc-{{ $k+2 }}"
+                                    data-target="#course-toc-{{ $index }}"
                                     data-parent="#parent">
-                                    <span class="flex">{{ ($k+2).'. '.$v->title }}</span>
+                                    <span class="flex">{{ $index.'. '.$v->title }}</span>
                                     <span class="accordion__toggle-icon material-icons">keyboard_arrow_down</span>
                                 </a>
-                                <div class="accordion__menu collapse"
-                                        id="course-toc-{{ $k+2 }}">
-                                    <div class="accordion__menu-link">
-                                        <span class="icon-holder icon-holder--small icon-holder--dark rounded-circle d-inline-flex icon--left">
-                                            <i class="material-icons icon-16pt">play_circle_outline</i>
-                                        </span>
-                                        <a class="flex"
-                                            href="student-lesson.html">Watch Trailer</a>
-                                        <span class="text-muted">1m 10s</span>
-                                    </div>
+                                <div class="accordion__menu collapse" id="course-toc-{{ $index }}">
+
+                                    @foreach ($v->lesson_active as $y)
+                                        <div class="accordion__menu-link">
+                                            <span class="icon-holder icon-holder--small icon-holder--primary rounded-circle d-inline-flex icon--left">
+                                                <i class="material-icons icon-16pt">{{ $y->can_preview ? 'play_circle_outline' : 'lock' }}</i>
+                                            </span>
+                                            @if ($y->can_preview)
+                                                <a class="flex" href="">{{ $y->title }}</a>
+                                            @else
+                                                <a class="flex text-muted">{{ $y->title }}</a>
+                                            @endif
+                                        </div>
+                                    @endforeach
+
                                 </div>
                             </div>
                         @endforeach
@@ -157,22 +121,14 @@
                                     </div>
                                     <div class="d-flex align-items-center mb-8pt">
                                         <span class="material-icons icon-16pt mr-8pt">play_circle_outline</span>
-                                        <p class="flex lh-1 mb-0">12 lessons</p>
+                                        <p class="flex lh-1 mb-0">{{ count($lesson_course_data) . ' Pelajaran' }}</p>
                                     </div>
                                     <div class="d-flex align-items-center">
                                         <span class="material-icons icon-16pt mr-8pt">assessment</span>
-                                        <p class="flex lh-1 mb-0">Beginner</p>
+                                        <p class="flex lh-1 mb-0">{{ $results_data->level_name }}</p>
                                     </div>
                                 </div>
                             </div>
-                            {{-- <span class="icon-holder icon-holder--outline-secondary rounded-circle d-inline-flex mb-8pt">
-                                <i class="material-icons">timer</i>
-                            </span>
-                            <h4 class="card-title"><strong>Unlock Library</strong></h4>
-                            <p class="card-subtitle text-70 mb-24pt">Get access to all videos in the library</p>
-                            <a href="pricing.html"
-                                class="btn btn-accent mb-8pt">Sign Up - Only $19.00/mo</a>
-                            <p class="mb-0">Have an account? <a href="login.html">Login</a></p> --}}
                         </div>
                     </div>
 
@@ -195,7 +151,7 @@
                 </div>
                 <div class="col-md-5">
                     <div class="page-separator">
-                        <div class="page-separator__text bg-white">Apa yang akan ada pelajari</div>
+                        <div class="page-separator__text bg-white">Apa yang akan anda pelajari</div>
                     </div>
                     <ul class="list-unstyled">
                         @foreach ($learn_description_data as $v)

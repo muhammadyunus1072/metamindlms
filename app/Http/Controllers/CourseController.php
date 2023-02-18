@@ -6,6 +6,7 @@ use App\Models\Course;
 use App\Models\CourseCategory;
 use App\Models\CourseLearnDescription;
 use App\Models\CourseSection;
+use App\Models\Lesson;
 use App\Models\Level;
 use Illuminate\Http\Request;
 
@@ -24,7 +25,7 @@ class CourseController extends Controller
     public function get_etc()
     {
         $data = array();
-        // $data = $this->meta_data($data);
+        $data = $this->meta_data($data);
         $data['ctitle'] = $this->ctitle;
         $data['croute'] = $this->routes_path;
         $data['has_access'] = $this->has_access;
@@ -165,6 +166,7 @@ class CourseController extends Controller
             )
             ->leftJoin('courses as c', 'c.id', '=', 'course_sections.course_id')
             ->where('course_sections.course_id', $id)
+            ->where('course_sections.is_actived', '1')
             ->orderBy('course_sections.position', 'asc')
             ->get();
         return $results_data;
@@ -177,6 +179,20 @@ class CourseController extends Controller
             )
             ->leftJoin('courses as c', 'c.id', '=', 'course_learn_descriptions.course_id')
             ->where('course_learn_descriptions.course_id', $id)
+            ->get();
+        return $results_data;
+    }
+
+    public function get_lesson_by_course($id)
+    {
+        $results_data = Lesson::select(
+            'lessons.*'
+            )
+            ->leftJoin('course_sections as cs', 'cs.id', '=', 'lessons.course_section_id')
+            ->leftJoin('courses as c', 'c.id', '=', 'cs.course_id')
+            ->where('cs.is_actived', '1')
+            ->where('lessons.is_actived', '1')
+            ->where('c.id', $id)
             ->get();
         return $results_data;
     }
@@ -198,12 +214,14 @@ class CourseController extends Controller
             $section_data = $this->get_section($id);
             $learn_description_data = $this->get_learn_description($id);
 
+            $lesson_course_data = $this->get_lesson_by_course($id);
+
             $popular_course_data = Course::select('courses.*', 'l.name as level_name')
                                 ->leftJoin('levels as l', 'l.id', '=', 'courses.level_id')
                                 ->leftJoin('course_categories as cc', 'cc.id', '=', 'courses.category_id')
                                 ->paginate(10);
 
-            return view($this->view_path . 'show', compact('data', 'results_data', 'section_data', 'learn_description_data', 'popular_course_data'));
+            return view($this->view_path . 'show', compact('data', 'results_data', 'section_data', 'learn_description_data', 'popular_course_data', 'lesson_course_data'));
         } else return Redirect()->route($this->has_access . '.index')->with("error", "Data " . $this->ctitle . " tidak ditemukan.");
     }
 

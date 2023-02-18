@@ -72,7 +72,7 @@
 
                     <!-- Navbar Brand -->
 
-                    <a href="index.html"
+                    {{-- <a href="index.html"
                        class="navbar-brand mr-16pt d-lg-none">
 
                         <span class="avatar avatar-sm navbar-brand-icon mr-0 mr-lg-8pt">
@@ -84,11 +84,11 @@
                         </span>
 
                         <span class="d-none d-lg-block">Luma</span>
-                    </a>
+                    </a> --}}
 
                     <!-- // END Navbar Brand -->
 
-                    <span class="d-none d-md-flex align-items-center mr-16pt">
+                    {{-- <span class="d-none d-md-flex align-items-center mr-16pt">
 
                         <span class="avatar avatar-sm mr-12pt">
 
@@ -100,20 +100,20 @@
                             <strong class="navbar-text-100">Experience IQ</strong>
                             <span class="navbar-text-50">2,300 points</span>
                         </small>
-                    </span>
+                    </span> --}}
 
                     <div class="flex"></div>
 
                     <!-- Switch Layout -->
 
-                    <a href="../Compact_App_Layout/student-dashboard.html"
+                    {{-- <a href="../Compact_App_Layout/student-dashboard.html"
                        class="navbar-toggler navbar-toggler-custom align-items-center justify-content-center d-none d-lg-flex"
                        data-toggle="tooltip"
                        data-title="Switch to Compact Layout"
                        data-placement="bottom"
                        data-boundary="window">
                         <span class="material-icons">swap_horiz</span>
-                    </a>
+                    </a> --}}
 
                     <!-- // END Switch Layout -->
 
@@ -122,7 +122,7 @@
                     <div class="nav navbar-nav flex-nowrap d-flex mr-16pt">
 
                         <!-- Notifications dropdown -->
-                        <div class="nav-item dropdown dropdown-notifications dropdown-xs-down-full"
+                        {{-- <div class="nav-item dropdown dropdown-notifications dropdown-xs-down-full"
                              data-toggle="tooltip"
                              data-title="Messages"
                              data-placement="bottom"
@@ -182,11 +182,11 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <!-- // END Notifications dropdown -->
 
                         <!-- Notifications dropdown -->
-                        <div class="nav-item ml-16pt dropdown dropdown-notifications dropdown-xs-down-full"
+                        {{-- <div class="nav-item ml-16pt dropdown dropdown-notifications dropdown-xs-down-full"
                              data-toggle="tooltip"
                              data-title="Notifications"
                              data-placement="bottom"
@@ -266,7 +266,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <!-- // END Notifications dropdown -->
 
                         <div class="nav-item dropdown">
@@ -284,13 +284,11 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <div class="dropdown-header"><strong>Account</strong></div>
-                                <a class="dropdown-item"
-                                   href="edit-account.html">Edit Account</a>
-                                <a class="dropdown-item"
-                                   href="billing.html">Billing</a>
-                                <a class="dropdown-item"
-                                   href="billing-history.html">Payments</a>
-                                <a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
+                                @if (Auth::check())
+                                    <a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
+                                @else
+                                    <a class="dropdown-item" href="{{ route('login.index') }}">Login</a>
+                                @endif
                             </div>
                         </div>
                     </div>
