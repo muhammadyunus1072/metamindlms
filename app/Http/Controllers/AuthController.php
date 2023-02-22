@@ -11,13 +11,15 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function login() {
+    public function login()
+    {
         return view('auth.login');
     }
 
-    public function do_login(Request $request) {
-        
-        if(request()->ajax()){
+    public function do_login(Request $request)
+    {
+
+        if (request()->ajax()) {
             try {
                 $email = $request->email;
                 $password = $request->password;
@@ -35,69 +37,66 @@ class AuthController extends Controller
                             if ($results_data->is_actived) {
 
                                 $data = [
-                                    'email'  => $email,
-                                    'password'  => $password,
+                                    'email' => $email,
+                                    'password' => $password,
                                 ];
 
                                 Auth::attempt($data);
 
-                                if(Auth::check()){
+                                if (Auth::check()) {
                                     return response()->json([
                                         "code" => 200,
                                         "response" => [
-                                            'type'      => 'success',
-                                            'title'     => 'Login Berhasil!',
-                                            'message'   => 'Kamu akan segera dialihkan ke halaman utama'
-                                        ]
+                                            'type' => 'success',
+                                            'title' => 'Login Berhasil!',
+                                            'message' => 'Kamu akan segera dialihkan ke halaman utama',
+                                        ],
                                     ]);
                                 }
-                            }
-                            else{
+                            } else {
                                 return response()->json([
                                     "code" => -1,
                                     "response" => [
-                                        'type'      => 'error',
-                                        'title'     => 'Login gagal!',
-                                        'message'   => 'Akun anda dinonaktifkan'
-                                    ]
+                                        'type' => 'error',
+                                        'title' => 'Login gagal!',
+                                        'message' => 'Akun anda dinonaktifkan',
+                                    ],
                                 ]);
                             }
 
-
-                        }
-                        else{
+                        } else {
                             return response()->json([
                                 "code" => -1,
                                 "response" => [
-                                    'type'      => 'error',
-                                    'title'     => 'Login gagal!',
-                                    'message'   => 'Akun tidak dapat diakses'
-                                ]
+                                    'type' => 'error',
+                                    'title' => 'Login gagal!',
+                                    'message' => 'Akun tidak dapat diakses',
+                                ],
                             ]);
                         }
                     }
-                    
+
                 }
 
                 return response()->json([
                     "code" => -1,
                     "response" => [
-                        'type'      => 'error',
-                        'title'     => 'Login gagal!',
-                        'message'   => 'Email atau password salah.'
-                    ]
+                        'type' => 'error',
+                        'title' => 'Login gagal!',
+                        'message' => 'Email atau password salah.',
+                    ],
                 ]);
-                
+
             } catch (Exception $e) {
-    
+
                 DB::rollBack();
                 return response()->json([
                     "code" => -1,
                     "response" => [
-                        'type'      => 'error',
-                        'title'     => 'Login gagal!',
-                        'message'   => 'Email atau password salah.'
-                    ]
+                        'type' => 'error',
+                        'title' => 'Login gagal!',
+                        'message' => 'Email atau password salah.',
+                    ],
                 ]);
             }
         }
@@ -105,14 +104,15 @@ class AuthController extends Controller
         return response()->json([
             "code" => -1,
             "response" => [
-                'type'      => 'error',
-                'title'     => 'Login gagal!',
-                'message'   => 'Email atau password salah.'
-            ]
+                'type' => 'error',
+                'title' => 'Login gagal!',
+                'message' => 'Email atau password salah.',
+            ],
         ]);
     }
 
-    public function logout(){
+    public function logout()
+    {
         Auth::logout();
         return redirect('');
     }

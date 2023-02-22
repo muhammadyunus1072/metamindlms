@@ -6,31 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
-        Schema::create('course_categories', function (Blueprint $table) {
+        Schema::create('group_category_courses', function (Blueprint $table) {
             $this->scheme($table);
         });
 
-        Schema::create('_history_course_categories', function (Blueprint $table) {
+        Schema::create('_history_group_category_courses', function (Blueprint $table) {
             $this->scheme($table, true);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
-        Schema::dropIfExists('course_categories');
-        Schema::dropIfExists('_history_course_categories');
+        Schema::dropIfExists('group_category_courses');
+        Schema::dropIfExists('_history_group_category_courses');
     }
 
     private function scheme(Blueprint $table, $is_history = false)
@@ -43,7 +33,7 @@ return new class extends Migration
         } else {
             $table->string('code')->unique()->comment('Kode');
         }
-
+        
         $table->string('name')->comment('Nama');
         $table->string('icon')->nullable()->comment('Icon');
         $table->text('description')->nullable()->comment('Deskripsi');

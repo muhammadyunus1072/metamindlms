@@ -21,7 +21,7 @@ class Course extends Model
     protected static function onBoot()
     {
         self::creating(function ($model) {
-            $model->code = Course::generateCode();
+            $model->code = self::generateCode();
         });
     }
 

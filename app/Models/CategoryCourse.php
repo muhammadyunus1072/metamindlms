@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Sis\TrackHistory\HasTrackHistory;
 
-class Level extends Model
+class CategoryCourse extends Model
 {
     use HasFactory, SoftDeletes, HasTrackHistory;
 
@@ -34,7 +34,7 @@ class Level extends Model
         $currentNumber = str_pad($currentNumber, $numberLength, "0", STR_PAD_LEFT);
 
         // Generate Format Number
-        $formattedNumber = "LVL-$currentNumber";
+        $formattedNumber = "COC-$currentNumber";
 
         return $formattedNumber;
     }

@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('courses', function (Blueprint $table) {
+        Schema::create('category_courses', function (Blueprint $table) {
             $this->scheme($table);
         });
 
-        Schema::create('_history_courses', function (Blueprint $table) {
+        Schema::create('_history_category_courses', function (Blueprint $table) {
             $this->scheme($table, true);
         });
     }
@@ -29,8 +29,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('courses');
-        Schema::dropIfExists('_history_courses');
+        Schema::dropIfExists('category_courses');
+        Schema::dropIfExists('_history_category_courses');
     }
 
     private function scheme(Blueprint $table, $is_history = false)
@@ -43,22 +43,16 @@ return new class extends Migration
         } else {
             $table->string('code')->unique()->comment('Kode');
         }
+
+        $table->bigInteger('group_category_course_id')->unsigned();
         
-        $table->bigInteger("level_id")->unsigned()->comment('Id Level');
-
-        $table->string('title')->comment('Judul');
+        $table->string('name')->comment('Nama');
+        $table->string('icon')->nullable()->comment('Icon');
         $table->text('description')->nullable()->comment('Deskripsi');
-        $table->text('about')->nullable()->comment('Tentang');
-
-        $table->string('url_image')->nullable()->comment('Url Image');
-        $table->string('url_icon')->nullable()->comment('Url Icon');
-        $table->string('url_video')->nullable()->comment('Url Video');
-
-        $table->double('price', 20, 2)->default(0)->comment('Password');
 
         $table->boolean("is_actived")->default(1);
-        $table->bigInteger("created_by")->unsigned()->nullable()->comment('Id Admin Pembuat');
-        $table->bigInteger("updated_by")->unsigned()->nullable()->comment('Id Admin pengubah');
+        $table->bigInteger("created_by")->unsigned();
+        $table->bigInteger("updated_by")->unsigned();
         $table->bigInteger("deleted_by")->unsigned()->nullable()->default(null);
         $table->softDeletes();
         $table->timestamps();
