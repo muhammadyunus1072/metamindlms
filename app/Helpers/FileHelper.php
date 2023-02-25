@@ -4,7 +4,7 @@ namespace App\Helpers;
 
 class FileHelper
 {
-    const WEBSITE_USER = 'http://localhost:8001';
+    const WEBSITE_USER = 'http://localhost:8000';
 
     const IMAGE_PATH = '/attachments/images/';
     const U_IMAGE_PATH = 'attachments/images/';

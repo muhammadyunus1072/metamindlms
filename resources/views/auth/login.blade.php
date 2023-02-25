@@ -128,7 +128,8 @@
                                 showCancelButton: false,
                                 showConfirmButton: false
                             });
-                            window.location = '/';
+                            // window.location = '/';
+                            location.reload();
                         } else {
                             Swal.fire(result.title, result.message, result.type);
                         }

@@ -10,4 +10,7 @@ use Sis\TrackHistory\HasTrackHistory;
 class Lesson extends Model
 {
     use HasFactory, SoftDeletes, HasTrackHistory;
+
+    const TYPE_VIDEO = 'video';
+    const TYPE_QUIZ = 'quiz';
 }
