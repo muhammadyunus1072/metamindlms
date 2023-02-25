@@ -2,17 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Student;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use PDO;
 
 class AuthController extends Controller
 {
     public function login()
     {
+        $user = Auth::user();
+
+        if($user){
+            if($user->role == User::ADMIN){
+                return redirect()->route('admin.dashboard.index');
+            }
+            else if($user->role == User::MEMBER){
+                return redirect()->route('member.dashboard.index');
+            }
+        }
+
         return view('auth.login');
     }
 
@@ -26,7 +38,7 @@ class AuthController extends Controller
 
                 DB::beginTransaction();
 
-                $results_data = Student::where("email", "=", $email)->first();
+                $results_data = User::where("email", "=", $email)->first();
 
                 if ($results_data) {
 

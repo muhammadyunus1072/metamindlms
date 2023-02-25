@@ -39,6 +39,49 @@ function numberf($data = null){
     else return number_format($data,2,".",",");
 }
 
+function response_json($data = null){
+    if(empty($data)){
+        return '-';
+    }
+    else {
+
+        if(array_key_exists('m', $data)){
+            $data['s'] .= ' ' . $data['m'];
+        }
+
+        if(array_key_exists('p', $data)){
+            return response()->json(['s' => $data['s'], 'st' => $data['st'], 'p' => $data['p']]);
+        }
+        else{
+            return response()->json(['s' => $data['s'], 'st' => $data['st']]);
+        }
+    }
+}
+
+//-----------------------
+
+const MASTER_SIDEBAR = array(
+    "group_category_course" => "Grup Kategori",
+    "category_course" => "Kategori Kursus",
+    "level" => "Level Kursus",
+    "course" => "Kursus",
+);
+
+function master_sidebar($key = null){
+    if(empty($key)) return '-';
+    else return MASTER_SIDEBAR[$key];
+}
+
+const MASTER_STRING = array(
+    "video" => "Video",
+    "quiz" => "Kuis",
+);
+
+function master_string($key = null){
+    if(empty($key)) return '-';
+    else return MASTER_STRING[$key];
+}
+
 
 //View
 function course_item_sm($id = null){
@@ -47,7 +90,7 @@ function course_item_sm($id = null){
     $id = dec($id);
     $results_data = Course::select('courses.*', 'l.name as level_name')
                                 ->leftJoin('levels as l', 'l.id', '=', 'courses.level_id')
-                                ->leftJoin('course_categories as cc', 'cc.id', '=', 'courses.category_id')
+                                // ->leftJoin('course_categories as cc', 'cc.id', '=', 'courses.category_id')
                                 ->where('id', $id)
                                 ->first();
 

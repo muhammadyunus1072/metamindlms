@@ -44,7 +44,7 @@ return new class extends Migration
 
         $table->bigInteger('course_section_id')->unsigned();
         $table->string('title')->comment('Judul');
-        $table->text('description')->comment('Deskripsi');
+        $table->text('description')->nullable()->comment('Deskripsi');
         $table->integer("position")->unsigned()->comment('Urutan');
         $table->enum("type", ["video", "quiz"])->comment('Jenis Pelajaran');
         $table->text('url_video')->nullable()->comment('Url Video');
