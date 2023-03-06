@@ -32,6 +32,9 @@
         <link href="https://cdn.jsdelivr.net/gh/smartintegratedsistem/JqueryPagination@1.0.0/css/jquery-pagination.css"
             rel="stylesheet">
         <link rel="stylesheet" href="{{ asset('vendor/datatables/dataTables.bs4.css') }}" />
+        
+        <!-- Quill Theme -->
+        <link type="text/css" href="{{ asset('/assets/css/quill.css') }}" rel="stylesheet">
 
     </head>
 
@@ -80,7 +83,7 @@
 
                         <span class="avatar avatar-sm navbar-brand-icon mr-0 mr-lg-8pt">
 
-                            <span class="avatar-title rounded bg-primary"><img src="../../public/images/illustration/student/128/white.svg"
+                            <span class="avatar-title rounded bg-primary"><img src=""
                                      alt="logo"
                                      class="img-fluid" /></span>
 
@@ -152,7 +155,7 @@
                                             </span>
                                             <span class="d-flex">
                                                 <span class="avatar avatar-xs mr-2">
-                                                    <img src="../../public/images/people/110/woman-5.jpg"
+                                                    <img src=""
                                                          alt="people"
                                                          class="avatar-img rounded-circle">
                                                 </span>
@@ -171,7 +174,7 @@
                                             </span>
                                             <span class="d-flex">
                                                 <span class="avatar avatar-xs mr-2">
-                                                    <img src="../../public/images/people/110/woman-5.jpg"
+                                                    <img src=""
                                                          alt="people"
                                                          class="avatar-img rounded-circle">
                                                 </span>
@@ -322,7 +325,7 @@
                     <div class="container page__container page-section d-flex flex-column">
                         <p class="text-70 brand mb-24pt">
                             <img class="brand-icon"
-                                 src="../../public/images/logo/black-70@2x.png"
+                                 src=""
                                  width="30"
                                  alt="Luma"> Luma
                         </p>
@@ -402,6 +405,10 @@
         <script src="https://cdn.jsdelivr.net/gh/smartintegratedsistem/JqueryPagination@1.0.0/js/jquery-pagination.js"></script>
         <script src="{{ asset('vendor/datatables/dataTables.min.js') }}"></script>
         <script src="{{ asset('vendor/datatables/dataTables.bootstrap.min.js') }}"></script>
+        
+        <!-- Quill -->
+        <script src="{{ asset('/assets/vendor/quill.min.js') }}"></script>
+        <script src="{{ asset('/assets/js/quill.js') }}"></script>
 
         <script>
             $.ajaxSetup({

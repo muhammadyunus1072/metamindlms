@@ -4,6 +4,14 @@
 
 @section('content')
 
+    <?php 
+        $list_route = array(
+            'favorite' => route('course.index') . '/store_favorite',
+
+            'course_member' => route('member.course_member.index'),
+        );
+    ?>
+
     <div class="pt-32pt">
         <div class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left">
             <div class="flex d-flex flex-column flex-sm-row align-items-center mb-24pt mb-md-0">
@@ -28,190 +36,168 @@
             <div class="row"
                     role="tablist">
                 <div class="col-auto">
-                    <a href="student-my-courses.html"
-                        class="btn btn-outline-secondary">My Courses</a>
+                    <a href="{{ $list_route['course_member'] }}"
+                        class="btn btn-outline-secondary">Kursus Saya</a>
                 </div>
             </div>
 
         </div>
     </div>
 
-        <div class="container page__container">
-            <div class="page-section">
+    <div class="container page__container">
+        <div class="page-section">
 
-                <div class="page-separator">
-                    <div class="page-separator__text">Overview</div>
+            <div class="page-separator">
+                <div class="page-separator__text">Pelajaran Terakhir Saya</div>
+            </div>
+
+            <div class="page-separator">
+                <div class="page-separator__text">Kursus Saya</div>
+            </div>
+
+            <div class="position-relative carousel-card">
+                <div class="js-mdk-carousel row d-block"
+                     id="course_member">
+
+                    <a class="carousel-control-next js-mdk-carousel-control mt-n24pt"
+                       href="#course_member"
+                       role="button"
+                       data-slide="next">
+                        <span class="carousel-control-icon material-icons"
+                              aria-hidden="true">keyboard_arrow_right</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+
+                    <div class="mdk-carousel__content">
+
+                        @foreach ($course_member as $v)
+                            @include('member.pages.dashboard.components.card_course_member', [
+                                'v' => $v
+                            ])
+                        @endforeach 
+
+                    </div>
                 </div>
+            </div>
 
-                <div class="row mb-lg-8pt">
-                    <div class="col-lg-6">
+            <div class="page-separator">
+                <div class="page-separator__text">Diskusi Saya</div>
+            </div>
 
-                        <div class="card">
-                            <div class="card-header d-flex align-items-center">
-                                <div class="h2 mb-0 mr-3">116</div>
-                                <div class="flex">
-                                    <p class="card-title">Angular</p>
-                                    <p class="card-subtitle text-50">Best score</p>
-                                </div>
-                                <div class="dropdown">
-                                    <a href="#"
-                                        class="btn btn-sm btn-outline-secondary dropdown-toggle"
-                                        data-toggle="dropdown">Popular Topics</a>
-                                    <div class="dropdown-menu dropdown-menu-right">
+            <div class="card">
+
+                <div class="list-group list-group-flush">
+
+                    <div class="list-group-item p-3">
+                        <div class="row align-items-start">
+                            <div class="col-md-3 mb-8pt mb-md-0">
+                                <div class="media align-items-center">
+                                    <div class="media-left mr-12pt">
                                         <a href=""
-                                            class="dropdown-item">Popular Topics</a>
+                                           class="avatar avatar-sm">
+                                            <!-- <img src="../../LB" alt="avatar" class="avatar-img rounded-circle"> -->
+                                            <span class="avatar-title rounded-circle">LB</span>
+                                        </a>
+                                    </div>
+                                    <div class="d-flex flex-column media-body media-middle">
                                         <a href=""
-                                            class="dropdown-item">Web Design</a>
+                                           class="card-title">Laza Bogdan</a>
+                                        <small class="text-muted">2 days ago</small>
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-body p-24pt">
-                                <div class="chart"
-                                        style="height: 344px;">
-                                    <canvas id="topicIqChart"
-                                            class="chart-canvas js-update-chart-line"
-                                            data-chart-hide-axes="true"
-                                            data-chart-points="true"
-                                            data-chart-suffix=" points"
-                                            data-chart-line-border-color="primary"></canvas>
-                                </div>
+                            <div class="col mb-8pt mb-md-0">
+                                <p class="mb-8pt"><a href="discussion.html"
+                                       class="text-body"><strong>Using Angular HttpClientModule instead of HttpModule</strong></a></p>
+
+                                <a href="discussion.html"
+                                   class="chip chip-outline-secondary">Angular fundamentals</a>
+
+                            </div>
+                            <div class="col-auto d-flex flex-column align-items-center justify-content-center">
+                                <h5 class="m-0">1</h5>
+                                <p class="lh-1 mb-0"><small class="text-70">answers</small></p>
                             </div>
                         </div>
-
                     </div>
-                    <div class="col-lg-6">
 
-                        <div class="card">
-                            <div class="card-header d-flex align-items-center border-0">
-                                <div class="h2 mb-0 mr-3">432</div>
-                                <div class="flex">
-                                    <p class="card-title">Experience IQ</p>
-                                    <p class="card-subtitle text-50">4 days streak this week</p>
+                    <div class="list-group-item p-3">
+                        <div class="row align-items-start">
+                            <div class="col-md-3 mb-8pt mb-md-0">
+                                <div class="media align-items-center">
+                                    <div class="media-left mr-12pt">
+                                        <a href=""
+                                           class="avatar avatar-sm">
+                                            <!-- <img src="../../AC" alt="avatar" class="avatar-img rounded-circle"> -->
+                                            <span class="avatar-title rounded-circle">AC</span>
+                                        </a>
+                                    </div>
+                                    <div class="d-flex flex-column media-body media-middle">
+                                        <a href=""
+                                           class="card-title">Adam Curtis</a>
+                                        <small class="text-muted">3 days ago</small>
+                                    </div>
                                 </div>
-                                <i class="material-icons text-muted ml-2">trending_up</i>
                             </div>
-                            <div class="card-body pt-0">
-                                <div class="chart"
-                                        style="height: 128px;">
-                                    <canvas id="iqChart"
-                                            class="chart-canvas js-update-chart-line"
-                                            data-chart-hide-axes="false"
-                                            data-chart-points="true"
-                                            data-chart-suffix="pt"
-                                            data-chart-line-border-color="primary"></canvas>
-                                </div>
+                            <div class="col mb-8pt mb-md-0">
+                                <p class="mb-0"><a href="discussion.html"
+                                       class="text-body"><strong>Why am I getting an error when trying to install angular/http@2.4.2</strong></a></p>
+
+                            </div>
+                            <div class="col-auto d-flex flex-column align-items-center justify-content-center">
+                                <h5 class="m-0">1</h5>
+                                <p class="lh-1 mb-0"><small class="text-70">answers</small></p>
                             </div>
                         </div>
-
-                        <div id="carouselExampleFade"
-                                class="carousel carousel-card slide mb-24pt">
-                            <div class="carousel-inner">
-
-                                <div class="carousel-item active">
-
-                                    <a class="card border-0 mb-0"
-                                        href="">
-                                        <img src="../../public/images/achievements/flinto.png"
-                                                alt="Flinto"
-                                                class="card-img"
-                                                style="max-height: 100%; width: initial;">
-                                        <div class="fullbleed bg-primary"
-                                                style="opacity: .5;"></div>
-                                        <span class="card-body d-flex flex-column align-items-center justify-content-center fullbleed">
-                                            <span class="row flex-nowrap">
-                                                <span class="col-auto text-center d-flex flex-column justify-content-center align-items-center">
-                                                    <span class="h5 text-white text-uppercase font-weight-normal m-0 d-block">Achievement</span>
-                                                    <span class="text-white-60 d-block mb-24pt">Jun 5, 2018</span>
-                                                </span>
-                                                <span class="col d-flex flex-column">
-                                                    <span class="text-right flex mb-16pt">
-                                                        <img src="../../public/images/paths/flinto_40x40@2x.png"
-                                                                width="64"
-                                                                alt="Flinto"
-                                                                class="rounded">
-                                                    </span>
-                                                </span>
-                                            </span>
-                                            <span class="row flex-nowrap">
-                                                <span class="col-auto text-center d-flex flex-column justify-content-center align-items-center">
-                                                    <img src="../../public/images/illustration/achievement/128/white.png"
-                                                            width="64"
-                                                            alt="achievement">
-                                                </span>
-                                                <span class="col d-flex flex-column">
-                                                    <span>
-                                                        <span class="card-title text-white mb-4pt d-block">Flinto</span>
-                                                        <span class="text-white-60">Introduction to The App Design Application</span>
-                                                    </span>
-                                                </span>
-                                            </span>
-                                        </span>
-                                    </a>
-
-                                </div>
-
-                                <div class="carousel-item">
-
-                                    <a class="card border-0 mb-0"
-                                        href="">
-                                        <img src="../../public/images/achievements/angular.png"
-                                                alt="Angular fundamentals"
-                                                class="card-img"
-                                                style="max-height: 100%; width: initial;">
-                                        <div class="fullbleed bg-primary"
-                                                style="opacity: .5;"></div>
-                                        <span class="card-body d-flex flex-column align-items-center justify-content-center fullbleed">
-                                            <span class="row flex-nowrap">
-                                                <span class="col-auto text-center d-flex flex-column justify-content-center align-items-center">
-                                                    <span class="h5 text-white text-uppercase font-weight-normal m-0 d-block">Achievement</span>
-                                                    <span class="text-white-60 d-block mb-24pt">Jun 5, 2018</span>
-                                                </span>
-                                                <span class="col d-flex flex-column">
-                                                    <span class="text-right flex mb-16pt">
-                                                        <img src="../../public/images/paths/angular_64x64.png"
-                                                                width="64"
-                                                                alt="Angular fundamentals"
-                                                                class="rounded">
-                                                    </span>
-                                                </span>
-                                            </span>
-                                            <span class="row flex-nowrap">
-                                                <span class="col-auto text-center d-flex flex-column justify-content-center align-items-center">
-                                                    <img src="../../public/images/illustration/achievement/128/white.png"
-                                                            width="64"
-                                                            alt="achievement">
-                                                </span>
-                                                <span class="col d-flex flex-column">
-                                                    <span>
-                                                        <span class="card-title text-white mb-4pt d-block">Angular fundamentals</span>
-                                                        <span class="text-white-60">Creating and Communicating Between Angular Components</span>
-                                                    </span>
-                                                </span>
-                                            </span>
-                                        </span>
-                                    </a>
-
-                                </div>
-
-                            </div>
-                            <a class="carousel-control-next"
-                                href="#carouselExampleFade"
-                                role="button"
-                                data-slide="next">
-                                <span class="carousel-control-icon material-icons"
-                                        aria-hidden="true">keyboard_arrow_right</span>
-                                <span class="sr-only">Next</span>
-                            </a>
-                        </div>
-
                     </div>
+
                 </div>
 
+                <div class="card-footer p-8pt">
 
+                    <ul class="pagination justify-content-start pagination-xsm m-0">
+                        <li class="page-item disabled">
+                            <a class="page-link"
+                               href="#"
+                               aria-label="Previous">
+                                <span aria-hidden="true"
+                                      class="material-icons">chevron_left</span>
+                                <span>Prev</span>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="#"
+                               aria-label="Page 1">
+                                <span>1</span>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="#"
+                               aria-label="Page 2">
+                                <span>2</span>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="#"
+                               aria-label="Next">
+                                <span>Next</span>
+                                <span aria-hidden="true"
+                                      class="material-icons">chevron_right</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
+
+
         </div>
+    </div>
 
 @stop
 
 @section('js')
+    @include('member.layouts.components.js_action_favorite')
 @stop

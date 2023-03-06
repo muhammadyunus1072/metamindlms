@@ -53,7 +53,7 @@ class CategoryCourseController extends Controller
                 'a.name as admins_name',
                 )
             ->leftJoin('group_category_courses as gcc', 'gcc.id', '=', 'category_courses.group_category_course_id')
-            ->leftJoin('admins as a', 'a.id', '=', 'category_courses.created_by')
+            ->leftJoin('users as a', 'a.id', '=', 'category_courses.created_by')
             ->whereNull("category_courses.deleted_at");
             return DataTables::of($asset)
                 ->addIndexColumn()

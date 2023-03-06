@@ -24,7 +24,7 @@
 
                     <ol class="breadcrumb p-0 m-0">
                         <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                        <li class="breadcrumb-item active">
+                        <li class="breadcrumb-item">
                             {{ $data["ctitle"] }}
                         </li>
                         <li class="breadcrumb-item active">

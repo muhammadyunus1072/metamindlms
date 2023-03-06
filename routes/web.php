@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Member\CourseController as M_CourseController;
 use App\Http\Controllers\Member\DashboardController as M_DashboardController;
+use App\Http\Controllers\Member\CourseMemberController as M_CourseMemberController;
 
 use App\Http\Controllers\Admin\DashboardController as A_DashboardController;
 use App\Http\Controllers\Admin\CategoryCourseController as A_CategoryCourseController;
@@ -101,28 +102,55 @@ Route::middleware('role:admin')->group(function(){
             Route::post("/update_lesson/{id}", "update_lesson")->name('update_lesson');
             Route::post("/destroy_lesson/{id}", "destroy_lesson")->name('destroy_lesson');
             Route::post("/active_lesson/{id}", "active_lesson")->name('active_lesson');
+            
+            Route::get("/member_course/{id}", "member_course")->name('member_course');
+            Route::get("/json_member_course/{id}", "json_member_course")->name('json_member_course');
+            Route::post("/store_member_course/{id}", "store_member_course")->name('store_member_course');
+            Route::post("/delete_member_course/{id}", "delete_member_course")->name('delete_member_course');
 
             Route::get("/search_level", "search_level")->name('search_level');
             Route::get("/search_category", "search_category")->name('search_category');
+            Route::get("/search_member", "search_member")->name('search_member');
         });
     });
 
 });
 
+
+
+
+
+
+
+Route::group(["controller" => M_CourseController::class, "prefix" => "course", "as" => "course."], function () {
+    Route::get('/', 'index')->name('index');
+    Route::get('/show/{id}', 'show')->name('show');
+    Route::get('/preview_lesson/{id}', 'preview_lesson')->name('preview_lesson');
+    
+    Route::get('/review_pagination/{id}', 'review_pagination')->name('review_pagination');
+    Route::post("/show_trailer", "show_trailer")->name('show_trailer');
+    
+    Route::get('/search', 'search')->name('search');
+});
+
 Route::middleware('role:member')->group(function(){
+
+    Route::group(["controller" => M_CourseController::class, "prefix" => "course", "as" => "course."], function () {
+        Route::post("/store_favorite", "store_favorite")->name('store_favorite');
+    });
 
     Route::group(["prefix" => "member", "as" => "member."], function () {
 
         Route::get("/", [M_DashboardController::class, "index"])->name('dashboard.index');
 
-        Route::group(["controller" => M_CourseController::class, "prefix" => "course", "as" => "course."], function () {
+        Route::group(["controller" => M_CourseMemberController::class, "prefix" => "course_member", "as" => "course_member."], function () {
             Route::get('/', 'index')->name('index');
             Route::get('/show/{id}', 'show')->name('show');
-            Route::get('/pagination_course_data', 'pagination_course_data')->name('pagination_course_data');
-            
-            Route::get('/search', 'search')->name('search');
-        });
+            Route::post('/store_review/{id}', 'store_review')->name('store_review');
 
+            Route::get('/show_lesson/{id}', 'show_lesson')->name('show_lesson');
+            Route::post('/end_lesson/{id}', 'end_lesson')->name('end_lesson');
+        });
     });
 
 });

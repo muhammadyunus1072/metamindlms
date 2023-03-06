@@ -36,7 +36,7 @@
     </li> --}}
     <li class="sidebar-menu-item">
         <a class="sidebar-menu-button"
-            href="{{ route('member.course.index') }}">
+            href="{{ route('course.index') }}">
             <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">local_library</span>
             <span class="sidebar-menu-text">Cari Kursus</span>
         </a>
