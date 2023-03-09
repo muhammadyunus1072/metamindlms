@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CategoryCourse;
 use App\Models\Course;
 use App\Models\CourseMember;
+use App\Models\Lesson;
 use App\Models\Level;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -63,6 +64,7 @@ class DashboardController extends Controller
             ->leftJoin('levels as l', 'l.id', '=', 'courses.level_id')
             ->where('cm.member_id', info_user_id())
             ->whereNull('cm.deleted_at')
+            ->take(4)
             ->get();
         return $results_data;
     }

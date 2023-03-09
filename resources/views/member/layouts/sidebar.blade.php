@@ -24,7 +24,7 @@
     <span>{{ env('APP_NAME') }}</span>
 </a>
 
-<div class="sidebar-heading">Student</div>
+<div class="sidebar-heading">Member</div>
 <ul class="sidebar-menu">
 
     {{-- <li class="sidebar-menu-item">
@@ -34,7 +34,7 @@
             <span class="sidebar-menu-text">Home</span>
         </a>
     </li> --}}
-    <li class="sidebar-menu-item">
+    <li class="sidebar-menu-item {{ Request::segment(1) == 'course' ? 'active' : '' }}">
         <a class="sidebar-menu-button"
             href="{{ route('course.index') }}">
             <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">local_library</span>
@@ -49,11 +49,35 @@
         </a>
     </li> --}}
     @if (Auth::check())
-        <li class="sidebar-menu-item active">
+        <li class="sidebar-menu-item {{ Request::segment(1) == 'member' && Request::segment(2) === null ? 'active' : '' }}">
             <a class="sidebar-menu-button"
                 href="{{ route('member.dashboard.index') }}">
-                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">account_box</span>
-                <span class="sidebar-menu-text">Student Dashboard</span>
+                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">home</span>
+                <span class="sidebar-menu-text">Dashboard</span>
+            </a>
+        </li>
+
+        <li class="sidebar-menu-item {{ Request::segment(2) == 'course_member' ? 'active' : '' }}">
+            <a class="sidebar-menu-button"
+                href="{{ route('member.course_member.index') }}">
+                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">search</span>
+                <span class="sidebar-menu-text">Kursus Saya</span>
+            </a>
+        </li>
+
+        <li class="sidebar-menu-item {{ Request::segment(2) == 'favorite' ? 'active' : '' }}">
+            <a class="sidebar-menu-button"
+                href="{{ route('member.favorite.index') }}">
+                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">favorite</span>
+                <span class="sidebar-menu-text">Kursus Favorit Saya</span>
+            </a>
+        </li>
+
+        <li class="sidebar-menu-item {{ Request::segment(2) == 'discussion' ? 'active' : '' }}">
+            <a class="sidebar-menu-button"
+                href="{{ route('member.discussion.index') }}">
+                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">people_outline</span>
+                <span class="sidebar-menu-text">Diskusi Saya</span>
             </a>
         </li>
     @endif

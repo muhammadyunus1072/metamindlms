@@ -24,6 +24,8 @@
         <link href="{{ asset('/assets/css/fontawesome.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('/assets/css/preloader.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('/assets/css/app.css') }}" rel="stylesheet" type="text/css" />
+        <link type="text/css" href="{{ asset('/assets/vendor/select2/select2.min.css') }}" rel="stylesheet">
+        <link type="text/css" href="{{ asset('/assets/css/select2.css') }}" rel="stylesheet">
         
         <link href="{{ asset('/css/sweetalert2.min.css') }}" rel="stylesheet" type="text/css">
         <link href="{{ asset('/css/main.css') }}" rel="stylesheet" type="text/css">
@@ -388,6 +390,8 @@
         <script src="{{ asset('/assets/js/list.js') }}"></script>
         <script src="{{ asset('/assets/js/toggle-check-all.js') }}"></script>
         <script src="{{ asset('/assets/js/check-selected-row.js') }}"></script>
+        <script src="{{ asset('/assets/vendor/select2/select2.min.js') }}"></script>
+        <script src="{{ asset('/assets/js/select2.js') }}"></script>
         
         <script src="{{ asset('/js/sweetalert2.all.min.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/gh/smartintegratedsistem/JqueryPagination@1.0.0/js/jquery-pagination.js"></script>
@@ -420,6 +424,8 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+
+            $('.custom-select-2').select2({})
 
             function r_action_table(data, messages, action_url, reload_data) {
                 swal.fire({
@@ -464,6 +470,39 @@
                                 alert_error("show", xhr);
                             }
                         });
+                    }
+                });
+            }
+
+            function action_table(data, action_url, reload_data) {
+                loading("show");
+                $.ajax({
+                    url: action_url,
+                    type: "POST",
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    data: data,
+                    success: function(result) {
+                        loading("hide");
+                        if (reload_data == 'table') {
+                            data_table.ajax.reload(null, false);
+                        }
+
+                        if (reload_data == 'page' && result['st'] == 's') {
+                            location.reload();
+                        }
+
+                        if (reload_data == 'redirect' && result['st'] == 's') {
+                            window.location.assign(result['p']);
+                        }
+
+                        // if (result['st'] == 's') info_server('success', result['s']);
+                        // else info_server('error', result['s']);
+                    },
+                    error: function(xhr, res, result) {
+                        loading("hide");
+                        alert_error("show", xhr);
                     }
                 });
             }

@@ -4,12 +4,6 @@
 
 @section('content')
 
-    <?php 
-        $list_route = array(
-            "review_pagination" => route('course.index') . '/review_pagination/' . enc($results_data->id),
-        );
-    ?>
-
     <div class="mdk-box bg-primary mdk-box--bg-gradient-primary2 js-mdk-box mb-0"
         style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),url({{ $data['files_course'] . $results_data->url_image }}); background-size: cover;"
             data-effects="blend-background">
@@ -76,7 +70,7 @@
                                         data-toggle="collapse"
                                         data-parent="#course-toc-{{ $index }}"
                                         href="#course-content-{{ $index }}">
-                                        <span class="flex">{{ $v->title }} (2 dari 4)</span>
+                                        <span class="flex">{{ $v->title }} ({{ count($v->lesson_status_by_user(info_user_id(), true)) }} dari {{ count($v->lesson_status_by_user(info_user_id())) }})</span>
                                         <span class="accordion__toggle-icon material-icons">keyboard_arrow_down</span>
                                     </a>
                                     <div class="accordion__menu">
@@ -86,8 +80,10 @@
                                                 <li class="accordion__menu-link">
                                                     <span class="material-icons icon-16pt icon--left text-50">{{ $y->lesson_icon(true) }}</span>
                                                     <a class="flex"
-                                                        href="">{{ $y->title }}</a>
-                                                    <span><i class="fas fa-check-circle text-success fa-lg"></i></span>
+                                                        href="{{ $data['croute'] . 'show_lesson/' . enc($y->id) }}">{{ $y->title }}</a>
+                                                    @if ($y->is_done_by_user(info_user_id()))
+                                                        <span><i class="fas fa-check-circle text-success fa-lg"></i></span>
+                                                    @endif
                                                 </li>
                                             @endforeach
                                         </ul>
@@ -468,62 +464,5 @@
 
             r_action_table(file_data, "Harap periksa kembali data yang telah diinput sebelum disimpan.", url, 'page', null);
         });
-    </script>
-
-    <script>
-        // paginator();
-
-        function paginator() {
-            // $('#payment_select_student').change(function() {
-            //     paymentPagination.update();
-            // });
-
-            var review_pagination = new JqueryPagination({
-                viewId: 'review_pagination',
-                url: "{{ $list_route['review_pagination'] }}",
-                itemEachPage: 1,
-                formatRequestData: function(d) {
-                    
-                },
-                renderItem: function(item) {
-                    console.log(item);
-                    let rating = ``;
-
-                    for (let i = 1; i <= 5; i++) {
-                        if(i <= item.rating){
-                            rating += `<span class="rating__item"><span class="material-icons">star</span></span>`;
-                        }
-                        else{
-                            rating += `<span class="rating__item"><span class="material-icons">star_border</span></span>`;
-                        }
-                    }
-
-                    let html = `
-                    <div class="pb-16pt mb-16pt border-bottom row">
-                        <div class="col-md-3 mb-16pt mb-md-0">
-                            <div class="d-flex">
-                                {{-- <a href="student-profile.html"
-                                    class="avatar avatar-sm mr-12pt">
-                                    <!-- <img src="LB" alt="avatar" class="avatar-img rounded-circle"> -->
-                                    <span class="avatar-title rounded-circle">LB</span>
-                                </a> --}}
-                                <div class="flex">
-                                    <p class="small text-muted m-0">${item.created_at}</p>
-                                    <a class="card-title">${item.member_name}</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-9">
-                            <div class="rating mb-8pt">
-                                `+ rating +`                                
-                            </div>
-                            <p class="text-70 mb-0">${item.comment}</p>
-                        </div>
-                    </div>
-                    `;
-                    return html;
-                }
-            });
-        }
     </script>
 @stop

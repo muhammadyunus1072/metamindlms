@@ -10,6 +10,7 @@ use App\Models\CourseLearnDescription;
 use App\Models\CourseReview;
 use App\Models\CourseSection;
 use App\Models\Lesson;
+use App\Models\LessonFile;
 use App\Models\Level;
 use App\Models\User;
 use Carbon\Carbon;
@@ -160,7 +161,9 @@ class CourseController extends Controller
                 return Redirect()->route($this->has_access . '.show', enc($results_data->course_id))->with("error", "Data Pelajaran tidak ditemukan.");
             }
 
-            return view($this->view_path . 'preview_lesson', compact('data', 'results_data'));
+            $lesson_file = $this->get_lesson_file($results_data->id);
+
+            return view($this->view_path . 'preview_lesson', compact('data', 'results_data', 'lesson_file'));
         } else return Redirect()->route($this->has_access . '.index')->with("error", "Data " . $this->ctitle . " tidak ditemukan.");
     }
 
@@ -271,58 +274,6 @@ class CourseController extends Controller
 
 
 
-
-
-    //------------------------------
-    //---------PAGINATION-----------
-    //------------------------------
-    public function review_pagination(Request $request, $id)
-    {
-        $data = $this->get_etc();
-        
-        $id = dec($id);
-
-        $query = CourseReview::select(
-            'course_reviews.rating',
-            'course_reviews.comment',
-            'course_reviews.created_at',
-            'u.name as member_name',
-        )
-        ->leftJoin('users as u', 'u.id', '=', 'course_reviews.member_id')
-        ->where('course_reviews.course_id', $id)
-        ->whereNull('course_reviews.deleted_at');
-
-        $queryCount = clone $query;
-
-        // Get Data
-        $skip = ($request->page - 1) * $request->item_each_page;
-        $length = $request->page * $request->item_each_page;
-        $result = $query->skip($skip)->take($length)->get();
-
-        $recordsTotal = $queryCount->count();
-
-        // Reconstruct Data
-        $data = array();
-        foreach ($result as $item) {
-            array_push($data, [
-                "rating" => $item->rating,
-                "comment" => $item->comment,
-                "created_at" => Carbon::parse($item->created_at)->diffForHumans(),
-                "member_name" => $item->member_name,
-            ]);
-        }
-
-        return [
-            'recordsTotal' => $recordsTotal,
-            'data' => $data,
-        ];
-    }
-
-
-
-
-
-
     
 
 
@@ -400,18 +351,16 @@ class CourseController extends Controller
         return $results_data;
     }
 
-
-
-
-
-
-
-    
-
-
-
-
-
-
+    public function get_lesson_file($id)
+    {
+        $results_data = LessonFile::
+            select(
+                'lesson_files.*',
+            )
+            ->where('lesson_files.lesson_id', $id)
+            ->whereNull('lesson_files.deleted_at')
+            ->get();
+        return $results_data;
+    }
     
 }

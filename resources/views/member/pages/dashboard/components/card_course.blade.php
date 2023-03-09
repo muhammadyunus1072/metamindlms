@@ -1,54 +1,60 @@
-<div class="col-md-6 col-lg-4 col-xl-3 card-group-row__col">
+<div class="col-lg-3 card-group-row__col">
 
-    <div class="card card-sm card--elevated p-relative o-hidden overlay overlay--primary-dodger-blue js-overlay mdk-reveal js-mdk-reveal "
-            data-partial-height="44"
-            data-toggle="popover"
-            data-trigger="click">
+    <div class="card card-sm card--elevated p-relative o-hidden overlay overlay--primary-dodger-blue js-overlay card-group-row__card"
+        data-toggle="popover"
+        data-trigger="click">
 
-        <a href=""
-           class="js-image"
-           data-position="">
-            <img src="{{ $data['files_course'] . $v->url_image }}" height="200px"
-                 alt="course">
-            <span class="overlay__content align-items-start justify-content-start">
-                <span class="overlay__action card-body d-flex align-items-center">
-                    <i class="material-icons mr-4pt">play_circle_outline</i>
+        <a
+           class="card-img-top js-image"
+           data-position=""
+           data-height="140">
+           <img src="{{ $data['files_course'] . $v->url_image }}" height="200px"
+                alt="course">
+            <span class="overlay__content">
+                <span class="overlay__action d-flex flex-column text-center">
+                    <i class="material-icons icon-32pt">play_circle_outline</i>
                     <span class="card-title text-white">Resume</span>
                 </span>
             </span>
         </a>
 
-        <div class="mdk-reveal__content">
-            <div class="card-body">
-                <div class="d-flex">
-                    <div class="flex">
-                        <a class="card-title"
-                        href="">{{ $v->title }}</a>
-                        <small class="text-50 font-weight-bold mb-4pt">{{ $v->level_name }}</small>
-                    </div>
-
-                    @if (Auth::check())
-                        <a
-                            data-toggle="tooltip"
-                            title="{{ $v->is_favorite() ? 'Hapuskan dari' :  'Tambahkan ke' }} Favorite"
-                            data-placement="top"
-                            data-boundary="window"
-                            class="ml-4pt material-icons text-20 card-course__icon-favorite"
-                            onclick="action_favorite('{{ enc($v->id) }}', this)"
-                            >{{ $v->is_favorite() ? 'favorite' :  'favorite_border' }}</a>
-                    @endif
-
+        <div class="card-body flex">
+            <div class="d-flex">
+                <div class="flex">
+                    <a class="card-title">{{ $v->title }}</a>
+                    <small class="text-50 font-weight-bold mb-4pt">{{ $v->level_name }}</small>
                 </div>
-                <div class="d-flex">
-                    <div class="rating flex">
-                        @for ($i = 1; $i <= 5; $i++)
-                            @if ($i <= $v->rating())
-                                <span class="rating__item"><span class="material-icons">star</span></span>
-                            @else
-                                <span class="rating__item"><span class="material-icons">star_border</span></span>
-                            @endif
-                        @endfor
-                    </div>
+
+                @if (Auth::check())
+                    <a
+                        data-toggle="tooltip"
+                        title="{{ $v->is_favorite() ? 'Hapuskan dari' :  'Tambahkan ke' }} Favorite"
+                        data-placement="top"
+                        data-boundary="window"
+                        class="ml-4pt material-icons text-20 card-course__icon-favorite"
+                        onclick="action_favorite('{{ enc($v->id) }}', this)"
+                        >{{ $v->is_favorite() ? 'favorite' :  'favorite_border' }}</a>
+                @endif
+            </div>
+            <div class="d-flex">
+                @for ($i = 1; $i <= 5; $i++)
+                    @if ($i <= $v->rating())
+                        <span class="rating__item"><span class="material-icons">star</span></span>
+                    @else
+                        <span class="rating__item"><span class="material-icons">star_border</span></span>
+                    @endif
+                @endfor
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row justify-content-between">
+                <div class="col-auto d-flex align-items-center">
+                    <span class="material-icons icon-16pt text-50 mr-4pt">format_list_bulleted</span>
+                    <p class="flex text-50 lh-1 mb-0"><small>{{ count($v->course_sections) }} Konten</small></p>
+                </div>
+                <div class="col-auto d-flex align-items-center">
+                    <span class="material-icons icon-16pt text-50 mr-4pt">play_circle_outline</span>
+                    <p class="flex text-50 lh-1 mb-0"><small>{{ count($v->lessons) }} Pelajaran</small></p>
                 </div>
             </div>
         </div>

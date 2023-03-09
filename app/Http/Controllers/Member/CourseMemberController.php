@@ -11,7 +11,9 @@ use App\Models\CourseMemberLesson;
 use App\Models\CourseReview;
 use App\Models\CourseSection;
 use App\Models\Lesson;
+use App\Models\LessonFile;
 use App\Models\Level;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -104,6 +106,82 @@ class CourseMemberController extends Controller
 
 
 
+    //------------------------------
+    //------FINISH LESSON-----------
+    //------------------------------
+    public function finish_lesson(Request $request, $id)
+    {
+        // if (!has_access($this->has_access, "view")) return abort(403);
+        if(request()->ajax()){
+            try {
+                DB::beginTransaction();
+                
+                $data = array();
+                $data['st'] = 'e';
+                $lesson_id = dec($id);
+
+                $lesson = $this->get_lesson($lesson_id)->first();
+                if(!$lesson){
+                    DB::rollBack();
+                    return response()->json(['s' => "Data " . $this->ctitle . " tidak ditemukan.", 'st' => 'e']);
+                }
+
+                $results_data = $this->get_course_member_lesson($lesson_id);
+                if(!$results_data){
+                    DB::rollBack();
+                    return response()->json(['s' => "Data " . $this->ctitle . " tidak ditemukan.", 'st' => 'e']);
+                }
+
+                if($results_data->is_done === 1){
+                    DB::rollBack();
+                    return response()->json(['s' => "Data " . $this->ctitle . " telah diselesaikan.", 'st' => 'e']);
+                }
+
+                $results_data->is_done = 1;
+                $results_data->is_done_at = Carbon::now();
+
+                if($results_data->save()){
+                    //Redirect
+                    $next_lesson = Lesson::
+                                        where('position', '>', $lesson->position)
+                                        ->where('course_section_id', $lesson->course_section_id)
+                                        ->orderBy('position', 'asc')
+                                        ->first();
+
+                    if($next_lesson){
+                        $data['p'] = $this->routes_path . 'show_lesson/' . enc($next_lesson->id);
+                    }
+                    else{
+                        $data['p'] = $this->routes_path . 'show_lesson/' . enc($lesson->id);
+                    }
+
+                    DB::commit();
+                    $data['st'] = 's';
+                    $data['s'] =  $this->ctitle . " berhasil diselesaikan.";
+                }
+                else{
+                    DB::rollBack();
+                    $data['s'] =  $this->ctitle . " gagal diselesaikan.";
+                }
+    
+            } catch (Exception $e) {
+    
+                DB::rollBack();
+                $data['s'] =  $this->ctitle . " gagal diselesaikan.";
+                $data['m'] = $e->getMessage();
+            }
+            return response_json($data);
+        }
+    }
+
+
+
+
+
+
+
+
+
 
     //------------------------------
     //-------STORE REVIEW-----------
@@ -181,13 +259,37 @@ class CourseMemberController extends Controller
         $data = $this->get_etc();
 
         $lesson_id = dec($id);
-        $results_data = $this->get_lesson($lesson_id)->first();
 
+        $course_member_lesson = $this->get_course_member_lesson($lesson_id);
+        if($course_member_lesson){
+            $course_member_lesson->opened_at = Carbon::now();
+            $course_member_lesson->save();
+        }
+        else{
+            //If never open lesson
+            $insert_data = new CourseMemberLesson();
+            $insert_data->lesson_id = $lesson_id;
+            $insert_data->member_id = info_user_id();
+            $insert_data->opened_at = Carbon::now();
+            $insert_data->save();
+        }
+
+        $results_data = $this->get_lesson($lesson_id);
         if($results_data){
+
+            $lesson_file = $this->get_lesson_file($lesson_id);
+
+            $list_lesson = Lesson::
+                                where('course_section_id', $results_data->course_section_id)
+                                ->where('position', '>=', $results_data->position-1)
+                                ->orderBy('position', 'asc')
+                                ->paginate(3);
 
             return view($this->view_path . 'show_lesson', compact(
                 'data', 
                 'results_data',
+                'lesson_file',
+                'list_lesson'
             ));
         } else return Redirect()->route('member.'.$this->has_access . '.index')->with("error", "Data " . $this->ctitle . " tidak ditemukan.");
     }
@@ -303,14 +405,47 @@ class CourseMemberController extends Controller
 
     public function get_lesson($id)
     {
-        $results_data = Lesson::
-            select(
-                'lessons.*',
+        $results_data = Lesson::select(
+            'lessons.*',
+            'c.id as course_id',
+            'c.url_image as course_url_image',
+            'c.title as course_title',
+            'l.name as level_name'
             )
             ->rightJoin('course_member_lessons as cml', 'cml.lesson_id', '=', 'lessons.id')
+            ->leftJoin('course_sections as cs', 'cs.id', '=', 'lessons.course_section_id')
+            ->leftJoin('courses as c', 'c.id', '=', 'cs.course_id')
+            ->leftJoin('levels as l', 'l.id', '=', 'c.level_id')
+            ->where('cs.is_actived', '1')
+            ->where('lessons.is_actived', '1')
+            ->where('c.is_actived', '1')
             ->where('lessons.id', $id)
             ->where('cml.member_id', info_user_id())
             ->whereNull('cml.deleted_at')
+            ->first();
+        return $results_data;
+    }
+
+    public function get_lesson_file($id)
+    {
+        $results_data = LessonFile::
+            select(
+                'lesson_files.*',
+            )
+            ->where('lesson_files.lesson_id', $id)
+            ->whereNull('lesson_files.deleted_at')
+            ->get();
+        return $results_data;
+    }
+
+    public function get_course_member_lesson($id){
+        $results_data = CourseMemberLesson::
+            select(
+                'course_member_lessons.*',
+            )
+            ->where('course_member_lessons.lesson_id', $id)
+            ->where('course_member_lessons.member_id', info_user_id())
+            ->whereNull('course_member_lessons.deleted_at')
             ->first();
         return $results_data;
     }

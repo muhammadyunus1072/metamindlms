@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('course_member_lessons', function (Blueprint $table) {
+        Schema::create('course_discussion_answers', function (Blueprint $table) {
             $this->scheme($table);
         });
 
-        Schema::create('_history_course_member_lessons', function (Blueprint $table) {
+        Schema::create('_history_course_discussion_answers', function (Blueprint $table) {
             $this->scheme($table, true);
         });
     }
@@ -29,8 +29,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('course_member_lessons');
-        Schema::dropIfExists('_history_course_member_lessons');
+        Schema::dropIfExists('course_discussion_answers');
+        Schema::dropIfExists('_history_course_discussion_answers');
     }
 
     private function scheme(Blueprint $table, $is_history = false)
@@ -42,12 +42,9 @@ return new class extends Migration
         } else {
         }
 
-        $table->bigInteger('lesson_id')->unsigned();
-        $table->bigInteger('member_id')->unsigned();
+        $table->bigInteger('discussion_id')->unsigned();
 
-        $table->timestamp('opened_at')->nullable();
-        $table->boolean("is_done")->default(0);
-        $table->timestamp('is_done_at')->nullable();
+        $table->text('answer')->nullable();
 
         $table->bigInteger("created_by")->unsigned()->nullable()->comment('Id Admin Pembuat');
         $table->bigInteger("updated_by")->unsigned()->nullable()->comment('Id Admin pengubah');

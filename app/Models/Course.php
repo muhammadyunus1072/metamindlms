@@ -88,6 +88,16 @@ class Course extends Model
         return CourseReview::where('course_id', $this->id)->whereNull('deleted_at')->count('id');
     }
 
+    public function review_by_user($user_id){
+        return CourseReview::
+            select(
+                'course_reviews.*',
+            )
+            ->where('course_reviews.course_id', $this->id)
+            ->where('course_reviews.member_id', $user_id)
+            ->first();
+    }
+
     //Static Function
     public static function course_popular(){
         return Course::select('courses.*', 'l.name as level_name')
