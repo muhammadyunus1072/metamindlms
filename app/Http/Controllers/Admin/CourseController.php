@@ -8,10 +8,12 @@ use App\Models\CategoryCourse;
 use App\Models\Course;
 use App\Models\CourseCategory;
 use App\Models\CourseLearnDescription;
+use App\Models\CourseMember;
 use App\Models\CourseSection;
 use App\Models\Lesson;
 use App\Models\LessonFile;
 use App\Models\Level;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -59,7 +61,7 @@ class CourseController extends Controller
                 'a.name as admins_name',
                 )
             ->leftJoin('levels as l', 'l.id', '=', 'courses.level_id')
-            ->leftJoin('admins as a', 'a.id', '=', 'courses.created_by')
+            ->leftJoin('users as a', 'a.id', '=', 'courses.created_by')
             ->whereNull("courses.deleted_at");
             return DataTables::of($asset)
                 ->addIndexColumn()
@@ -110,9 +112,15 @@ class CourseController extends Controller
                             aria-expanded="false">Aksi <i class="mdi mdi-chevron-down"></i></button>
                         <div class="dropdown-menu">
                     ';
+
+                    // if (has_access($this->has_access, "updated")) {
+                        $btn .= '
+                        <a class="dropdown-item" name="btn_m" id="btn_m"><i class="fas fa-user mr-2"></i> Member</a>';
+                    // }
                         
                     // if (has_access($this->has_access, "updated")) {
-                        $btn .= '<a class="dropdown-item" name="btn_u" id="btn_u"><i class="fas fa-edit mr-2"></i> Ubah</a>';
+                        $btn .= '<div class="dropdown-divider"></div>
+                        <a class="dropdown-item" name="btn_u" id="btn_u"><i class="fas fa-edit mr-2"></i> Ubah</a>';
                     // }
 
                     // if (has_access($this->has_access, "updated")) {
@@ -131,6 +139,9 @@ class CourseController extends Controller
                     ';
 
                     return $btn;
+                })
+                ->addColumn('m', function ($row) {
+                    return $this->routes_path . 'member_course/' . enc($row->id);
                 })
                 ->addColumn('up', function ($row) {
                     return $this->routes_path . 'edit/' . enc($row->id);
@@ -263,6 +274,10 @@ class CourseController extends Controller
             return response_json($data);
         }
     }
+
+
+
+
 
 
 
@@ -410,6 +425,115 @@ class CourseController extends Controller
 
 
     //------------------------------
+    //---------DELETE---------------
+    //------------------------------
+    public function destroy($id)
+    {
+        if(request()->ajax()){
+            try {
+                DB::beginTransaction();
+
+                $data = array();
+                $data['st'] = 'e';
+
+                $id = dec($id);
+                $results_data = Course::find($id);
+                
+
+                if($results_data){
+
+                    if($results_data->delete()){
+                        DB::commit();
+                        $data['s'] = "Data " . $this->ctitle . " " . $results_data->code . " berhasil dihapus";
+                        $data['st'] = 's';
+                    }
+                    else{
+                        DB::rollBack();
+                        $data['s'] = "Data " . $this->ctitle . " gagal dihapus.";
+                    }
+
+                }
+                else{
+                    DB::rollBack();
+                    $data['s'] = "Data " . $this->ctitle . " tidak ditemukan.";
+                }
+    
+            } catch (Exception $e) {
+                DB::rollBack();
+                $data['s'] = "Data " . $this->ctitle . " gagal dihapus";
+                $data['m'] = $e->getMessage();
+            }
+            return response_json($data);
+        }
+    }
+
+
+
+
+
+
+
+
+    //------------------------------
+    //---------ACTIVE---------------
+    //------------------------------
+    public function active($id)
+    {
+        if(request()->ajax()){
+            try {
+                DB::beginTransaction();
+
+                $data = array();
+                $data['st'] = 'e';
+
+                $is_actived = '';
+
+                $id = dec($id);
+                $results_data = Course::find($id);
+                
+                if($results_data){
+
+                    if ($results_data->is_actived == 1) {
+                        $is_actived = "nonaktifkan";
+                        $results_data->is_actived = 0;
+                    } else {
+                        $is_actived = "aktifkan";
+                        $results_data->is_actived = 1;
+                    }
+
+                    if($results_data->save()){
+                        DB::commit();
+                        $data['s'] = "Data " . $this->ctitle . " " . $results_data->name . " berhasil " . $is_actived;
+                        $data['st'] = 's';
+                    }
+                    else{
+                        DB::rollBack();
+                        $data['s'] = "Data " . $this->ctitle . " gagal diubah.";
+                    }
+
+                }
+                else{
+                    DB::rollBack();
+                    $data['s'] = "Data " . $this->ctitle . " tidak ditemukan.";
+                }
+    
+            } catch (Exception $e) {
+                DB::rollBack();
+                $data['s'] = "Data " . $this->ctitle . " gagal diubah";
+                $data['m'] = $e->getMessage();
+            }
+            return response_json($data);
+        }
+    }
+
+
+
+
+
+
+
+
+    //------------------------------
     //--------STORE SECTION---------
     //------------------------------
     public function store_section(Request $request, $id)
@@ -484,7 +608,7 @@ class CourseController extends Controller
 
             $course = $this->get_transaction($results_data->course_id)->first();
             if(!$course){
-                return response()->json(['s' => "Data " . $this->ctitle . " tidak ditemukan.", 'st' => 'e']);
+                return Redirect()->route('admin'.$this->has_access . '.index')->with("error", "Data " . $this->ctitle . " tidak ditemukan.");
             }
 
             return view($this->view_path . 'edit_section', compact('data', 'results_data'));
@@ -558,7 +682,7 @@ class CourseController extends Controller
                 'a.name as admins_name',
                 )
             ->leftJoin('course_sections as cs', 'cs.id', '=', 'lessons.course_section_id')
-            ->leftJoin('admins as a', 'a.id', '=', 'lessons.created_by')
+            ->leftJoin('users as a', 'a.id', '=', 'lessons.created_by')
             ->where('lessons.course_section_id', $id)
             ->whereNull("lessons.deleted_at");
             return DataTables::of($data)
@@ -843,12 +967,12 @@ class CourseController extends Controller
 
             $course_section = $this->get_section($results_data->course_section_id)->first();
             if(!$course_section){
-                return response()->json(['s' => "Data Konten " . $this->ctitle . " tidak ditemukan.", 'st' => 'e']);
+                return Redirect()->route('admin.'.$this->has_access . '.index')->with("error", "Data Konten " . $this->ctitle . " tidak ditemukan.");
             }
 
             $course = $this->get_transaction($results_data->course_id)->first();
             if(!$course){
-                return response()->json(['s' => "Data " . $this->ctitle . " tidak ditemukan.", 'st' => 'e']);
+                return Redirect()->route('admin.'.$this->has_access . '.index')->with("error", "Data " . $this->ctitle . " tidak ditemukan.");
             }
 
             $file_data = $this->get_transaction_lesson_file($results_data->id);
@@ -1170,7 +1294,7 @@ class CourseController extends Controller
             $data['st'] = 's';
             $data['results_data'] = $results_data;
             return response()->json(['st' => $data['st'], 'results_data' => $data['results_data']]);
-        } else return Redirect()->route('admin.'.$this->has_access . '.index')->with("error", "Data Poin Pembelajaran " . $this->ctitle . " tidak ditemukan.");
+        } else return response()->json(['s' => "Data Poin Pembelajaran " . $this->ctitle . " tidak ditemukan.", 'st' => 'e']);
     }
 
     public function update_learn_description(Request $request, $id)
@@ -1287,6 +1411,224 @@ class CourseController extends Controller
     }
 
 
+
+
+
+
+
+
+
+    //------------------------------
+    //---------MEMBER---------------
+    //------------------------------
+    public function member_course($id, Request $request)
+    {
+        // if (!has_access($this->has_access, "updated")) return abort(403);
+
+        $data = $this->get_etc();
+        $id = dec($id);
+
+        $results_data = $this->get_transaction($id)->first();
+        
+        if ($results_data) {
+
+            return view($this->view_path . 'member', compact('data', 'results_data'));
+        } else return Redirect()->route('admin.'. $this->has_access . '.index')->with("error", "Data " . $this->ctitle . " tidak ditemukan.");
+    }
+
+    public function json_member_course(Request $request){
+        // Saat request ajax datatable
+        if ($request->ajax()) {
+            $course_id = dec($request->id);
+
+            $asset = new CourseMember;
+            $asset = $asset->select(
+                'course_members.*', 
+                'm.email as member_email',
+                'm.name as member_name',
+                'm.phone as member_phone',
+                'a.name as admins_name',
+                )
+            ->leftJoin('users as m', 'm.id', '=', 'course_members.member_id')
+            ->leftJoin('users as a', 'a.id', '=', 'course_members.created_by')
+            ->where('course_members.course_id', $course_id)
+            ->whereNull("course_members.deleted_at");
+            return DataTables::of($asset)
+                ->addIndexColumn()
+                ->filter(function ($query) use ($request){
+                    if ($request->search['value']) {
+                        $search_value = '%' . $request->search['value'] . '%';
+                        $query->where(function ($query) use ($search_value) {
+                            $query->where('course_members.code', 'like', $search_value)
+                                ->orWhere('m.email', 'like', $search_value)
+                                ->orWhere('m.name', 'like', $search_value)
+                                ->orWhere('m.phone', 'like', $search_value)
+                                ->orWhere('a.name', 'like', $search_value);
+                        });
+                    }
+                })
+                ->addColumn('created_date', function ($row) {
+                    $view = timestampf($row->created_at);
+                    return $view;
+                })
+                ->addColumn('action', function ($row) {
+                    $btn = '
+                    <div class="btn-group">
+                        <button type="button"
+                            class="btn btn-primary btn-sm dropdown-toggle"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false">Aksi <i class="mdi mdi-chevron-down"></i></button>
+                        <div class="dropdown-menu">
+                    ';
+
+                    // if (has_access($this->has_access, "updated")) {
+                        $btn .= '
+                        <a class="dropdown-item" name="btn_dl" id="btn_dl"><i class="fas fa-trash mr-2"></i> Hapus</a>';
+                    // }
+                    
+                    $btn .= '
+                        </div>
+                    </div>
+                    ';
+
+                    return $btn;
+                })
+                ->addColumn('dl', function ($row) {
+                    return $this->routes_path . 'delete_member_course/' . enc($row->id);
+                })
+                ->smart(true)
+                ->startsWithSearch()
+                ->rawColumns(['vname', 'vlevel', 'vprice', 'vstatus', 'created_date', 'action'])
+                ->toJson();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+    //------------------------------
+    //--------STORE MEMBER----------
+    //------------------------------
+    public function store_member_course(Request $request, $id)
+    {
+        // if (!has_access($this->has_access, "view")) return abort(403);
+
+        if(request()->ajax()){
+            try {
+                DB::beginTransaction();
+                
+                $data = array();
+                $data['st'] = 'e';
+                $course_id = dec($id);
+
+                //VALIDATION
+                if(!$request->member_id){
+                    DB::rollBack();
+                    return response()->json(['s' => "Terdapat data yang belum diisi, Harap melengkapi seluruh data sebelum disimpan.", 'st' => 'e']);
+                }
+
+                $results_data = $this->get_transaction($course_id)->first();
+                if(!$results_data){
+                    return response()->json(['s' => "Data " . $this->ctitle . " tidak ditemukan.", 'st' => 'e']);
+                }
+
+                $member = User::find(dec($request->member_id));
+                if(!$member){
+                    return response()->json(['s' => "Data Member tidak ditemukan.", 'st' => 'e']);
+                }
+
+                $member_course = CourseMember::where('member_id', $member->id)->where('course_id', $results_data->id)->first();
+                if($member_course){
+                    return response()->json(['s' => "Data Member ". $this->ctitle ." sudah ada pada ". $this->ctitle ." ini.", 'st' => 'e']);
+                }
+
+                $insert_data = new CourseMember();
+                $insert_data->course_id = $results_data->id;
+                $insert_data->member_id = $member->id;
+
+                if($insert_data->save()){
+                    DB::commit();
+                    $data['st'] = 's';
+                    $data['s'] = "Data Member " . $this->ctitle . " berhasil disimpan.";
+                }
+                else{
+                    DB::rollBack();
+                    $data['s'] = "Data Member " . $this->ctitle . " gagal disimpan.";
+                }
+    
+            } catch (Exception $e) {
+    
+                DB::rollBack();
+                $data['s'] = "Data Member " . $this->ctitle . " gagal disimpan.";
+                $data['m'] = $e->getMessage();
+            }
+            return response_json($data);
+        }
+    }
+
+
+
+
+
+
+
+
+
+    //------------------------------
+    //--------DELETE MEMBER---------
+    //------------------------------
+    public function delete_member_course(Request $request, $id)
+    {
+        // if (!has_access($this->has_access, "view")) return abort(403);
+
+        if(request()->ajax()){
+            try {
+                DB::beginTransaction();
+                
+                $data = array();
+                $data['st'] = 'e';
+                $id = dec($id);
+
+                $results_data = $this->get_member_course($id)->first();
+
+                if($results_data){
+
+                    $results_data = CourseMember::find($id);
+                    
+                    if($results_data->delete()){
+                        DB::commit();
+                        $data['st'] = 's';
+                        $data['s'] = "Data Member ". $this->ctitle ." berhasil dihapus.";
+                    }
+                    else{
+                        DB::rollBack();
+                        $data['s'] = "Data Member ". $this->ctitle ." gagal dihapus.";
+                    }
+                }
+                else{
+                    DB::rollBack();
+                    $data['s'] = "Data Member ". $this->ctitle ." tidak ditemukan.";
+                }
+    
+            } catch (Exception $e) {
+    
+                DB::rollBack();
+                $data['s'] = "Data Member ". $this->ctitle ." gagal dihapus.";
+                $data['m'] = $e->getMessage();
+            }
+            return response_json($data);
+        }
+    }
+
+
     
 
 
@@ -1380,6 +1722,14 @@ class CourseController extends Controller
         return $results_data;
     }
 
+    public function get_member_course($id)
+    {
+        $results_data = CourseMember::
+            select('course_members.*')
+            ->where('course_members.id', $id);
+        return $results_data;
+    }
+
 
 
 
@@ -1415,6 +1765,24 @@ class CourseController extends Controller
             ->orderBy('category_courses.name', 'asc')
             ->get();
 
+        return json_encode($data);
+    }
+
+    public function search_member(Request $request){
+        $data = User::select('users.*')
+            ->where(function ($query) use ($request) {
+                $search_value = '%' . $request->search . '%';
+                $query->where('users.name', 'like', $search_value)
+                ->orWhere('users.email', 'like', $search_value);
+            })
+            ->where('users.role', User::MEMBER)
+            ->where('users.is_actived', '1')
+            ->orderBy('users.name', 'asc')
+            ->get();
+
+        foreach ($data as $v) {
+            $v->enc_id = enc($v->id);
+        }
         return json_encode($data);
     }
 

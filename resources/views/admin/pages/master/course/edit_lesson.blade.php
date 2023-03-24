@@ -22,10 +22,10 @@
 
                     <ol class="breadcrumb p-0 m-0">
                         <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                        <li class="breadcrumb-item active">
+                        <li class="breadcrumb-item">
                             {{ $data["ctitle"] }}
                         </li>
-                        <li class="breadcrumb-item active">
+                        <li class="breadcrumb-item">
                             {{ $data["csub_title"] }}
                         </li>
                         <li class="breadcrumb-item active">
@@ -64,8 +64,10 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-12">
-                                    <label class="form-label" for="description">Deskripsi :</label>
-                                    <textarea class="form-control" name="description" id="description" rows="6">{{ $results_data->description }}</textarea>
+                                    <label class="form-label">Default</label>
+                                    <div style="height: 300px;" name="description" id="description">
+                                        <?= $results_data->description ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -166,6 +168,10 @@
 @include('admin.pages.master.course.components.js_file')
 
 <script>
+    const description = new Quill('#description', {
+        theme: 'snow'
+    });
+
     $("#form-data").submit(function(e) {
 		e.preventDefault();
 		
@@ -174,7 +180,7 @@
 
 		var file_data = new FormData();
 		file_data.append('title', $('#title').val());
-		file_data.append('description', $('#description').val());
+		file_data.append('description', description.root.innerHTML);
 		file_data.append('position', $('#position').val());
 		file_data.append('can_preview', ($('#can_preview').prop('checked') ? 1 : 0));
 		file_data.append('url_video', $('#url_video').val());

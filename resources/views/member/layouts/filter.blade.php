@@ -22,7 +22,7 @@
                 $level_filter = request()->input('level_filter') ?? array();
             ?>
 
-            <form action="{{ route('member.course.search') }}" class="m-0" id="form_search">
+            <form action="{{ $list_route['search'] }}" class="m-0" id="form_search">
                 <div class="sidebar-heading">Kategori</div>
                 <div class="sidebar-block">
                     <div class="form-group">

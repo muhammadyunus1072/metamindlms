@@ -47,20 +47,41 @@
             <span class="sidebar-menu-text">Browse Paths</span>
         </a>
     </li> --}}
+<<<<<<< HEAD
     <li class="sidebar-menu-item active">
         <a class="sidebar-menu-button" href="{{ route('admin.dashboard.index') }}">
+=======
+    <li class="sidebar-menu-item {{ Request::segment(1) == 'admin' && Request::segment(2) === null ? 'active' : '' }}">
+        <a class="sidebar-menu-button"
+            href="{{ route('admin.dashboard.index') }}">
+>>>>>>> 41afe7b466e6580738e08754d2a0d7fa471c7d0d
             <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">account_box</span>
             <span class="sidebar-menu-text">Dashboard</span>
         </a>
     </li>
 
     <ul class="sidebar-menu">
+<<<<<<< HEAD
         <li class="sidebar-menu-item">
             <a class="sidebar-menu-button" data-toggle="collapse" href="#master_data_menu">
+=======
+        <li class="sidebar-menu-item {{ Request::segment(2) == 'master_data' ? 'active' : '' }}
+        
+        {{
+            Request::segment(3) == 'group_category_course' || 
+            Request::segment(3) == 'category_course' || 
+            Request::segment(3) == 'level' || 
+            Request::segment(3) == 'course' ? 'open': ''
+        }}">
+            <a class="sidebar-menu-button"
+                data-toggle="collapse"
+                href="#master_data_menu">
+>>>>>>> 41afe7b466e6580738e08754d2a0d7fa471c7d0d
                 <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">folder</span>
                 Master Data
                 <span class="ml-auto sidebar-menu-toggle-icon"></span>
             </a>
+<<<<<<< HEAD
             <ul class="sidebar-submenu collapse sm-indent" id="master_data_menu">
                 <li class="sidebar-menu-item">
                     <?php $name = 'course'; ?>
@@ -89,6 +110,35 @@
                 <li class="sidebar-menu-item">
                     <?php $name = 'level'; ?>
                     <a class="sidebar-menu-button" href="{{ route('admin.' . $name . '.index') }}">
+=======
+            <ul class="sidebar-submenu collapse sm-indent "
+                id="master_data_menu">
+                <?php $name = 'group_category_course' ?>
+                <li class="sidebar-menu-item {{ Request::segment(3) == $name ? 'active' : '' }}">
+                    <a class="sidebar-menu-button"
+                        href="{{ route('admin.'.$name.'.index') }}">
+                        <span class="sidebar-menu-text">{{ master_sidebar($name) }}</span>
+                    </a>
+                </li>
+                <?php $name = 'category_course' ?>
+                <li class="sidebar-menu-item {{ Request::segment(3) == $name ? 'active' : '' }}">
+                    <a class="sidebar-menu-button"
+                        href="{{ route('admin.'.$name.'.index') }}">
+                        <span class="sidebar-menu-text">{{ master_sidebar($name) }}</span>
+                    </a>
+                </li>
+                <?php $name = 'level' ?>
+                <li class="sidebar-menu-item {{ Request::segment(3) == $name ? 'active' : '' }}">
+                    <a class="sidebar-menu-button"
+                        href="{{ route('admin.'.$name.'.index') }}">
+                        <span class="sidebar-menu-text">{{ master_sidebar($name) }}</span>
+                    </a>
+                </li>
+                <?php $name = 'course' ?>
+                <li class="sidebar-menu-item {{ Request::segment(3) == $name ? 'active' : '' }}">
+                    <a class="sidebar-menu-button"
+                        href="{{ route('admin.'.$name.'.index') }}">
+>>>>>>> 41afe7b466e6580738e08754d2a0d7fa471c7d0d
                         <span class="sidebar-menu-text">{{ master_sidebar($name) }}</span>
                     </a>
                 </li>

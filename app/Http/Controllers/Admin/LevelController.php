@@ -50,7 +50,7 @@ class LevelController extends Controller
                 'levels.*', 
                 'a.name as admins_name',
                 )
-            ->leftJoin('admins as a', 'a.id', '=', 'levels.created_by')
+            ->leftJoin('users as a', 'a.id', '=', 'levels.created_by')
             ->whereNull("levels.deleted_at");
             return DataTables::of($asset)
                 ->addIndexColumn()

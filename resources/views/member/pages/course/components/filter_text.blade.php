@@ -1,7 +1,7 @@
  <div class="d-flex flex-column flex-sm-row align-items-sm-center mb-24pt"
         style="white-space: nowrap;">
     <div class="form-group flex mr-3 mb-2 mb-sm-0">
-        <form action="{{ route('member.course.search') }}" class="m-0" id="form_search">
+        <form action="{{ $list_route['search'] }}" class="m-0" id="form_search">
             <div class="row">
                 <div class="col-lg">
                     <div class="search-form form-control-rounded search-form--dark">

@@ -117,6 +117,14 @@
 		],
 	});
 
+	$('#master-table tbody').on('click', '#btn_m', function() {
+		var data = data_table.row($(this).parents('tr')).data();
+		if (data === undefined) {
+			data = data_table.row($(this)).data();
+		}
+		window.location.assign(data['m']);
+	});
+
     $('#master-table tbody').on('click', '#btn_u', function() {
 		var data = data_table.row($(this).parents('tr')).data();
 		if (data === undefined) {
@@ -132,7 +140,7 @@
         }
 
         var file_data = new FormData();
-        vstatus_text = "Apakah anda yakin ingin " + data['vstatus_text'] + " data " + data['name'] + " ?";
+        vstatus_text = "Apakah anda yakin ingin " + data['vstatus_text'] + " data " + data['code'] + " ?";
         r_action_table(file_data, vstatus_text, data['ac'], 'table', data_table);
     });
 
@@ -143,7 +151,7 @@
 		}
 
 		var file_data = new FormData();
-		vstatus_text = "Apakah anda yakin ingin menghapus {{ $data['ctitle'] }} " + data['name'] + " ?";
+		vstatus_text = "Apakah anda yakin ingin menghapus {{ $data['ctitle'] }} " + data['code'] + " ?";
 		r_action_table(file_data, vstatus_text, data['dl'], 'table', data_table);
 	});
 </script>

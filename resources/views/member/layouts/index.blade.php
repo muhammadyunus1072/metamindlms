@@ -24,12 +24,16 @@
         <link href="{{ asset('/assets/css/fontawesome.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('/assets/css/preloader.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('/assets/css/app.css') }}" rel="stylesheet" type="text/css" />
+        <link type="text/css" href="{{ asset('/assets/vendor/select2/select2.min.css') }}" rel="stylesheet">
+        <link type="text/css" href="{{ asset('/assets/css/select2.css') }}" rel="stylesheet">
         
         <link href="{{ asset('/css/sweetalert2.min.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset('/css/main.css') }}" rel="stylesheet" type="text/css">
 
         <link href="https://cdn.jsdelivr.net/gh/smartintegratedsistem/JqueryPagination@1.0.0/css/jquery-pagination.css"
             rel="stylesheet">
 
+        @livewireStyles
     </head>
 
     <body class="layout-app ">
@@ -317,7 +321,7 @@
                     <div class="container page__container page-section d-flex flex-column">
                         <p class="text-70 brand mb-24pt">
                             <img class="brand-icon"
-                                 src="../../public/images/logo/black-70@2x.png"
+                                 src=""
                                  width="30"
                                  alt="Luma"> Luma
                         </p>
@@ -363,6 +367,8 @@
         </div>
 
         <!-- // END Drawer Layout -->
+        
+        @yield('modal')
 
         <script src="{{ asset('/assets/vendor/jquery.min.js') }}"></script>
         <script src="{{ asset('/assets/vendor/popper.min.js') }}"></script>
@@ -384,9 +390,33 @@
         <script src="{{ asset('/assets/js/list.js') }}"></script>
         <script src="{{ asset('/assets/js/toggle-check-all.js') }}"></script>
         <script src="{{ asset('/assets/js/check-selected-row.js') }}"></script>
+        <script src="{{ asset('/assets/vendor/select2/select2.min.js') }}"></script>
+        <script src="{{ asset('/assets/js/select2.js') }}"></script>
         
         <script src="{{ asset('/js/sweetalert2.all.min.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/gh/smartintegratedsistem/JqueryPagination@1.0.0/js/jquery-pagination.js"></script>
+        
+        <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
+        <script src="{{ asset('/js/main.js') }}"></script>
+
+        <script>
+            $(document).ready(function(){
+                $(".custom_scrolling_navbar a").on('click', function(event) {
+                    if (this.hash !== "") {
+                        event.preventDefault();
+                
+                        var hash = this.hash;
+                
+                        $('html, body').animate({
+                            scrollTop: $(hash).offset().top
+                        }, 800, function(){
+                    
+                            window.location.hash = hash;
+                        });
+                    }
+                });
+            });
+        </script>
 
         <script>
             $.ajaxSetup({
@@ -394,6 +424,8 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+
+            $('.custom-select-2').select2({})
 
             function r_action_table(data, messages, action_url, reload_data) {
                 swal.fire({
@@ -413,6 +445,7 @@
                             url: action_url,
                             type: "POST",
                             processData: false,
+                            contentType: false,
                             cache: false,
                             data: data,
                             success: function(result) {
@@ -437,6 +470,39 @@
                                 alert_error("show", xhr);
                             }
                         });
+                    }
+                });
+            }
+
+            function action_table(data, action_url, reload_data) {
+                loading("show");
+                $.ajax({
+                    url: action_url,
+                    type: "POST",
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    data: data,
+                    success: function(result) {
+                        loading("hide");
+                        if (reload_data == 'table') {
+                            data_table.ajax.reload(null, false);
+                        }
+
+                        if (reload_data == 'page' && result['st'] == 's') {
+                            location.reload();
+                        }
+
+                        if (reload_data == 'redirect' && result['st'] == 's') {
+                            window.location.assign(result['p']);
+                        }
+
+                        // if (result['st'] == 's') info_server('success', result['s']);
+                        // else info_server('error', result['s']);
+                    },
+                    error: function(xhr, res, result) {
+                        loading("hide");
+                        alert_error("show", xhr);
                     }
                 });
             }
@@ -466,8 +532,22 @@
             }
         </script>
 
+        <script>
+            function change_icon_favorite(data, view){
+                if(data == 1){
+                    $(view).attr('data-original-title', 'Hapuskan dari Favorite');
+                    $(view).text('favorite');
+                }
+                else if(data == 0){
+                    $(view).attr('data-original-title', 'Tambahkan ke Favorite');
+                    $(view).text('favorite_border');
+                }
+            }
+        </script>
+
         @yield('js')
 
+        @livewireScripts
     </body>
 
 </html>

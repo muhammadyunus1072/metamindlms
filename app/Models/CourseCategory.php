@@ -18,6 +18,6 @@ class CourseCategory extends Model
 
     public function category_course()
     {
-        return $this->belongsTo(Category::class, 'category_course_id', 'id');
+        return $this->belongsTo(CategoryCourse::class, 'category_course_id', 'id');
     }
 }

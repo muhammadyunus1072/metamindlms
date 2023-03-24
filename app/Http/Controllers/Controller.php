@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\FileHelper;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -14,6 +15,8 @@ class Controller extends BaseController
 
     public function meta_data($data = null)
     {
+        Carbon::setLocale('id');
+        
         // $company_information = Company_information::first();
         // $data["meta_web_title"] = (!empty($data["meta_web_title"])) ? $data["meta_web_title"] : $company_information->website_name;
         // $data["meta_description"] = (!empty($data["meta_description"])) ? $data["meta_description"] : $company_information->slogan;
