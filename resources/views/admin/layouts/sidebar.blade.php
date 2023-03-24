@@ -47,141 +47,93 @@
             <span class="sidebar-menu-text">Browse Paths</span>
         </a>
     </li> --}}
-<<<<<<< HEAD
     <li class="sidebar-menu-item active">
         <a class="sidebar-menu-button" href="{{ route('admin.dashboard.index') }}">
-=======
     <li class="sidebar-menu-item {{ Request::segment(1) == 'admin' && Request::segment(2) === null ? 'active' : '' }}">
-        <a class="sidebar-menu-button"
-            href="{{ route('admin.dashboard.index') }}">
->>>>>>> 41afe7b466e6580738e08754d2a0d7fa471c7d0d
+        <a class="sidebar-menu-button" href="{{ route('admin.dashboard.index') }}">
             <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">account_box</span>
             <span class="sidebar-menu-text">Dashboard</span>
         </a>
     </li>
 
     <ul class="sidebar-menu">
-<<<<<<< HEAD
         <li class="sidebar-menu-item">
             <a class="sidebar-menu-button" data-toggle="collapse" href="#master_data_menu">
-=======
-        <li class="sidebar-menu-item {{ Request::segment(2) == 'master_data' ? 'active' : '' }}
-        
-        {{
-            Request::segment(3) == 'group_category_course' || 
-            Request::segment(3) == 'category_course' || 
-            Request::segment(3) == 'level' || 
-            Request::segment(3) == 'course' ? 'open': ''
-        }}">
-            <a class="sidebar-menu-button"
-                data-toggle="collapse"
-                href="#master_data_menu">
->>>>>>> 41afe7b466e6580738e08754d2a0d7fa471c7d0d
+        <li class="sidebar-menu-item {{ Request::segment(2) == 'master_data' ? 'active open' : '' }}">
+            <a class="sidebar-menu-button" data-toggle="collapse" href="#master_data_menu">
                 <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">folder</span>
                 Master Data
                 <span class="ml-auto sidebar-menu-toggle-icon"></span>
             </a>
-<<<<<<< HEAD
             <ul class="sidebar-submenu collapse sm-indent" id="master_data_menu">
-                <li class="sidebar-menu-item">
-                    <?php $name = 'course'; ?>
-                    <a class="sidebar-menu-button" href="{{ route('admin.' . $name . '.index') }}">
-                        <span class="sidebar-menu-text">{{ master_sidebar($name) }}</span>
-                    </a>
-                </li>
-                <li class="sidebar-menu-item">
-                    <?php $name = 'offline_course'; ?>
-                    <a class="sidebar-menu-button" href="{{ route('admin.' . $name . '.index') }}">
-                        <span class="sidebar-menu-text">{{ master_sidebar($name) }}</span>
-                    </a>
-                </li>
-                <li class="sidebar-menu-item">
-                    <?php $name = 'group_category_course'; ?>
-                    <a class="sidebar-menu-button" href="{{ route('admin.' . $name . '.index') }}">
-                        <span class="sidebar-menu-text">{{ master_sidebar($name) }}</span>
-                    </a>
-                </li>
-                <li class="sidebar-menu-item">
-                    <?php $name = 'category_course'; ?>
-                    <a class="sidebar-menu-button" href="{{ route('admin.' . $name . '.index') }}">
-                        <span class="sidebar-menu-text">{{ master_sidebar($name) }}</span>
-                    </a>
-                </li>
-                <li class="sidebar-menu-item">
-                    <?php $name = 'level'; ?>
-                    <a class="sidebar-menu-button" href="{{ route('admin.' . $name . '.index') }}">
-=======
-            <ul class="sidebar-submenu collapse sm-indent "
-                id="master_data_menu">
-                <?php $name = 'group_category_course' ?>
+                <?php $name = 'course'; ?>
                 <li class="sidebar-menu-item {{ Request::segment(3) == $name ? 'active' : '' }}">
-                    <a class="sidebar-menu-button"
-                        href="{{ route('admin.'.$name.'.index') }}">
+                    <a class="sidebar-menu-button" href="{{ route('admin.' . $name . '.index') }}">
                         <span class="sidebar-menu-text">{{ master_sidebar($name) }}</span>
                     </a>
                 </li>
-                <?php $name = 'category_course' ?>
+                <?php $name = 'offline_course'; ?>
                 <li class="sidebar-menu-item {{ Request::segment(3) == $name ? 'active' : '' }}">
-                    <a class="sidebar-menu-button"
-                        href="{{ route('admin.'.$name.'.index') }}">
+                    <a class="sidebar-menu-button" href="{{ route('admin.' . $name . '.index') }}">
                         <span class="sidebar-menu-text">{{ master_sidebar($name) }}</span>
                     </a>
                 </li>
-                <?php $name = 'level' ?>
+                <?php $name = 'group_category_course'; ?>
                 <li class="sidebar-menu-item {{ Request::segment(3) == $name ? 'active' : '' }}">
-                    <a class="sidebar-menu-button"
-                        href="{{ route('admin.'.$name.'.index') }}">
+                    <a class="sidebar-menu-button" href="{{ route('admin.' . $name . '.index') }}">
                         <span class="sidebar-menu-text">{{ master_sidebar($name) }}</span>
                     </a>
                 </li>
-                <?php $name = 'course' ?>
+                <?php $name = 'category_course'; ?>
                 <li class="sidebar-menu-item {{ Request::segment(3) == $name ? 'active' : '' }}">
-                    <a class="sidebar-menu-button"
-                        href="{{ route('admin.'.$name.'.index') }}">
->>>>>>> 41afe7b466e6580738e08754d2a0d7fa471c7d0d
+                    <a class="sidebar-menu-button" href="{{ route('admin.' . $name . '.index') }}">
+                        <span class="sidebar-menu-text">{{ master_sidebar($name) }}</span>
+                    </a>
+                </li>
+                <?php $name = 'level'; ?>
+                <li class="sidebar-menu-item {{ Request::segment(3) == $name ? 'active' : '' }}">
+                    <a class="sidebar-menu-button" href="{{ route('admin.' . $name . '.index') }}">
                         <span class="sidebar-menu-text">{{ master_sidebar($name) }}</span>
                     </a>
                 </li>
             </ul>
-        </li>
-    </ul>
 
-    {{-- <li class="sidebar-menu-item">
+            {{-- <li class="sidebar-menu-item">
         <a class="sidebar-menu-button"
             href="student-my-courses.html">
             <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">search</span>
             <span class="sidebar-menu-text">My Courses</span>
         </a>
     </li> --}}
-    {{-- <li class="sidebar-menu-item">
+            {{-- <li class="sidebar-menu-item">
         <a class="sidebar-menu-button"
             href="student-paths.html">
             <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">timeline</span>
             <span class="sidebar-menu-text">My Paths</span>
         </a>
     </li> --}}
-    {{-- <li class="sidebar-menu-item">
+            {{-- <li class="sidebar-menu-item">
         <a class="sidebar-menu-button"
             href="student-path.html">
             <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">change_history</span>
             <span class="sidebar-menu-text">Path Details</span>
         </a>
     </li> --}}
-    {{-- <li class="sidebar-menu-item">
+            {{-- <li class="sidebar-menu-item">
         <a class="sidebar-menu-button"
             href="student-course.html">
             <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">face</span>
             <span class="sidebar-menu-text">Course Preview</span>
         </a>
     </li> --}}
-    {{-- <li class="sidebar-menu-item">
+            {{-- <li class="sidebar-menu-item">
         <a class="sidebar-menu-button"
             href="student-lesson.html">
             <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">panorama_fish_eye</span>
             <span class="sidebar-menu-text">Lesson Preview</span>
         </a>
     </li> --}}
-    {{-- <li class="sidebar-menu-item">
+            {{-- <li class="sidebar-menu-item">
         <a class="sidebar-menu-button"
             href="student-take-course.html">
             <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">class</span>
@@ -189,42 +141,42 @@
             <span class="sidebar-menu-badge badge badge-accent badge-notifications ml-auto">PRO</span>
         </a>
     </li> --}}
-    {{-- <li class="sidebar-menu-item">
+            {{-- <li class="sidebar-menu-item">
         <a class="sidebar-menu-button"
             href="student-take-lesson.html">
             <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">import_contacts</span>
             <span class="sidebar-menu-text">Take Lesson</span>
         </a>
     </li> --}}
-    {{-- <li class="sidebar-menu-item">
+            {{-- <li class="sidebar-menu-item">
         <a class="sidebar-menu-button"
             href="student-take-quiz.html">
             <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">dvr</span>
             <span class="sidebar-menu-text">Take Quiz</span>
         </a>
     </li> --}}
-    {{-- <li class="sidebar-menu-item">
+            {{-- <li class="sidebar-menu-item">
         <a class="sidebar-menu-button"
             href="student-quiz-results.html">
             <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">poll</span>
             <span class="sidebar-menu-text">My Quizzes</span>
         </a>
     </li> --}}
-    {{-- <li class="sidebar-menu-item">
+            {{-- <li class="sidebar-menu-item">
         <a class="sidebar-menu-button"
             href="student-quiz-result-details.html">
             <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">live_help</span>
             <span class="sidebar-menu-text">Quiz Result</span>
         </a>
     </li> --}}
-    {{-- <li class="sidebar-menu-item">
+            {{-- <li class="sidebar-menu-item">
         <a class="sidebar-menu-button"
             href="student-path-assessment.html">
             <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">layers</span>
             <span class="sidebar-menu-text">Skill Assessment</span>
         </a>
     </li> --}}
-    {{-- <li class="sidebar-menu-item">
+            {{-- <li class="sidebar-menu-item">
         <a class="sidebar-menu-button"
             href="student-path-assessment-result.html">
             <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">assignment_turned_in</span>
@@ -232,9 +184,9 @@
         </a>
     </li> --}}
 
-</ul>
+    </ul>
 
-{{-- <div class="sidebar-heading">Instructor</div>
+    {{-- <div class="sidebar-heading">Instructor</div>
 <ul class="sidebar-menu">
 
     <li class="sidebar-menu-item">
@@ -289,7 +241,7 @@
 
 </ul> --}}
 
-{{-- <div class="sidebar-heading">Applications</div>
+    {{-- <div class="sidebar-heading">Applications</div>
 <ul class="sidebar-menu">
 
     <li class="sidebar-menu-item">
@@ -637,7 +589,7 @@
     </li>
 </ul> --}}
 
-{{-- <div class="sidebar-heading">UI</div>
+    {{-- <div class="sidebar-heading">UI</div>
 <ul class="sidebar-menu">
     <li class="sidebar-menu-item">
         <a class="sidebar-menu-button"

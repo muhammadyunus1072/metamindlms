@@ -51,6 +51,48 @@ class Show extends Component
         $this->count_registrar = OfflineCourseRegistrar::where('offline_course_id', '=', $decId)->count();
     }
 
+    public function saveAttendance($encUserId)
+    {
+        $decUserId = Crypt::decryptString($encUserId);
+
+        $checkAttendance = OfflineCourseAttendance::where('offline_course_id', '=', $this->offline_course_id)
+            ->where('user_id', '=', $decUserId)
+            ->first();
+
+        if (!empty($checkAttendance)) {
+            $this->addError('attendance_user_id', 'Peserta Sudah Terdapat Dalam Daftar Kehadiran');
+            return;
+        }
+
+        OfflineCourseAttendance::create([
+            'offline_course_id' => $this->offline_course_id,
+            'user_id' => $decUserId
+        ]);
+
+        $this->attendanceChange();
+    }
+
+    public function saveRegistrar($encUserId)
+    {
+        $decUserId = Crypt::decryptString($encUserId);
+
+        $checkAttendance = OfflineCourseAttendance::where('offline_course_id', '=', $this->offline_course_id)
+            ->where('user_id', '=', $decUserId)
+            ->first();
+
+        if (!empty($checkAttendance)) {
+            $this->addError('attendance_user_id', 'Peserta Sudah Terdapat Dalam Daftar Kehadiran');
+            return;
+        }
+
+        OfflineCourseAttendance::create([
+            'offline_course_id' => $this->offline_course_id,
+            'user_id' => $decUserId
+        ]);
+
+        $this->registrarChange();
+    }
+
     public function render()
     {
         return view('livewire.offline-course.show');
