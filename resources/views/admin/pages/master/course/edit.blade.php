@@ -289,7 +289,7 @@
     @include('admin.pages.master.course.components.modal_edit_learn_description')
 @endsection
 
-@section('js')
+@push('js')
 
 @include('admin.pages.master.course.components.js_file')
 
@@ -430,4 +430,4 @@
 
 @include('admin.pages.master.course.components.js_destroy_section')
     
-@stop
+@endpush

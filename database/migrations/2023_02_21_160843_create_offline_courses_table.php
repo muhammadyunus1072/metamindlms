@@ -30,11 +30,11 @@ return new class extends Migration
             $table->bigInteger('obj_id')->unsigned();
         } else {
         }
-        $table->text('image');
+        $table->text('image')->nullable()->default(null);
+        
         $table->text('title');
         $table->text('description');
         $table->integer('quota')->nullable()->default(null);
-
         $table->datetime('date_time_start');
         $table->datetime('date_time_end');
 

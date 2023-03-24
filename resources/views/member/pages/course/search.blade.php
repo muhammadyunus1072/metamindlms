@@ -134,5 +134,5 @@
     @include('member.layouts.filter')
 @endsection
 
-@section('js')
+@push('js')
 @stop

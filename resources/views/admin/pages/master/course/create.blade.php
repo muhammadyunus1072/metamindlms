@@ -169,7 +169,7 @@
 
 @stop
 
-@section('js')
+@push('js')
 
 @include('admin.pages.master.course.components.js_file')
 
@@ -201,4 +201,4 @@
 	});
 </script>
     
-@stop
+@endpush

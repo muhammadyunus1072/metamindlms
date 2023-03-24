@@ -34,21 +34,20 @@ return new class extends Migration
 
         if ($is_history) {
             $table->bigInteger('obj_id')->unsigned();
-            $table->string('email')->comment('Email');
         } else {
-            $table->string('email')->unique()->comment('Email');
         }
-        $table->string('password')->comment('Password');
+        
+        $table->string('email')->comment('Email');
         $table->string('name')->comment('Nama');
-        $table->date('birth_date')->nullable()->comment('Tanggal Lahir');
-        $table->enum('gender', ['Pria', 'Wanita'])->nullable()->comment('Jenis Kelamin');
         $table->enum('role', ['admin', 'member'])->nullable()->comment('Role');
+        $table->string('password')->comment('Password');
 
-        if ($is_history) {
-            $table->string('phone')->nullable()->comment('Nomor Handphone');
-        } else {
-            $table->string('phone')->nullable()->unique()->comment('Nomor Handphone');
-        }
+        $table->string('phone')->nullable()->default(null)->comment('Nomor Handphone');
+        $table->string('birth_place')->nullable()->default(null)->comment('Tempat Lahir');
+        $table->date('birth_date')->nullable()->default(null)->comment('Tanggal Lahir');
+        $table->enum('gender', ['Pria', 'Wanita'])->nullable()->default(null)->comment('Jenis Kelamin');
+        $table->string('religion')->nullable()->default(null)->comment('Agama');
+        $table->string('company_name')->nullable()->default(null)->comment('Nama Perusahaan');
 
         $table->boolean("is_actived")->default(1);
         $table->text("accessibility")->nullable()->comment('Hak Akses');

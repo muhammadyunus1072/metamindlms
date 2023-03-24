@@ -9,11 +9,6 @@ use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         User::create([
@@ -22,6 +17,15 @@ class UserSeeder extends Seeder
             "name" => "Member",
             "role" => "member",
         ]);
+
+        for ($i = 1; $i < 10; $i++) {
+            User::create([
+                "email" => "member$i@gmail.com",
+                "password" => Hash::make('secret'),
+                "name" => "Member $i",
+                "role" => "member",
+            ]);
+        }
 
         User::create([
             "email" => "admin@gmail.com",

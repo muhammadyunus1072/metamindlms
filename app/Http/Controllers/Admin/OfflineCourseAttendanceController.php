@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\OfflineCourse;
+use App\Models\OfflineCourseAttendance;
 use Illuminate\Http\Request;
 
-class OfflineCourseController extends Controller
+class OfflineCourseAttendanceController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class OfflineCourseController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\OfflineCourse  $offlineCourse
+     * @param  \App\Models\OfflineCourseAttendance  $offlineCourseAttendance
      * @return \Illuminate\Http\Response
      */
-    public function show(OfflineCourse $offlineCourse)
+    public function show(OfflineCourseAttendance $offlineCourseAttendance)
     {
         //
     }
@@ -52,10 +52,10 @@ class OfflineCourseController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\OfflineCourse  $offlineCourse
+     * @param  \App\Models\OfflineCourseAttendance  $offlineCourseAttendance
      * @return \Illuminate\Http\Response
      */
-    public function edit(OfflineCourse $offlineCourse)
+    public function edit(OfflineCourseAttendance $offlineCourseAttendance)
     {
         //
     }
@@ -64,10 +64,10 @@ class OfflineCourseController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\OfflineCourse  $offlineCourse
+     * @param  \App\Models\OfflineCourseAttendance  $offlineCourseAttendance
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, OfflineCourse $offlineCourse)
+    public function update(Request $request, OfflineCourseAttendance $offlineCourseAttendance)
     {
         //
     }
@@ -75,10 +75,10 @@ class OfflineCourseController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\OfflineCourse  $offlineCourse
+     * @param  \App\Models\OfflineCourseAttendance  $offlineCourseAttendance
      * @return \Illuminate\Http\Response
      */
-    public function destroy(OfflineCourse $offlineCourse)
+    public function destroy(OfflineCourseAttendance $offlineCourseAttendance)
     {
         //
     }

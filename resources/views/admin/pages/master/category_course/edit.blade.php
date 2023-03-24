@@ -83,7 +83,7 @@
 
 @stop
 
-@section('js')
+@push('js')
 
 @include('admin.pages.master.category_course.components.js_select2')
 
@@ -103,4 +103,4 @@
 	});
 </script>
     
-@stop
+@endpush

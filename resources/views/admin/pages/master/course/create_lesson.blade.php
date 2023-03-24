@@ -144,7 +144,7 @@
 
 @stop
 
-@section('js')
+@push('js')
 
 @include('admin.pages.master.course.components.js_file')
 
@@ -171,4 +171,4 @@
 		r_action_table(file_data, "Harap periksa kembali data yang telah diinput sebelum disimpan.", url, 'redirect', null);
 	});
 </script>
-@stop
+@endpush

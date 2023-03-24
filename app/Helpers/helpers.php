@@ -65,6 +65,7 @@ const MASTER_SIDEBAR = array(
     "category_course" => "Kategori Kursus",
     "level" => "Level Kursus",
     "course" => "Kursus",
+    "offline_course" => "Kursus Offline",
 );
 
 function master_sidebar($key = null){

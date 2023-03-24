@@ -66,7 +66,7 @@
 
 @stop
 
-@section('js')
+@push('js')
 
 <script>
     $("#form-data").submit(function(e) {
@@ -83,4 +83,4 @@
 	});
 </script>
     
-@stop
+@endpush

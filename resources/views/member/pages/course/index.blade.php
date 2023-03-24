@@ -451,9 +451,3 @@
 @section('filter')
     @include('member.layouts.filter')
 @endsection
-
-@section('js')
-<script>
-    
-</script>
-@stop

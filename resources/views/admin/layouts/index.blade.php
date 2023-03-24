@@ -33,6 +33,7 @@
             rel="stylesheet">
         <link rel="stylesheet" href="{{ asset('vendor/datatables/dataTables.bs4.css') }}" />
 
+        @stack('css')
     </head>
 
     <body class="layout-app ">
@@ -318,7 +319,7 @@
 
                 <!-- Footer -->
 
-                <div class="bg-white border-top-2 mt-auto">
+                {{-- <div class="bg-white border-top-2 mt-auto">
                     <div class="container page__container page-section d-flex flex-column">
                         <p class="text-70 brand mb-24pt">
                             <img class="brand-icon"
@@ -335,7 +336,7 @@
                         </p>
                         <p class="text-50 small mt-n1 mb-0">Copyright 2019 &copy; All rights reserved.</p>
                     </div>
-                </div>
+                </div> --}}
 
                 <!-- // END Footer -->
 
@@ -484,7 +485,7 @@
             }
         </script>
 
-        @yield('js')
+        @stack('js')
 
     </body>
 

@@ -338,8 +338,4 @@
     </div>
 
     <!-- // END Page Content -->
-
-@stop
-
-@section('js')
 @stop

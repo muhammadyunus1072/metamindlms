@@ -9,15 +9,14 @@
     </form>
 </div> --}}
 
-<a href="index.html"
-    class="sidebar-brand ">
+<a href="index.html" class="sidebar-brand ">
     <!-- <img class="sidebar-brand-icon" src="../../public/images/illustration/student/128/white.svg" alt="Luma"> -->
 
     <span class="avatar avatar-xl sidebar-brand-icon h-auto">
 
-        <span class="avatar-title rounded bg-primary"><img src="{{ asset('/assets/images/illustration/student/128/white.svg') }}"
-                    class="img-fluid"
-                    alt="logo" /></span>
+        <span class="avatar-title rounded bg-primary"><img
+                src="{{ asset('/assets/images/illustration/student/128/white.svg') }}" class="img-fluid"
+                alt="logo" /></span>
 
     </span>
 
@@ -49,8 +48,7 @@
         </a>
     </li> --}}
     <li class="sidebar-menu-item active">
-        <a class="sidebar-menu-button"
-            href="{{ route('admin.dashboard.index') }}">
+        <a class="sidebar-menu-button" href="{{ route('admin.dashboard.index') }}">
             <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">account_box</span>
             <span class="sidebar-menu-text">Dashboard</span>
         </a>
@@ -58,47 +56,46 @@
 
     <ul class="sidebar-menu">
         <li class="sidebar-menu-item">
-            <a class="sidebar-menu-button"
-                data-toggle="collapse"
-                href="#master_data_menu">
+            <a class="sidebar-menu-button" data-toggle="collapse" href="#master_data_menu">
                 <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">folder</span>
                 Master Data
                 <span class="ml-auto sidebar-menu-toggle-icon"></span>
             </a>
-            <ul class="sidebar-submenu collapse sm-indent"
-                id="master_data_menu">
+            <ul class="sidebar-submenu collapse sm-indent" id="master_data_menu">
                 <li class="sidebar-menu-item">
-                    <?php $name = 'group_category_course' ?>
-                    <a class="sidebar-menu-button"
-                        href="{{ route('admin.'.$name.'.index') }}">
+                    <?php $name = 'course'; ?>
+                    <a class="sidebar-menu-button" href="{{ route('admin.' . $name . '.index') }}">
                         <span class="sidebar-menu-text">{{ master_sidebar($name) }}</span>
                     </a>
                 </li>
                 <li class="sidebar-menu-item">
-                    <?php $name = 'category_course' ?>
-                    <a class="sidebar-menu-button"
-                        href="{{ route('admin.'.$name.'.index') }}">
+                    <?php $name = 'offline_course'; ?>
+                    <a class="sidebar-menu-button" href="{{ route('admin.' . $name . '.index') }}">
                         <span class="sidebar-menu-text">{{ master_sidebar($name) }}</span>
                     </a>
                 </li>
                 <li class="sidebar-menu-item">
-                    <?php $name = 'level' ?>
-                    <a class="sidebar-menu-button"
-                        href="{{ route('admin.'.$name.'.index') }}">
+                    <?php $name = 'group_category_course'; ?>
+                    <a class="sidebar-menu-button" href="{{ route('admin.' . $name . '.index') }}">
                         <span class="sidebar-menu-text">{{ master_sidebar($name) }}</span>
                     </a>
                 </li>
                 <li class="sidebar-menu-item">
-                    <?php $name = 'course' ?>
-                    <a class="sidebar-menu-button"
-                        href="{{ route('admin.'.$name.'.index') }}">
+                    <?php $name = 'category_course'; ?>
+                    <a class="sidebar-menu-button" href="{{ route('admin.' . $name . '.index') }}">
+                        <span class="sidebar-menu-text">{{ master_sidebar($name) }}</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <?php $name = 'level'; ?>
+                    <a class="sidebar-menu-button" href="{{ route('admin.' . $name . '.index') }}">
                         <span class="sidebar-menu-text">{{ master_sidebar($name) }}</span>
                     </a>
                 </li>
             </ul>
         </li>
     </ul>
-    
+
     {{-- <li class="sidebar-menu-item">
         <a class="sidebar-menu-button"
             href="student-my-courses.html">

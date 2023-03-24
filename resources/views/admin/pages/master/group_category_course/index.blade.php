@@ -69,7 +69,7 @@
 
 @stop
 
-@section('js')
+@push('js')
 
 <script>
     var data_table = $("#master-table").DataTable({
@@ -144,4 +144,4 @@
 	});
 </script>
     
-@stop
+@endpush
