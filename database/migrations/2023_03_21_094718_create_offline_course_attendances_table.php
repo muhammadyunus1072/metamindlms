@@ -32,6 +32,7 @@ return new class extends Migration
         } else {
         }
 
+        $table->bigInteger('offline_course_registrar_id')->unsigned();
         $table->bigInteger('offline_course_id')->unsigned();
         $table->bigInteger('user_id')->unsigned();
         $table->string('user_name')->nullable()->default(null)->comment('Nama');

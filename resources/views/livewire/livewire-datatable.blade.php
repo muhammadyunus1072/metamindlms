@@ -24,7 +24,7 @@
         </div>
 
         <div class="table-responsive">
-            <table class="table table-bordered" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+            <table class="table table-bordered table-nowrap w-100 h-100">
                 <thead>
                     <tr>
                         @foreach ($columns as $col)
@@ -33,7 +33,7 @@
                                     <button class='btn' wire:click="sortBy('{{ $col['key'] }}')">
                                         {{ $col['name'] }}
 
-                                        <div class="text-nowrap ml-1">
+                                        <div class="ml-1">
                                             <i
                                                 class="fa fa-arrow-down
                                             {{ $col['key'] == $sortBy && $sortDirection == 'asc' ? '' : 'text-muted' }}"></i>

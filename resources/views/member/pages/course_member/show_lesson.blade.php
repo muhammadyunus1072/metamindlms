@@ -96,7 +96,7 @@
 
 @stop
 
-@section('js')
+@push('js')
     <script>
         $("#btn_finish_lesson").click(function() {
             var url = "{{ $list_route['finish_lesson'] }}";
@@ -106,4 +106,4 @@
             action_table(file_data, url, 'page');
         });
     </script>
-@stop
+@endpush

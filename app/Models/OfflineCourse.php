@@ -45,4 +45,9 @@ class OfflineCourse extends Model
     {
         return $this->hasMany(OfflineCourseRegistrar::class, 'offline_course_id', 'id');
     }
+
+    public function attachments()
+    {
+        return $this->hasMany(OfflineCourseAttachment::class, 'offline_course_id', 'id');
+    }
 }

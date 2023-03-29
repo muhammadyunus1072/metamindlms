@@ -88,7 +88,7 @@
     @include('admin.pages.master.course.components.modal_add_member_course')
 @endsection
 
-@section('js')
+@push('js')
 
 @include('admin.pages.master.course.components.js_select2_member')
 
@@ -161,4 +161,4 @@
     });
 </script>
     
-@stop
+@endpush

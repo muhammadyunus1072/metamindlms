@@ -69,40 +69,80 @@
                     </div>
 
                     <div class="form-group">
-                        <div class="row">
-                            <div class="col-6">
-                                <label class="form-label" for="image">Foto :</label>
-                                <div class="custom-file">
-                                    <input type="file" wire:model.lazy="image"
-                                        class="custom-file-input  @error('image') is-invalid @enderror">
-                                    <label for="image" class="custom-file-label">
-                                        <div wire:loading.remove wire:target="image">
-                                            @if ($image)
-                                                {{ $image->getClientOriginalName() }}
-                                            @else
-                                                Pilih Gambar
-                                            @endif
-                                        </div>
-                                        <div wire:loading wire:target="image">
-                                            Uploading...
-                                        </div>
-                                    </label>
-                                    @error('image')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
+                        <label class="form-label" for="image">Foto :</label>
+                        <div class="custom-file">
+                            <input type="file" wire:model.lazy="image"
+                                class="custom-file-input  @error('image') is-invalid @enderror">
+                            <label for="image" class="custom-file-label">
+                                <div wire:loading.remove wire:target="image">
+                                    @if ($image)
+                                        {{ $image->getClientOriginalName() }}
+                                    @else
+                                        Pilih Gambar
+                                    @endif
                                 </div>
-
-                                @if ($image && empty($errors->get('image')))
-                                    <img class="img-fluid" src="{{ $image->temporaryUrl() }}"
-                                        style="width: 300px; height:auto">
-                                @elseif($oldImage != null)
-                                    <img class="img-fluid" src="{{ $oldImage }}" style="width: 300px; height:auto">
-                                @endif
-
-                            </div>
+                                <div wire:loading wire:target="image">
+                                    Uploading...
+                                </div>
+                            </label>
+                            @error('image')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
+
+                        @if ($image && empty($errors->get('image')))
+                            <img class="img-fluid" src="{{ $image->temporaryUrl() }}" style="width: 300px; height:auto">
+                        @elseif($oldImage != null)
+                            <img class="img-fluid" src="{{ $oldImage }}" style="width: 300px; height:auto">
+                        @endif
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="attachments">Lampiran :</label>
+                        <div class="custom-file">
+                            <input type="file" wire:model.lazy="attachments" multiple class="custom-file-input">
+                            <label for="attachments" class="custom-file-label">
+                                <div wire:loading.remove wire:target="attachments">
+                                    Pilih File
+                                </div>
+                                <div wire:loading wire:target="attachments">
+                                    Uploading...
+                                </div>
+                            </label>
+                        </div>
+                        <div class="row ml-1 mt-1">
+                            @foreach ($attachments as $item)
+                                <div class="btn btn-outline-primary btn-sm mt-1 ml-1">
+                                    <button type="button" class="btn btn-danger mr-2 p-1"
+                                        wire:click="deleteAttachment('{{ $item->getFilename() }}', 0)">
+                                        <i class='fa fa-times'></i>
+                                    </button>
+                                    {{ $item->getClientOriginalName() }}
+                                </div>
+                            @endforeach
+                        </div>
+
+                        @if (count($oldAttachments) > 0)
+                            <div class="mt-3">
+                                <label class="form-label" for="attachments">Lampiran Sebelumnya :</label>
+                                <div class="row ml-1">
+                                    @foreach ($oldAttachments as $item)
+                                        <div class="btn btn-outline-primary btn-sm mt-1 ml-1">
+                                            <button type="button" class="btn btn-danger mr-2 p-1"
+                                                wire:click="deleteAttachment('{{ $item['id'] }}', 1)">
+                                                <i class='fa fa-times'></i>
+                                            </button>
+
+                                            <a target="_blank" href="{{ $item['file'] }}">
+                                                {{ $item['file_name'] }}
+                                            </a>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
                     </div>
                 </div>
 

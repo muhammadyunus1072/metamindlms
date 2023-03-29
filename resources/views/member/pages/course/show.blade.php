@@ -372,16 +372,13 @@
         </div>
     </div>
 
-<<<<<<< HEAD
-=======
 @stop
 
 @section('modal')
     @include('member.layouts.components.modal_trailer')
 @endsection
 
-@section('js')
+@push('js')
     @include('member.layouts.components.js_action_favorite')
     @include('member.layouts.components.js_show_trailer')
->>>>>>> 41afe7b466e6580738e08754d2a0d7fa471c7d0d
-@stop
+@endpush

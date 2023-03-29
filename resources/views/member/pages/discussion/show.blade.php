@@ -67,7 +67,7 @@
 
 @stop
 
-@section('js')
+@push('js')
     <script>
         $("#form-data").submit(function(e) {
             e.preventDefault();
@@ -90,4 +90,4 @@
             r_action_table(file_data, "Apakah anda yakin ingin menghapus {{ $data['ctitle'] }} ini ?", url, 'redirect', null);
         });
     </script>
-@stop
+@endpush

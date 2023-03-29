@@ -29,7 +29,7 @@
                 <h4 class="card-title">List Data Kursus Offline</h4>
             </div>
             <div class="card-body">
-                @livewire('offline-course.datatable')
+                @livewire('admin.offline-course.datatable')
             </div>
         </div>
     </div>

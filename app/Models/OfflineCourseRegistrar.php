@@ -21,26 +21,33 @@ class OfflineCourseRegistrar extends Model
         self::creating(function ($model) {
             $user = $model->user;
             $model->user_name = $user->name;
-            $model->user_email = $user->address;
+            $model->user_email = $user->email;
             $model->user_phone = $user->phone;
-            $model->user_birth_place = $user->owner_name;
-            $model->user_birth_date = $user->owner_email;
-            $model->user_gender = $user->owner_phone;
-            $model->user_religion = $user->contract_date_start;
-            $model->user_company_name = $user->contract_date_end;
+            $model->user_birth_place = $user->birth_place;
+            $model->user_birth_date = $user->birth_date;
+            $model->user_gender = $user->gender;
+            $model->user_religion = $user->religion;
+            $model->user_company_name = $user->company_name;
         });
 
         self::updating(function ($model) {
             if ($model->user_id != $model->getOriginal('user_id')) {
                 $user = $model->user;
                 $model->user_name = $user->name;
-                $model->user_email = $user->address;
+                $model->user_email = $user->email;
                 $model->user_phone = $user->phone;
-                $model->user_birth_place = $user->owner_name;
-                $model->user_birth_date = $user->owner_email;
-                $model->user_gender = $user->owner_phone;
-                $model->user_religion = $user->contract_date_start;
-                $model->user_company_name = $user->contract_date_end;
+                $model->user_birth_place = $user->birth_place;
+                $model->user_birth_date = $user->birth_date;
+                $model->user_gender = $user->gender;
+                $model->user_religion = $user->religion;
+                $model->user_company_name = $user->company_name;
+            }
+        });
+
+        self::deleted(function ($model) {
+            $attendance = $model->offlineCourseAttendance;
+            if (!empty($attendance)) {
+                $attendance->delete();
             }
         });
     }
@@ -53,5 +60,10 @@ class OfflineCourseRegistrar extends Model
     public function offlineCourse()
     {
         return $this->belongsTo(OfflineCourse::class, 'offline_course_id', 'id');
+    }
+
+    public function offlineCourseAttendance()
+    {
+        return $this->hasOne(OfflineCourseAttendance::class, 'offline_course_registrar_id', 'id');
     }
 }

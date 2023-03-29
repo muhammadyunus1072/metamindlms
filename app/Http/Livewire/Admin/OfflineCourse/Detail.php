@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Livewire\OfflineCourse;
+namespace App\Http\Livewire\Admin\OfflineCourse;
 
 use App\Helpers\FileHelper;
 use App\Models\OfflineCourse;
+use App\Models\OfflineCourseAttachment;
 use App\Models\OfflineCourseCategory;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Crypt;
@@ -19,10 +21,16 @@ class Detail extends Component
     public $quota;
     public $date_time_start;
     public $date_time_end;
+
     public $image = null;
-    public $oldImage = null;
     public $categories = [];
+    public $attachments = [];
+
+    public $oldImage = null;
     public $oldCategories = [];
+    public $oldAttachments = [];
+
+    public $deletedOldAttachments = [];
 
     protected $rules = [
         'title' => 'required',
@@ -53,6 +61,7 @@ class Detail extends Component
             $this->quota = $offlineCourse->quota;
             $this->date_time_start = $offlineCourse->date_time_start;
             $this->date_time_end = $offlineCourse->date_time_end;
+
             $this->oldImage = $offlineCourse->getImage();
 
             $courseCategories = $offlineCourse->categories()->select('category_courses.id', 'category_courses.name')->get();
@@ -60,6 +69,15 @@ class Detail extends Component
                 $encId = Crypt::encryptString($item->id);
                 array_push($this->categories, $encId);
                 $this->oldCategories[$encId] = $item->name;
+            }
+
+            $offlineCourseAttachments = $offlineCourse->attachments()->select('id', 'file', 'file_name')->get();
+            foreach ($offlineCourseAttachments as $item) {
+                array_push($this->oldAttachments, [
+                    'id' => Crypt::encryptString($item->id),
+                    'file' => $item->getFile(),
+                    'file_name' => $item->file_name,
+                ]);
             }
         }
     }
@@ -97,7 +115,7 @@ class Detail extends Component
                 'image' => 'image|max:2048',
             ]);
 
-            $this->image->store(FileHelper::OFFLINE_COURSE_SAVE_LOCATION, 'public');
+            $this->image->store(FileHelper::OFFLINE_COURSE_SAVE_LOCATION);
             $validatedData['image'] = $this->image->hashName();
         }
 
@@ -111,6 +129,31 @@ class Detail extends Component
         $offlineCourse->fill($validatedData);
         $offlineCourse->save();
 
+        // Handle Attachment
+        if (count($this->deletedOldAttachments) > 0) {
+            foreach ($this->deletedOldAttachments as $encId) {
+                $decId = Crypt::decryptString($encId);
+                $offlineCourseAttachment = OfflineCourseAttachment::find($decId);
+                if ($offlineCourseAttachment) {
+                    Storage::delete(FileHelper::OFFLINE_COURSE_SAVE_LOCATION . $offlineCourseAttachment->file);
+                    $offlineCourseAttachment->delete();
+                }
+            }
+        }
+
+        if (count($this->attachments) > 0) {
+            $validatedData['attachments'] = [];
+
+            foreach ($this->attachments as $attachment) {
+                $attachment->store(FileHelper::OFFLINE_COURSE_SAVE_LOCATION, 'public');
+
+                OfflineCourseAttachment::create([
+                    'offline_course_id' => $offlineCourse->id,
+                    'file' => $attachment->hashName(),
+                    'file_name' => $attachment->getClientOriginalName()
+                ]);
+            }
+        }
 
         // Handle Categories
         $offlineCourseCategories = $offlineCourse->offlineCourseCategories()->get();
@@ -131,8 +174,22 @@ class Detail extends Component
         return redirect()->route('admin.offline_course.index');
     }
 
+    public function deleteAttachment($id, $isOld = 0)
+    {
+        if ($isOld) {
+            array_push($this->deletedOldAttachments, $id);
+            $this->oldAttachments = array_filter($this->oldAttachments, function ($item) use ($id) {
+                return $item['id'] != $id;
+            });
+        } else {
+            $this->attachments = array_filter($this->attachments, function ($item) use ($id) {
+                return $item->getFilename() != $id;
+            });
+        }
+    }
+
     public function render()
     {
-        return view('livewire.offline-course.detail');
+        return view('livewire.admin.offline-course.detail');
     }
 }

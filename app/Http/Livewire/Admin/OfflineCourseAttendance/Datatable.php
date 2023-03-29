@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Livewire\OfflineCourseRegistrar;
+namespace App\Http\Livewire\Admin\OfflineCourseAttendance;
 
-use App\Models\OfflineCourseRegistrar;
+use App\Models\OfflineCourseAttendance;
 use App\Traits\WithDatatable;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
@@ -14,13 +14,15 @@ class Datatable extends Component
 
     public $offline_course_id;
 
+    protected $listeners = ['refresh-attendance-data' => '$refresh'];
+
     public function delete($encryptedId)
     {
         $id = Crypt::decryptString($encryptedId);
-        $attendance = OfflineCourseRegistrar::find($id);
+        $attendance = OfflineCourseAttendance::find($id);
         $attendance->delete();
 
-        $this->emitUp('registrarChange');
+        $this->emit('attendance-change');
     }
 
     public function getColumns()
@@ -33,7 +35,7 @@ class Datatable extends Component
                 'render' => function ($item) {
                     $encryptedId = Crypt::encryptString($item->id);
 
-                    $destroyUrl = route('admin.offline_course_registrar.destroy', $encryptedId);
+                    $destroyUrl = route('admin.offline_course_attendance.destroy', $encryptedId);
                     $destroyHtml = "<form action='$destroyUrl' method='POST' wire:submit.prevent=\"delete('$encryptedId')\">"
                         . method_field('DELETE') . csrf_field() .
                         "<button type='submit' class='btn btn-danger ml-1'
@@ -66,17 +68,17 @@ class Datatable extends Component
 
     public function paginate($query)
     {
-        return $query->paginate($this->length, ['*'], 'page_registrar');
+        return $query->paginate($this->length, ['*'], 'page_attendance');
     }
 
     public function getQuery()
     {
         $decId = Crypt::decryptString($this->offline_course_id);
-        return OfflineCourseRegistrar::where('offline_course_id', '=', $decId);
+        return OfflineCourseAttendance::where('offline_course_id', '=', $decId);
     }
 
     public function getView()
     {
-        return 'livewire.offline-course-registrar.datatable';
+        return 'livewire.admin.offline-course-attendance.datatable';
     }
 }

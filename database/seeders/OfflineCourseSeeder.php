@@ -42,13 +42,12 @@ class OfflineCourseSeeder extends Seeder
             ]);
 
             $randUserId = rand(1, 10);
-            OfflineCourseRegistrar::create([
+            $registrar = OfflineCourseRegistrar::create([
                 'user_id' => $randUserId,
                 'offline_course_id' => $offlineCourse->id,
             ]);
             OfflineCourseAttendance::create([
-                'user_id' => $randUserId,
-                'offline_course_id' => $offlineCourse->id,
+                'offline_course_registrar_id' => $registrar->id,
             ]);
 
             $randUserId = rand(1, 10);

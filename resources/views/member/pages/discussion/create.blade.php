@@ -72,7 +72,7 @@
 
 @stop
 
-@section('js')
+@push('js')
     @include('member.pages.discussion.components.js_select2_lesson')
 
     <script>
@@ -90,4 +90,4 @@
             r_action_table(file_data, "Harap periksa kembali data yang telah diinput sebelum disimpan.", url, 'redirect', null);
         });
     </script>
-@stop
+@endpush

@@ -447,7 +447,7 @@
     @include('member.layouts.components.modal_trailer')
 @endsection
 
-@section('js')
+@push('js')
     @include('member.layouts.components.js_action_favorite')
     @include('member.layouts.components.js_show_trailer')
 
@@ -465,4 +465,4 @@
             r_action_table(file_data, "Harap periksa kembali data yang telah diinput sebelum disimpan.", url, 'page', null);
         });
     </script>
-@stop
+@endpush

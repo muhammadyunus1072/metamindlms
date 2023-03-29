@@ -33,5 +33,5 @@
 @stop
 
 
-@section('js')
-@stop
+@push('js')
+@endpush

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\OfflineCourse;
+namespace App\Http\Livewire\Admin\OfflineCourse;
 
 use App\Models\OfflineCourse;
 use App\Traits\WithDatatable;
@@ -110,6 +110,6 @@ class Datatable extends Component
 
     public function getView()
     {
-        return 'livewire.offline-course.datatable';
+        return 'livewire.admin.offline-course.datatable';
     }
 }

@@ -12,35 +12,42 @@ class OfflineCourseAttendance extends Model
     use HasFactory, SoftDeletes, HasTrackHistory;
 
     protected $fillable = [
-        'offline_course_id',
-        'user_id',
+        'offline_course_registrar_id',
     ];
 
     protected static function onBoot()
     {
         self::creating(function ($model) {
-            $user = $model->user;
-            $model->user_name = $user->name;
-            $model->user_email = $user->address;
-            $model->user_phone = $user->phone;
-            $model->user_birth_place = $user->owner_name;
-            $model->user_birth_date = $user->owner_email;
-            $model->user_gender = $user->owner_phone;
-            $model->user_religion = $user->contract_date_start;
-            $model->user_company_name = $user->contract_date_end;
+            $registrar = $model->offlineCourseRegistrar;
+
+            $model->offline_course_id = $registrar->offline_course_id;
+
+            $model->user_id = $registrar->user_id;
+            $model->user_name = $registrar->user_name;
+            $model->user_email = $registrar->user_email;
+            $model->user_phone = $registrar->user_phone;
+            $model->user_birth_place = $registrar->user_birth_place;
+            $model->user_birth_date = $registrar->user_birth_date;
+            $model->user_gender = $registrar->user_gender;
+            $model->user_religion = $registrar->user_religion;
+            $model->user_company_name = $registrar->user_company_name;
         });
 
         self::updating(function ($model) {
-            if ($model->user_id != $model->getOriginal('user_id')) {
-                $user = $model->user;
-                $model->user_name = $user->name;
-                $model->user_email = $user->address;
-                $model->user_phone = $user->phone;
-                $model->user_birth_place = $user->owner_name;
-                $model->user_birth_date = $user->owner_email;
-                $model->user_gender = $user->owner_phone;
-                $model->user_religion = $user->contract_date_start;
-                $model->user_company_name = $user->contract_date_end;
+            if ($model->offline_course_registrar_id != $model->getOriginal('offline_course_registrar_id')) {
+                $registrar = $model->offlineCourseRegistrar;
+
+                $model->offline_course_id = $registrar->offline_course_id;
+
+                $model->user_id = $registrar->user_id;
+                $model->user_name = $registrar->user_name;
+                $model->user_email = $registrar->user_email;
+                $model->user_phone = $registrar->user_phone;
+                $model->user_birth_place = $registrar->user_birth_place;
+                $model->user_birth_date = $registrar->user_birth_date;
+                $model->user_gender = $registrar->user_gender;
+                $model->user_religion = $registrar->user_religion;
+                $model->user_company_name = $registrar->user_company_name;
             }
         });
     }
@@ -53,5 +60,10 @@ class OfflineCourseAttendance extends Model
     public function offlineCourse()
     {
         return $this->belongsTo(OfflineCourse::class, 'offline_course_id', 'id');
+    }
+
+    public function offlineCourseRegistrar()
+    {
+        return $this->belongsTo(OfflineCourseRegistrar::class, 'offline_course_registrar_id', 'id');
     }
 }

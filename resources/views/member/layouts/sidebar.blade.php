@@ -9,15 +9,14 @@
     </form>
 </div> --}}
 
-<a href="index.html"
-    class="sidebar-brand ">
+<a href="index.html" class="sidebar-brand ">
     <!-- <img class="sidebar-brand-icon" src="../../public/images/illustration/student/128/white.svg" alt="Luma"> -->
 
     <span class="avatar avatar-xl sidebar-brand-icon h-auto">
 
-        <span class="avatar-title rounded bg-primary"><img src="{{ asset('/assets/images/illustration/student/128/white.svg') }}"
-                    class="img-fluid"
-                    alt="logo" /></span>
+        <span class="avatar-title rounded bg-primary"><img
+                src="{{ asset('/assets/images/illustration/student/128/white.svg') }}" class="img-fluid"
+                alt="logo" /></span>
 
     </span>
 
@@ -35,10 +34,13 @@
         </a>
     </li> --}}
     <li class="sidebar-menu-item {{ Request::segment(1) == 'course' ? 'active' : '' }}">
-        <a class="sidebar-menu-button"
-            href="{{ route('course.index') }}">
-            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">local_library</span>
-            <span class="sidebar-menu-text">Cari Kursus</span>
+        <a class="sidebar-menu-button" href="{{ route('course.index') }}">
+            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">search</span>
+            <span class="sidebar-menu-text">Cari Kursus Online</span>
+        </a>
+        <a class="sidebar-menu-button" href="{{ route('course.index') }}">
+            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">search</span>
+            <span class="sidebar-menu-text">Cari Kursus Offline</span>
         </a>
     </li>
     {{-- <li class="sidebar-menu-item">
@@ -49,39 +51,36 @@
         </a>
     </li> --}}
     @if (Auth::check())
-        <li class="sidebar-menu-item {{ Request::segment(1) == 'member' && Request::segment(2) === null ? 'active' : '' }}">
-            <a class="sidebar-menu-button"
-                href="{{ route('member.dashboard.index') }}">
+        <li
+            class="sidebar-menu-item {{ Request::segment(1) == 'member' && Request::segment(2) === null ? 'active' : '' }}">
+            <a class="sidebar-menu-button" href="{{ route('member.dashboard.index') }}">
                 <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">home</span>
                 <span class="sidebar-menu-text">Dashboard</span>
             </a>
         </li>
 
         <li class="sidebar-menu-item {{ Request::segment(2) == 'course_member' ? 'active' : '' }}">
-            <a class="sidebar-menu-button"
-                href="{{ route('member.course_member.index') }}">
-                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">search</span>
+            <a class="sidebar-menu-button" href="{{ route('member.course_member.index') }}">
+                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">local_library</span>
                 <span class="sidebar-menu-text">Kursus Saya</span>
             </a>
         </li>
 
         <li class="sidebar-menu-item {{ Request::segment(2) == 'favorite' ? 'active' : '' }}">
-            <a class="sidebar-menu-button"
-                href="{{ route('member.favorite.index') }}">
+            <a class="sidebar-menu-button" href="{{ route('member.favorite.index') }}">
                 <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">favorite</span>
                 <span class="sidebar-menu-text">Kursus Favorit Saya</span>
             </a>
         </li>
 
         <li class="sidebar-menu-item {{ Request::segment(2) == 'discussion' ? 'active' : '' }}">
-            <a class="sidebar-menu-button"
-                href="{{ route('member.discussion.index') }}">
+            <a class="sidebar-menu-button" href="{{ route('member.discussion.index') }}">
                 <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">people_outline</span>
                 <span class="sidebar-menu-text">Diskusi Saya</span>
             </a>
         </li>
     @endif
-    
+
     {{-- <li class="sidebar-menu-item">
         <a class="sidebar-menu-button"
             href="student-my-courses.html">

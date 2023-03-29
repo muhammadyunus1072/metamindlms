@@ -79,7 +79,7 @@
 
 @stop
 
-@section('js')
+@push('js')
     <script>
         $("#form-data").submit(function(e) {
             e.preventDefault();
@@ -94,4 +94,4 @@
             r_action_table(file_data, "Harap periksa kembali data yang telah diinput sebelum disimpan.", url, 'page', null);
         });
     </script>
-@stop
+@endpush

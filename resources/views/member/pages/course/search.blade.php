@@ -40,10 +40,6 @@
     @include('member.layouts.filter')
 @endsection
 
-<<<<<<< HEAD
 @push('js')
-=======
-@section('js')
     @include('member.layouts.components.js_action_favorite')
->>>>>>> 41afe7b466e6580738e08754d2a0d7fa471c7d0d
-@stop
+@endpush

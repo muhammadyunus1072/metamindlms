@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\LevelController as A_LevelController;
 use App\Http\Controllers\Admin\OfflineCourseController as A_OfflineCourseController;
 use App\Http\Controllers\Admin\OfflineCourseAttendanceController as A_OfflineCourseAttendanceController;
 use App\Http\Controllers\Admin\OfflineCourseRegistrarController as A_OfflineCourseRegistrarController;
+use App\Http\Controllers\Admin\UserController as A_UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Member\CourseController as M_CourseController;
 use App\Http\Controllers\Member\DashboardController as M_DashboardController;
@@ -129,15 +130,31 @@ Route::middleware('role:admin')->group(function () {
 
             // Master Data Kursus Offline Pendaftaran
             Route::group(["controller" => A_OfflineCourseAttendanceController::class, "prefix" => "offline_course_attendance", "as" => "offline_course_attendance."], function () {
-                Route::delete("destroy/{id}", "edit")->name('destroy');
+                Route::delete("destroy/{id}", "destroy")->name('destroy');
             });
 
             // Master Data Kursus Offline Kehadiran
             Route::group(["controller" => A_OfflineCourseRegistrarController::class, "prefix" => "offline_course_registrar", "as" => "offline_course_registrar."], function () {
-                Route::delete("destroy/{id}", "edit")->name('destroy');
+                Route::delete("destroy/{id}", "destroy")->name('destroy');
+                Route::get("select2", "select2")->name('select2');
+            });
+
+            // Master Data Kursus Offline Kehadiran
+            Route::group(["controller" => A_UserController::class, "prefix" => "user", "as" => "user."], function () {
+                Route::get("select2", "select2")->name('select2');
             });
         });
     });
+});
+
+Route::group(["controller" => M_CourseController::class, "prefix" => "course", "as" => "course."], function () {
+    Route::get('/', 'index')->name('index');
+    Route::get('/show/{id}', 'show')->name('show');
+    Route::get('/preview_lesson/{id}', 'preview_lesson')->name('preview_lesson');
+
+    Route::post("/show_trailer", "show_trailer")->name('show_trailer');
+
+    Route::get('/search', 'search')->name('search');
 });
 
 

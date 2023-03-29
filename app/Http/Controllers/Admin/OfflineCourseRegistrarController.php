@@ -1,85 +1,34 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\OfflineCourseRegistrar;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Crypt;
 
 class OfflineCourseRegistrarController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function select2(Request $request)
     {
-        //
-    }
+        $decId = Crypt::decryptString($request->offline_course_id);
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+        $data = OfflineCourseRegistrar::select('id', 'user_name', 'user_email')
+            ->where(function ($query) use ($request) {
+                $search_value = '%' . $request->search . '%';
+                $query->where('user_name', 'like', $search_value)
+                    ->orWhere('user_email', 'like', $search_value);
+            })
+            ->where('offline_course_id', '=', $decId)
+            ->whereDoesntHave('offlineCourseAttendance')
+            ->orderBy('user_name', 'asc')
+            ->get();
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $res = [];
+        foreach ($data as $item) {
+            array_push($res, ['id' => Crypt::encryptString($item->id), 'text' => $item->user_name . " - " . $item->user_email]);
+        }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\OfflineCourseRegistrar  $offlineCourseRegistrar
-     * @return \Illuminate\Http\Response
-     */
-    public function show(OfflineCourseRegistrar $offlineCourseRegistrar)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\OfflineCourseRegistrar  $offlineCourseRegistrar
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(OfflineCourseRegistrar $offlineCourseRegistrar)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\OfflineCourseRegistrar  $offlineCourseRegistrar
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, OfflineCourseRegistrar $offlineCourseRegistrar)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\OfflineCourseRegistrar  $offlineCourseRegistrar
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(OfflineCourseRegistrar $offlineCourseRegistrar)
-    {
-        //
+        return $res;
     }
 }

@@ -65,6 +65,6 @@
     @include('member.layouts.filter')
 @endsection
 
-@section('js')
+@push('js')
     @include('member.layouts.components.js_action_favorite')
-@stop
+@endpush

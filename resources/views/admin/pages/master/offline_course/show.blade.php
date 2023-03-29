@@ -19,7 +19,7 @@
     </div>
 
     <div class="page__container page-section">
-        @livewire('offline-course.show', ['offlineCourse' => $offlineCourse])
+        @livewire('admin.offline-course.show', ['offlineCourse' => $offlineCourse])
     </div>
 
 @stop
