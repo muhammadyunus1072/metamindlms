@@ -977,7 +977,11 @@ class CourseController extends Controller
 
             $file_data = $this->get_transaction_lesson_file($results_data->id);
 
-            return view($this->view_path . 'edit_lesson', compact('data', 'results_data', 'file_data'));
+            if($results_data->type == Lesson::TYPE_QUIZ){
+                return view($this->view_path . 'edit_lesson_quiz', compact('data', 'results_data', 'file_data'));
+            } else {
+                return view($this->view_path . 'edit_lesson', compact('data', 'results_data', 'file_data'));
+            }
         } else return Redirect()->route('admin.'.$this->has_access . '.index')->with("error", "Data Konten " . $this->ctitle . " tidak ditemukan.");
     }
 
