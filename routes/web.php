@@ -15,6 +15,7 @@ use App\Http\Controllers\Member\DashboardController as M_DashboardController;
 use App\Http\Controllers\Member\CourseMemberController as M_CourseMemberController;
 use App\Http\Controllers\Member\DiscussionController as M_DiscussionController;
 use App\Http\Controllers\Member\FavoriteController as M_FavoriteController;
+use App\Http\Controllers\Member\OfflineCourseController as M_OfflineCourseController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -151,14 +152,12 @@ Route::group(["controller" => M_CourseController::class, "prefix" => "course", "
     Route::get('/', 'index')->name('index');
     Route::get('/show/{id}', 'show')->name('show');
     Route::get('/preview_lesson/{id}', 'preview_lesson')->name('preview_lesson');
-
     Route::post("/show_trailer", "show_trailer")->name('show_trailer');
-
     Route::get('/search', 'search')->name('search');
 });
 
 
-Route::group(["controller" => M_CourseController::class, "prefix" => "course", "as" => "course."], function () {
+Route::group(["controller" => M_OfflineCourseController::class, "prefix" => "offline_course", "as" => "offline_course."], function () {
     Route::get('/', 'index')->name('index');
     Route::get('/show/{id}', 'show')->name('show');
     Route::get('/preview_lesson/{id}', 'preview_lesson')->name('preview_lesson');

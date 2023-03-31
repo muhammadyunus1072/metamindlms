@@ -33,12 +33,12 @@
             <span class="sidebar-menu-text">Home</span>
         </a>
     </li> --}}
-    <li class="sidebar-menu-item {{ Request::segment(1) == 'course' ? 'active' : '' }}">
+    <li class="sidebar-menu-item {{ Request::segment(1) == 'course' || Request::segment(1) == 'offline_course' ? 'active' : '' }}">
         <a class="sidebar-menu-button" href="{{ route('course.index') }}">
             <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">search</span>
             <span class="sidebar-menu-text">Cari Kursus Online</span>
         </a>
-        <a class="sidebar-menu-button" href="{{ route('course.index') }}">
+        <a class="sidebar-menu-button" href="{{ route('offline_course.index') }}">
             <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">search</span>
             <span class="sidebar-menu-text">Cari Kursus Offline</span>
         </a>
@@ -56,6 +56,14 @@
             <a class="sidebar-menu-button" href="{{ route('member.dashboard.index') }}">
                 <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">home</span>
                 <span class="sidebar-menu-text">Dashboard</span>
+            </a>
+        </li>
+
+        <li
+            class="sidebar-menu-item">
+            <a class="sidebar-menu-button" href="{{ route('member.dashboard.index') }}">
+                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">account_circle</span>
+                <span class="sidebar-menu-text">QR-Code</span>
             </a>
         </li>
 

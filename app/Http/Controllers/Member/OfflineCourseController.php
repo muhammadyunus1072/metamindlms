@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Member;
 
 use App\Http\Controllers\Controller;
 use App\Models\OfflineCourse;
@@ -10,8 +10,16 @@ use Illuminate\Support\Facades\Crypt;
 
 class OfflineCourseController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        return view('member.pages.master.offline_course.index');
+        return view('member.pages.offline_course.index');
+    }
+
+    public function show($id)
+    {
+        $id = Crypt::decrypt($id);
+        $offlineCourse = OfflineCourse::find($id);
+
+        return view('member.pages.offline_course.show', ['offlineCourse' => $offlineCourse]);
     }
 }
