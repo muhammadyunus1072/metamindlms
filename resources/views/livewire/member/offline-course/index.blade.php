@@ -1,5 +1,5 @@
 <div>
-    {{-- Search & Filter --}}
+    {{-- Search --}}
     <div class="d-flex flex-column flex-sm-row align-items-sm-center mb-24pt" style="white-space: nowrap;">
         <div class="form-group flex mr-3 mb-2 mb-sm-0">
             <div class="row">
@@ -8,48 +8,6 @@
                         <input id="search" type="text" class="form-control" placeholder="Cari Kursus"
                             wire:model='search'><i class="material-icons">search</i>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <a href="#" data-target="#library-drawer" data-toggle="sidebar" class="btn btn-sm btn-white ml-sm-16pt">
-            <i class="material-icons icon--left">tune</i> Filters
-        </a>
-
-        <div class="mdk-drawer js-mdk-drawer " id="library-drawer" data-align="end">
-            <div class="mdk-drawer__content ">
-                <div class="sidebar sidebar-light sidebar-right py-16pt" data-perfect-scrollbar
-                    data-perfect-scrollbar-wheel-propagation="true">
-
-                    <div class="d-flex align-items-center mb-24pt  d-lg-none">
-                        <form action="index.html" class="search-form search-form--light mx-16pt pr-0 pl-16pt">
-                            <input type="text" class="form-control pl-0" placeholder="Search">
-                            <button class="btn" type="submit"><i class="material-icons">search</i></button>
-                        </form>
-                    </div>
-
-                    <form action="" class="m-0" id="form_search">
-                        <div class="sidebar-heading">Kategori</div>
-                        <div class="sidebar-block">
-                            <div class="form-group">
-                                <div class="custom-control custom-checkbox">
-                                    <input class="custom-control-input" type="checkbox" value="semua"
-                                        id="category_filter_all" name="category_filter[]"
-                                       >
-                                    <label class="custom-control-label" for="category_filter_all">
-                                        <span
-                                            class="material-icons sidebar-menu-icon sidebar-menu-icon--left">brush</span>
-                                        <span class="sidebar-menu-text">Semua</span>
-                                    </label>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="card-body">
-                            <button type="submit" class="btn btn-block btn-outline-primary mb-3">Filter</button>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>
@@ -127,7 +85,8 @@
                             <div class="d-flex align-items-center">
                                 <span class="material-icons icon-16pt text-50 mr-4pt">assessment</span>
                                 <p class="flex text-50 lh-1 mb-0">
-                                    <small>Mulai Kursus : {{ Carbon\Carbon::parse($item->date_time_start)->format('d/m/Y') }}</small>
+                                    <small>Mulai Kursus :
+                                        {{ Carbon\Carbon::parse($item->date_time_start)->format('d/m/Y') }}</small>
                                 </p>
                             </div>
                             <div class="d-flex align-items-center">
@@ -139,7 +98,8 @@
                             </div>
                         </div>
                         <div class="col text-right mt-3">
-                            <a href="{{ route('offline_course.show', Crypt::encrypt($item->id)) }}" class="btn btn-primary">Lihat Kursus</a>
+                            <a href="{{ route('offline_course.show', Crypt::encrypt($item->id)) }}"
+                                class="btn btn-primary">Lihat Kursus</a>
                         </div>
                     </div>
                 </div>

@@ -38,7 +38,7 @@
                                                 class="fa fa-arrow-down
                                             {{ $col['key'] == $sortBy && $sortDirection == 'asc' ? '' : 'text-muted' }}"></i>
                                             <i
-                                                class="fa fa-arrow-up 
+                                                class="fa fa-arrow-up
                                             {{ $col['key'] == $sortBy && $sortDirection == 'desc' ? '' : 'text-muted' }}"></i>
                                         </div>
                                     </button>
