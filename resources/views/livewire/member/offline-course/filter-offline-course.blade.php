@@ -15,7 +15,7 @@
                                 <div class="custom-control custom-checkbox">
                                     <input class="custom-control-input" type="checkbox" value="{{ $item->id }}"
                                         id="{{ $item->name }}"
-                                        wire:click="$emit('add_filter_category, {{ $item->id }})">
+                                        wire:click="$emit('add_filter_category', {{ $item->id }})">
                                     <label class="custom-control-label" for="{{ $item->name }}">
                                         <span
                                             class="material-icons sidebar-menu-icon sidebar-menu-icon--left">brush</span>
