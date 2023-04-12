@@ -20,6 +20,11 @@ class Lesson extends Model
         return $this->hasOneThrough(Course::class, CourseSection::class, 'id', 'id', 'course_section_id', 'course_id');
     }
 
+    public function questions()
+    {
+        return $this->hasMany(LessonQuestion::class, 'lesson_id','id');
+    }
+
     //Attribut
     public function lesson_icon($is_member){
         if ($this->can_preview || $is_member) {
