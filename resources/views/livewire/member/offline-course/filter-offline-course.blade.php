@@ -1,6 +1,6 @@
 <div>
     <div class="col-md-6">
-        <a href="#" data-target="#library-drawer" data-toggle="sidebar" class="btn btn-sm btn-white ml-sm-16pt">
+        <a href="#" data-target="#library-drawer" data-toggle="sidebar" class="btn btn-sm btn-white m-3">
             <i class="material-icons icon--left">tune</i> Filters
         </a>
 

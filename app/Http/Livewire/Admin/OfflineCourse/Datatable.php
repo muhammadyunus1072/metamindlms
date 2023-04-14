@@ -58,7 +58,7 @@ class Datatable extends Component
                             $destroyHtml
                         </div>
                     </div>";
-                    
+
                     return $html;
                 },
             ],

@@ -33,7 +33,8 @@
             <span class="sidebar-menu-text">Home</span>
         </a>
     </li> --}}
-    <li class="sidebar-menu-item {{ Request::segment(1) == 'course' || Request::segment(1) == 'offline_course' ? 'active' : '' }}">
+    <li
+        class="sidebar-menu-item {{ Request::segment(1) == 'course' || Request::segment(1) == 'offline_course' ? 'active' : '' }}">
         <a class="sidebar-menu-button" href="{{ route('course.index') }}">
             <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">search</span>
             <span class="sidebar-menu-text">Cari Kursus Online</span>
@@ -59,8 +60,7 @@
             </a>
         </li>
 
-        <li
-            class="sidebar-menu-item">
+        <li class="sidebar-menu-item">
             <a class="sidebar-menu-button" href="{{ route('member.dashboard.index') }}">
                 <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">account_circle</span>
                 <span class="sidebar-menu-text">QR-Code</span>

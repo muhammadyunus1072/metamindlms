@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\OfflineCourseController as A_OfflineCourseControl
 use App\Http\Controllers\Admin\OfflineCourseAttendanceController as A_OfflineCourseAttendanceController;
 use App\Http\Controllers\Admin\OfflineCourseRegistrarController as A_OfflineCourseRegistrarController;
 use App\Http\Controllers\Admin\UserController as A_UserController;
+use App\Http\Controllers\Admin\ReportController as A_ReportController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Member\CourseController as M_CourseController;
 use App\Http\Controllers\Member\DashboardController as M_DashboardController;
@@ -16,6 +17,7 @@ use App\Http\Controllers\Member\CourseMemberController as M_CourseMemberControll
 use App\Http\Controllers\Member\DiscussionController as M_DiscussionController;
 use App\Http\Controllers\Member\FavoriteController as M_FavoriteController;
 use App\Http\Controllers\Member\OfflineCourseController as M_OfflineCourseController;
+use App\Http\Controllers\Member\QuizController as M_QuizController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -145,6 +147,11 @@ Route::middleware('role:admin')->group(function () {
                 Route::get("select2", "select2")->name('select2');
             });
         });
+
+        Route::group(["controller" => A_ReportController::class, "prefix" => "report", "as" => "report."], function () {
+            Route::get('/offline_course', 'offline_course')->name('offline_course');
+            Route::get('/registrar_offline_course', 'registrar_offline_course')->name('registrar_offline_course');
+        });
     });
 });
 
@@ -178,6 +185,16 @@ Route::middleware('role:member')->group(function () {
         Route::get("/", [M_DashboardController::class, "index"])->name('dashboard.index');
 
         Route::group(["controller" => M_CourseMemberController::class, "prefix" => "course_member", "as" => "course_member."], function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/show/{id}', 'show')->name('show');
+            Route::post('/finish_lesson/{id}', 'finish_lesson')->name('finish_lesson');
+            Route::post('/store_review/{id}', 'store_review')->name('store_review');
+
+            Route::get('/show_lesson/{id}', 'show_lesson')->name('show_lesson');
+            Route::post('/end_lesson/{id}', 'end_lesson')->name('end_lesson');
+        });
+
+        Route::group(["controller" => M_QuizController::class, "prefix" => "quiz", "as" => "quiz."], function () {
             Route::get('/', 'index')->name('index');
             Route::get('/show/{id}', 'show')->name('show');
             Route::post('/finish_lesson/{id}', 'finish_lesson')->name('finish_lesson');
