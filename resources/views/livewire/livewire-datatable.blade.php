@@ -7,6 +7,11 @@
                     <option value="{{ $item }}">{{ $item }}</option>
                 @endforeach
             </select>
+
+        </div>
+        <div class="col-auto">
+            <label>Total Data</label>
+            <h4 class="card-title text-center">{{ $data->total() }}</h4>
         </div>
         <div class="col col-md-6">
             <label>Kata Kunci</label>

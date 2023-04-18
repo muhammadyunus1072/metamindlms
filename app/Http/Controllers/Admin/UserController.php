@@ -30,4 +30,21 @@ class UserController extends Controller
 
         return $res;
     }
+
+    // Select 2 Member
+    public function search(Request $request)
+    {
+        $data = User::select('id', 'name', 'role')
+            ->where('role', 'member')
+            ->where('name', 'LIKE', '%' . $request->search . '%')
+            ->orderBy('id', 'desc')
+            ->get()
+            ->toArray();
+
+        foreach ($data as $index => $item) {
+            $data[$index]['id'] = Crypt::encrypt($item['id']);
+        }
+
+        return json_encode($data);
+    }
 }

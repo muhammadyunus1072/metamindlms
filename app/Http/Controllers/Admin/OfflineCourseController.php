@@ -58,4 +58,20 @@ class OfflineCourseController extends Controller
 
         return $res;
     }
+
+    // Select 2 Offline Course
+    public function search(Request $request)
+    {
+        $data = OfflineCourse::select('id', 'title')
+            ->where('title', 'LIKE', '%' . $request->search . '%')
+            ->orderBy('id', 'desc')
+            ->get()
+            ->toArray();
+
+        foreach ($data as $index => $item) {
+            $data[$index]['id'] = Crypt::encrypt($item['id']);
+        }
+
+        return json_encode($data);
+    }
 }

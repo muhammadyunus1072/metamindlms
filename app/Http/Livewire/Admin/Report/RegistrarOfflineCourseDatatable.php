@@ -2,13 +2,35 @@
 
 namespace App\Http\Livewire\Admin\Report;
 
+use App\Models\OfflineCourse;
+use App\Models\User;
 use Livewire\Component;
 use App\Traits\WithDatatable;
 use App\Models\OfflineCourseRegistrar;
+use Illuminate\Support\Facades\Crypt;
 
 class RegistrarOfflineCourseDatatable extends Component
 {
     use WithDatatable;
+
+
+    public $filter_offline_course_id = "";
+    public $filter_member_id = "";
+
+    protected $listeners = [
+        'registrar_filter_offline_course',
+        'registrar_filter_member',
+    ];
+
+    public function registrar_filter_offline_course($offline_course_id)
+    {
+        $this->filter_offline_course_id = $offline_course_id;
+    }
+
+    public function registrar_filter_member($member_id)
+    {
+        $this->filter_member_id = $member_id;
+    }
 
     public function getColumns()
     {
@@ -53,7 +75,16 @@ class RegistrarOfflineCourseDatatable extends Component
 
     public function getQuery()
     {
-        return OfflineCourseRegistrar::query();
+        $filter_offline_course_id = $this->filter_offline_course_id != "" ? Crypt::decrypt($this->filter_offline_course_id) : "";
+        $filter_member_id = $this->filter_member_id !=  "" ? Crypt::decrypt($this->filter_member_id) : "";
+
+        return OfflineCourseRegistrar::select('*')
+            ->when((!empty($filter_offline_course_id)), function ($query) use ($filter_offline_course_id) {
+                $query->where('offline_course_id', $filter_offline_course_id);
+            })
+            ->when((!empty($filter_member_id)), function ($query) use ($filter_member_id) {
+                $query->where('user_id', $filter_member_id);
+            });
     }
 
     public function getView()

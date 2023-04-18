@@ -12,7 +12,7 @@ class OfflineCourseDatatable extends Component
 {
     use WithDatatable;
 
-    public $filter_categories_id = [];  
+    public $filter_categories_id = [];
 
     protected $listeners = [
         'filter_category'
@@ -20,7 +20,6 @@ class OfflineCourseDatatable extends Component
 
     public function filter_category($category_id)
     {
-        // $category_id = Crypt::decryptString($enc_category_id);
         if (in_array($category_id, $this->filter_categories_id)) {
             $this->filter_categories_id = array_filter(
                 $this->filter_categories_id,

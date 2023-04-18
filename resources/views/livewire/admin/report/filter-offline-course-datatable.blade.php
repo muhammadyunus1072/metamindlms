@@ -4,9 +4,6 @@
         <i class="material-icons icon--left">tune</i> Filters
     </a>
 
-    <h4 class="card-title mb-3">Total : </h4>
-
-
     <div class="mdk-drawer js-mdk-drawer " id="library-drawer" data-align="end">
         <div class="mdk-drawer__content ">
             <div class="sidebar sidebar-light sidebar-right" data-perfect-scrollbar
@@ -17,7 +14,7 @@
                         <div class="form-group">
                             <div class="custom-control custom-checkbox">
                                 <input class="custom-control-input" type="checkbox"
-                                    value="{{ $item->id }}" id="{{ $item->name }}"
+                                    value="{{ Crypt::encrypt($item->id) }}" id="{{ $item->name }}"
                                     wire:click="$emit('filter_category', {{ $item->id }})">
                                 <label class="custom-control-label" for="{{ $item->name }}">
                                     <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">brush</span>

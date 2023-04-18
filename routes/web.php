@@ -17,7 +17,6 @@ use App\Http\Controllers\Member\CourseMemberController as M_CourseMemberControll
 use App\Http\Controllers\Member\DiscussionController as M_DiscussionController;
 use App\Http\Controllers\Member\FavoriteController as M_FavoriteController;
 use App\Http\Controllers\Member\OfflineCourseController as M_OfflineCourseController;
-use App\Http\Controllers\Member\QuizController as M_QuizController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -152,6 +151,10 @@ Route::middleware('role:admin')->group(function () {
             Route::get('/offline_course', 'offline_course')->name('offline_course');
             Route::get('/registrar_offline_course', 'registrar_offline_course')->name('registrar_offline_course');
         });
+
+        // Select 2 Oflline Course
+        Route::get('offline_course/get', [A_OfflineCourseController::class, 'search'])->name('get.offline_course');
+        Route::get('user/get', [A_UserController::class, 'search'])->name('get.user');
     });
 });
 
@@ -191,16 +194,7 @@ Route::middleware('role:member')->group(function () {
             Route::post('/store_review/{id}', 'store_review')->name('store_review');
 
             Route::get('/show_lesson/{id}', 'show_lesson')->name('show_lesson');
-            Route::post('/end_lesson/{id}', 'end_lesson')->name('end_lesson');
-        });
-
-        Route::group(["controller" => M_QuizController::class, "prefix" => "quiz", "as" => "quiz."], function () {
-            Route::get('/', 'index')->name('index');
-            Route::get('/show/{id}', 'show')->name('show');
-            Route::post('/finish_lesson/{id}', 'finish_lesson')->name('finish_lesson');
-            Route::post('/store_review/{id}', 'store_review')->name('store_review');
-
-            Route::get('/show_lesson/{id}', 'show_lesson')->name('show_lesson');
+            Route::get('/show_score/{id}', 'lesson_score')->name('lesson_score');
             Route::post('/end_lesson/{id}', 'end_lesson')->name('end_lesson');
         });
 

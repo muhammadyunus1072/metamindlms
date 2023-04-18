@@ -11,6 +11,7 @@ use App\Models\CourseMemberLesson;
 use App\Models\CourseReview;
 use App\Models\CourseSection;
 use App\Models\Lesson;
+use App\Models\LessonAnswer;
 use App\Models\LessonFile;
 use App\Models\LessonQuestion;
 use App\Models\Level;
@@ -19,6 +20,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
 
 class CourseMemberController extends Controller
@@ -278,7 +280,8 @@ class CourseMemberController extends Controller
                 ->orderBy('position', 'asc')
                 ->paginate(3);
 
-            $lesson_questions = LessonQuestion::where('lesson_id', $lesson_id)->get();
+            $lesson_questions = LessonQuestion::where('lesson_id', $lesson_id)
+                ->paginate(5);
             foreach ($lesson_questions as $key => $value) {
                 $value['choices'] = json_decode($value['choices'], true);
             }
@@ -293,9 +296,53 @@ class CourseMemberController extends Controller
         } else return Redirect()->route('member.' . $this->has_access . '.index')->with("error", "Data " . $this->ctitle . " tidak ditemukan.");
     }
 
+    // Show Lesson
+    public function show_score(Request $request, $id)
+    {
+        $data = $this->get_etc();
 
+        $lesson_id = dec($id);
 
+        $course_member_lesson = $this->get_course_member_lesson($lesson_id);
+        if ($course_member_lesson) {
+            $course_member_lesson->opened_at = Carbon::now();
+            $course_member_lesson->save();
+        } else {
+            //If never open lesson
+            $insert_data = new CourseMemberLesson();
+            $insert_data->lesson_id = $lesson_id;
+            $insert_data->member_id = info_user_id();
+            $insert_data->opened_at = Carbon::now();
+            $insert_data->save();
+        }
 
+        $results_data = $this->get_lesson($lesson_id);
+        if ($results_data) {
+
+            $lesson_file = $this->get_lesson_file($lesson_id);
+
+            $list_lesson = Lesson::where('course_section_id', $results_data->course_section_id)
+                ->where('position', '>=', $results_data->position - 1)
+                ->orderBy('position', 'asc')
+                ->paginate(3);
+
+            $lesson_questions = LessonQuestion::where('lesson_id', $lesson_id)
+                ->get();
+            foreach ($lesson_questions as $key => $value) {
+                $value['choices'] = json_decode($value['choices'], true);
+            }
+
+            $lesson_answers = LessonAnswer::where('lesson_question_lesson_id', $lesson_id)->get();
+
+            return view($this->view_path . 'show_score', compact(
+                'data',
+                'results_data',
+                'lesson_file',
+                'list_lesson',
+                'lesson_questions',
+            ));
+        } else return Redirect()->route('member.' . $this->has_access . '.index')->with("error", "Data " . $this->ctitle . " tidak ditemukan.");
+    }
 
 
 
