@@ -36,6 +36,8 @@
         <!-- Quill Theme -->
         <link type="text/css" href="{{ asset('/assets/css/quill.css') }}" rel="stylesheet">
 
+        <link type="text/css" href="{{ asset('/assets/vendor/daterangepicker.css') }}" rel="stylesheet">
+
         @stack('css')
     </head>
 
@@ -95,7 +97,7 @@
 
                     <!-- // END Navbar Brand -->
 
-                    <span class="d-none d-md-flex align-items-center mr-16pt">
+                    {{-- <span class="d-none d-md-flex align-items-center mr-16pt">
 
                         <span class="avatar avatar-sm mr-12pt">
 
@@ -107,20 +109,20 @@
                             <strong class="navbar-text-100">Experience IQ</strong>
                             <span class="navbar-text-50">2,300 points</span>
                         </small>
-                    </span>
+                    </span> --}}
 
                     <div class="flex"></div>
 
                     <!-- Switch Layout -->
 
-                    <a href="../Compact_App_Layout/student-dashboard.html"
+                    {{-- <a href="../Compact_App_Layout/student-dashboard.html"
                        class="navbar-toggler navbar-toggler-custom align-items-center justify-content-center d-none d-lg-flex"
                        data-toggle="tooltip"
                        data-title="Switch to Compact Layout"
                        data-placement="bottom"
                        data-boundary="window">
                         <span class="material-icons">swap_horiz</span>
-                    </a>
+                    </a> --}}
 
                     <!-- // END Switch Layout -->
 
@@ -129,7 +131,7 @@
                     <div class="nav navbar-nav flex-nowrap d-flex mr-16pt">
 
                         <!-- Notifications dropdown -->
-                        <div class="nav-item dropdown dropdown-notifications dropdown-xs-down-full"
+                        {{-- <div class="nav-item dropdown dropdown-notifications dropdown-xs-down-full"
                              data-toggle="tooltip"
                              data-title="Messages"
                              data-placement="bottom"
@@ -273,7 +275,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <!-- // END Notifications dropdown -->
 
                         <div class="nav-item dropdown">
@@ -291,12 +293,12 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <div class="dropdown-header"><strong>Account</strong></div>
-                                <a class="dropdown-item"
+                                {{-- <a class="dropdown-item"
                                    href="edit-account.html">Edit Account</a>
                                 <a class="dropdown-item"
                                    href="billing.html">Billing</a>
                                 <a class="dropdown-item"
-                                   href="billing-history.html">Payments</a>
+                                   href="billing-history.html">Payments</a> --}}
                                 <a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
                             </div>
                         </div>
@@ -406,6 +408,8 @@
         <script src="https://cdn.jsdelivr.net/gh/smartintegratedsistem/JqueryPagination@1.0.0/js/jquery-pagination.js"></script>
         <script src="{{ asset('vendor/datatables/dataTables.min.js') }}"></script>
         <script src="{{ asset('vendor/datatables/dataTables.bootstrap.min.js') }}"></script>
+
+        <script src="{{ asset('/assets/vendor/daterangepicker.js') }}"></script>
         
         <!-- Quill -->
         <script src="{{ asset('/assets/vendor/quill.min.js') }}"></script>
@@ -419,6 +423,8 @@
             });
 
             $('.custom-select-2').select2({})
+
+            $('input[name="daterange"]').daterangepicker();
 
             function r_action_table(data, messages, action_url, reload_data, datatable) {
                 swal.fire({

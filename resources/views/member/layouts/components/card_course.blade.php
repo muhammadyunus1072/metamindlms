@@ -30,7 +30,7 @@
                     <small class="text-50 font-weight-bold mb-4pt">{{ $v->level_name }}</small>
                 </div>
                 
-                @if (Auth::check())
+                @if (Auth::check() && info_user()->role == "member")
                     <a
                         data-toggle="tooltip"
                         title="{{ $v->is_favorite() ? 'Hapuskan dari' :  'Tambahkan ke' }} Favorite"

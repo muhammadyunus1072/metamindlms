@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\OfflineCourseController as A_OfflineCourseControl
 use App\Http\Controllers\Admin\OfflineCourseAttendanceController as A_OfflineCourseAttendanceController;
 use App\Http\Controllers\Admin\OfflineCourseRegistrarController as A_OfflineCourseRegistrarController;
 use App\Http\Controllers\Admin\UserController as A_UserController;
+use App\Http\Controllers\Admin\ReportController as A_ReportController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Member\CourseController as M_CourseController;
 use App\Http\Controllers\Member\DashboardController as M_DashboardController;
@@ -143,6 +144,35 @@ Route::middleware('role:admin')->group(function () {
             Route::group(["controller" => A_UserController::class, "prefix" => "user", "as" => "user."], function () {
                 Route::get("select2", "select2")->name('select2');
             });
+        });
+
+        Route::group(["prefix" => "report", "as" => "report."], function () {
+            // Report Data
+            Route::group(["controller" => A_ReportController::class], function () {
+
+                Route::get("/", "index")->name('index');
+
+                Route::group(["prefix" => "course_member", "as" => "course_member."], function () {
+                    Route::get("/", "course_member")->name('index');
+                    Route::get("/json", "json_course_member")->name('json');
+                    Route::get("/export", "export_course_member")->name('export');
+                });
+
+                Route::group(["prefix" => "recap_course", "as" => "recap_course."], function () {
+                    Route::get("/", "recap_course")->name('index');
+                    Route::get("/json", "json_recap_course")->name('json');
+                    Route::get("/export", "export_recap_course")->name('export');
+                });
+
+
+                Route::get("/search_member", "search_member")->name('search_member');
+                Route::get("/search_course", "search_course")->name('search_course');
+
+            });
+
+            
+
+            
         });
     });
 });

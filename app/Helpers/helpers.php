@@ -36,6 +36,12 @@ function timef($data = null){
     else return date("H:i", strtotime($data));
 }
 
+function sql_datef($data = null)
+{
+    if (empty($data)) return '-';
+    return date("Y-m-d", strtotime($data));
+}
+
 function numberf($data = null){
     if(empty($data)) return '-';
     else return number_format($data,2,".",",");
@@ -51,6 +57,12 @@ function time_diff_for_human($data = null){
 
     if(empty($data)) return '-';
     else return Carbon::parse($data)->diffForHumans();
+}
+
+function percentage($value = null, $total_value = null)
+{
+    if (empty($value) || empty($total_value)) return 0;
+    else return round((($value / $total_value) * 100), 2);
 }
 
 function response_json($data = null){
@@ -103,6 +115,8 @@ const MASTER_SIDEBAR = array(
     "level" => "Level Kursus",
     "course" => "Kursus",
     "offline_course" => "Kursus Offline",
+    "course_member" => "Kursus Member",
+    "recap_course" => "Rekap Kursus",
 );
 
 function master_sidebar($key = null){
