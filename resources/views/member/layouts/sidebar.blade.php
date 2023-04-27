@@ -9,7 +9,7 @@
     </form>
 </div> --}}
 
-<a href="index.html" class="sidebar-brand ">
+<a href="{{ route('member.dashboard.index') }}" class="sidebar-brand ">
     <!-- <img class="sidebar-brand-icon" src="../../public/images/illustration/student/128/white.svg" alt="Luma"> -->
 
     <span class="avatar avatar-xl sidebar-brand-icon h-auto">
