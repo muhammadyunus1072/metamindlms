@@ -23,7 +23,7 @@
                         if ($k !== 0) {
                             $list_route['previous_page'] = $data['croute'] . 'show_lesson/' . enc($list_lesson[$k - 1]->id);
                         }
-
+                        
                         if ($k + 1 !== count($list_lesson)) {
                             $list_route['next_page'] = $data['croute'] . 'show_lesson/' . enc($list_lesson[$k + 1]->id);
                         }
@@ -69,86 +69,28 @@
         </div>
     </div>
 
-    @include('member.pages.course.components.show_title_nav')
 
-    @include('member.pages.course.components.show_detail_lesson')
-
-    {{-- <div class="container page__container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="page-section">
-                    <div class="page-nav__content">
-                        <div class="page-separator">
-                            <div class="page-separator__text">Soal Quiz</div>
-                        </div>
-
-                        <div class="row mb-0 text-justify">
-                            <div class="col">
-                                <form action="{{ route('member.course_member.lesson_answer', enc($results_data->id)) }}"
-                                    id="form-data" method="post">
-                                    @csrf
-                                    @forelse ($lesson_questions as $key => $item)
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h4 class="card-title">Soal No. {{ $item->number }}</h4>
-                                            </div>
-                                            <div class="card-body">
-                                                <h4 class="card-title mb-3">{{ $item->text }}</h4>
-                                                @forelse ($item->choices as $key2 => $choice)
-                                                    <div class="form-group">
-                                                        <div class="custom-control custom-checkbox">
-                                                            <input
-                                                                name="answer_choice[{{ $key }}][{{ $key2 }}][]"
-                                                                id="{{ $choice['text'] }}" type="checkbox"
-                                                                value="{{ $key2 }}"
-                                                                class="custom-control-input">
-                                                            <label for="{{ $choice['text'] }}"
-                                                                class="custom-control-label">
-                                                                {{ $choice['text'] }}</label>
-                                                        </div>
-                                                    </div>
-                                                @empty
-                                                    <h4>Data belum tersedia</h4>
-                                                @endforelse
-                                                <p class="text-muted">*Jawaban dapat lebih dari 1</p>
-                                            </div>
-                                        </div>
-                                    @empty
-                                        <h4 class="text-center">Pertanyaan Belum Tersedia</h4>
-                                    @endforelse
-                                    {{ $lesson_questions->links() }}
-                                    <button onclick="return  confirm('Yakin akan kumpul Quiz?')" type="submit"
-                                        class="btn btn-primary text-end">Submit</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+    @if ($results_data['type'] == App\Models\Lesson::TYPE_VIDEO)
+        @include('member.pages.course.components.show_title_nav')
+        @include('member.pages.course.components.show_detail_lesson')
+        <div class="page-section bg-white">
+            <div class="container page__container">
+                <div class="d-flex align-items-center mb-heading">
+                    <h4 class="m-0">Forum Diskusi</h4>
+                    <a href="{{ $list_route['create_discussion'] }}" class="text-underline ml-auto">Berikan Pertanyaan</a>
                 </div>
+                <div class="border-top">
+                    @livewire('discussion', ['lesson_id' => $results_data->id])
+                </div>
+                <a href="discussions.html" class="btn btn-outline-secondary">Lihat semua diskusi</a>
             </div>
         </div>
-    </div> --}}
-
-    @livewire('member.online-course.quiz', ['results_data' => $results_data, 'lesson_questions' => $lesson_questions])
-
-    <div class="page-section bg-white">
-        <div class="container page__container">
-
-            <div class="d-flex align-items-center mb-heading">
-                <h4 class="m-0">Forum Diskusi</h4>
-                <a href="{{ $list_route['create_discussion'] }}" class="text-underline ml-auto">Berikan Pertanyaan</a>
-            </div>
-
-            <div class="border-top">
-
-                @livewire('discussion', ['lesson_id' => $results_data->id])
-
-            </div>
-
-            <a href="discussions.html" class="btn btn-outline-secondary">Lihat semua diskusi</a>
-
-        </div>
-    </div>
-
+    @else
+        @include('member.pages.course.components.show_title_quiz_nav')
+        @livewire('member.online-course.quiz', [
+            'lesson_id' => enc($results_data['id']),
+        ])
+    @endif
 @stop
 
 @push('js')

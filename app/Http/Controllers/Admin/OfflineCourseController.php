@@ -36,8 +36,14 @@ class OfflineCourseController extends Controller
         return view('admin.pages.master.offline_course.show', ['offlineCourse' => $offlineCourse]);
     }
 
-    public function destroy(Request $request)
+    public function showQr(Request $request)
     {
+        $decId = Crypt::decryptString($request->id);
+
+        $offlineCourse = OfflineCourse::find($decId);
+        $offlineCourse->url = route('member.qr_scan.show', Crypt::encryptString($request->id));
+
+        return view('admin.pages.master.offline_course.show_qr', ['offlineCourse' => $offlineCourse]);
     }
 
     public function select2Category(Request $request)

@@ -17,6 +17,7 @@ use App\Http\Controllers\Member\CourseMemberController as M_CourseMemberControll
 use App\Http\Controllers\Member\DiscussionController as M_DiscussionController;
 use App\Http\Controllers\Member\FavoriteController as M_FavoriteController;
 use App\Http\Controllers\Member\OfflineCourseController as M_OfflineCourseController;
+use App\Http\Controllers\Member\QrScanController as M_QrScanController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -126,6 +127,7 @@ Route::middleware('role:admin')->group(function () {
                 Route::get("create", "create")->name('create');
                 Route::get("edit/{id}", "edit")->name('edit');
                 Route::get("show/{id}", "show")->name('show');
+                Route::get("show/qr/{id}", "showQr")->name('show.qr');
                 Route::delete("destroy/{id}", "edit")->name('destroy');
                 Route::get("select2/category", "select2Category")->name('select2.category');
             });
@@ -165,7 +167,6 @@ Route::group(["controller" => M_CourseController::class, "prefix" => "course", "
     Route::post("/show_trailer", "show_trailer")->name('show_trailer');
     Route::get('/search', 'search')->name('search');
 });
-
 
 Route::group(["controller" => M_OfflineCourseController::class, "prefix" => "offline_course", "as" => "offline_course."], function () {
     Route::get('/', 'index')->name('index');
@@ -214,6 +215,11 @@ Route::middleware('role:member')->group(function () {
             Route::post("/store_answer/{id}", "store_answer")->name('store_answer');
 
             Route::get("/search_lesson/{id}", "search_lesson")->name('search_lesson');
+        });
+
+        Route::group(["controller" => M_QrScanController::class, "prefix" => "qr_scan", "as" => "qr_scan."], function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/show/{id}', 'show')->name('show');
         });
     });
 });

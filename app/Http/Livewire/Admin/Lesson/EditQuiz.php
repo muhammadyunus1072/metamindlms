@@ -51,7 +51,8 @@ class EditQuiz extends Component
     public function save()
     {
         $validatedData = $this->validate();
-        $lesson = Lesson::find(Crypt::decryptString($this->lesson_id));
+        $decId = Crypt::decryptString($this->lesson_id);
+        $lesson = Lesson::find($decId);
         $lesson->title = $this->title;
         $lesson->description = $this->description;
         $lesson->can_preview = $this->can_preview;
@@ -83,6 +84,8 @@ class EditQuiz extends Component
         foreach ($deletedQuestions as $item) {
             $item->delete();
         }
+
+        return redirect()->route('admin.course.edit_lesson', $decId);
     }
 
     //-----------------------------

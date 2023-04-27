@@ -29,6 +29,9 @@ class Datatable extends Component
                 'render' => function ($item) {
                     $encryptedId = Crypt::encryptString($item->id);
 
+                    $showQrUrl = route('admin.offline_course.show.qr', $encryptedId);
+                    $showQrHtml = "<a href='$showQrUrl' class='dropdown-item'><i class='fa fa-qrcode mr-2'></i>QR Code</a>";
+
                     $showUrl = route('admin.offline_course.show', $encryptedId);
                     $showHtml = "<a href='$showUrl' class='dropdown-item'><i class='fa fa-eye mr-2'></i>Lihat Detail</a>";
 
@@ -52,6 +55,8 @@ class Datatable extends Component
                             aria-expanded='false'>Aksi <i class='mdi mdi-chevron-down'></i></button>
                         <div class='dropdown-menu'>
                             $showHtml
+                            <div class='dropdown-divider'></div>
+                            $showQrHtml
                             <div class='dropdown-divider'></div>
                             $editHtml
                             <div class='dropdown-divider'></div>

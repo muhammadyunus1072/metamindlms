@@ -272,26 +272,17 @@ class CourseMemberController extends Controller
 
         $results_data = $this->get_lesson($lesson_id);
         if ($results_data) {
-
             $lesson_file = $this->get_lesson_file($lesson_id);
-
             $list_lesson = Lesson::where('course_section_id', $results_data->course_section_id)
                 ->where('position', '>=', $results_data->position - 1)
                 ->orderBy('position', 'asc')
                 ->paginate(3);
-
-            $lesson_questions = LessonQuestion::where('lesson_id', $lesson_id)
-                ->paginate(5);
-            foreach ($lesson_questions as $key => $value) {
-                $value['choices'] = json_decode($value['choices'], true);
-            }
 
             return view($this->view_path . 'show_lesson', compact(
                 'data',
                 'results_data',
                 'lesson_file',
                 'list_lesson',
-                'lesson_questions',
             ));
         } else return Redirect()->route('member.' . $this->has_access . '.index')->with("error", "Data " . $this->ctitle . " tidak ditemukan.");
     }
