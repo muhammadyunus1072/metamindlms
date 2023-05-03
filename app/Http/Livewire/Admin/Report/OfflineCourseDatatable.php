@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Admin\Report;
 
+use App\Exports\CollectionExport;
 use Livewire\Component;
 use App\Models\OfflineCourse;
 use App\Models\OfflineCourseAttendance;
@@ -9,6 +10,7 @@ use App\Models\OfflineCourseRegistrar;
 use App\Traits\WithDatatable;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OfflineCourseDatatable extends Component
 {
@@ -26,6 +28,13 @@ class OfflineCourseDatatable extends Component
     {
         $this->total_offline_course_registrar = OfflineCourseRegistrar::count();
         $this->total_offline_course_attendance = OfflineCourseAttendance::count();
+    }
+
+    public function export()
+    {
+        $data = $this->getProcessedQuery()->get();
+        $fileName = "Data Kursus Offline";
+        return Excel::download(new CollectionExport('admin.pages.report.offline_course.export', $data), "$fileName.xlsx");
     }
 
     public function filter_category($category_id)
@@ -75,7 +84,7 @@ class OfflineCourseDatatable extends Component
                 'sortable' => false,
                 'searchable' => false,
                 'render' => function ($item) {
-                    return $item->registrars()->count();
+                    return $item->registrars->count();
                 },
             ],
             [
@@ -83,7 +92,7 @@ class OfflineCourseDatatable extends Component
                 'sortable' => false,
                 'searchable' => false,
                 'render' => function ($item) {
-                    return $item->attendances()->count();
+                    return $item->attendances->count();
                 },
             ],
         ];
@@ -118,11 +127,12 @@ class OfflineCourseDatatable extends Component
             });
         })->count();
 
-        return OfflineCourse::when(count($this->filter_categories_id) > 0, function ($query) {
-            $query->whereHas('offlineCourseCategories', function ($query) {
-                $query->whereIn('category_course_id', $this->filter_categories_id);
+        return OfflineCourse::with('registrars', 'attendances')
+            ->when(count($this->filter_categories_id) > 0, function ($query) {
+                $query->whereHas('offlineCourseCategories', function ($query) {
+                    $query->whereIn('category_course_id', $this->filter_categories_id);
+                });
             });
-        });
     }
 
     public function getView(): String

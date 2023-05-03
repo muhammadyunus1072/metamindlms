@@ -50,7 +50,6 @@ trait WithDatatable
         $this->resetPage();
     }
 
-
     public function sortBy($field)
     {
         $this->sortDirection = $this->sortBy === $field
@@ -67,7 +66,7 @@ trait WithDatatable
             : 'asc';
     }
 
-    public function getData()
+    public function getProcessedQuery()
     {
         $columns = $this->getColumns();
         $query = $this->getQuery();
@@ -92,7 +91,12 @@ trait WithDatatable
             $query->orderBy($sortBy, $sortDirection);
         });
 
-        return $this->paginate($query);
+        return $query;
+    }
+
+    public function getData()
+    {
+        return $this->paginate($this->getProcessedQuery());
     }
 
     public function render()

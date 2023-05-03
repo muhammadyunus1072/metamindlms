@@ -2,11 +2,13 @@
 
 namespace App\Http\Livewire\Admin\Report;
 
+use App\Exports\CollectionExport;
 use Livewire\Component;
 use App\Traits\WithDatatable;
 use App\Models\OfflineCourseRegistrar;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Database\Eloquent\Builder;
+use Maatwebsite\Excel\Facades\Excel;
 
 class RegistrarOfflineCourseDatatable extends Component
 {
@@ -19,6 +21,13 @@ class RegistrarOfflineCourseDatatable extends Component
         'registrar_filter_offline_course',
         'registrar_filter_member',
     ];
+
+    public function export()
+    {
+        $data = $this->getProcessedQuery()->get();
+        $fileName = "Data Pendaftar Kursus Offline";
+        return Excel::download(new CollectionExport('admin.pages.report.registrar_offline_course.export', $data), "$fileName.xlsx");
+    }
 
     public function registrar_filter_offline_course($offline_course_id)
     {
@@ -77,6 +86,7 @@ class RegistrarOfflineCourseDatatable extends Component
         $filter_member_id = $this->filter_member_id !=  "" ? Crypt::decrypt($this->filter_member_id) : "";
 
         return OfflineCourseRegistrar::select('*')
+            ->with('offlineCourse', 'offlineCourseAttendance')
             ->when((!empty($filter_offline_course_id)), function ($query) use ($filter_offline_course_id) {
                 $query->where('offline_course_id', $filter_offline_course_id);
             })

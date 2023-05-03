@@ -128,7 +128,7 @@ Route::middleware('role:admin')->group(function () {
 
         // Report Data
         Route::group(["prefix" => "report", "as" => "report."], function () {
-    
+
             Route::group(["controller" => ReportController::class], function () {
                 Route::get("/", "index")->name('index');
 
@@ -154,7 +154,6 @@ Route::middleware('role:admin')->group(function () {
                 Route::get('/offline_course', 'offline_course')->name('offline_course');
                 Route::get('/registrar_offline_course', 'registrar_offline_course')->name('registrar_offline_course');
             });
-
             Route::get('offline_course/get', [OfflineCourseController::class, 'search'])->name('get.offline_course');
             Route::get('user/get', [UserController::class, 'search'])->name('get.user');
         });

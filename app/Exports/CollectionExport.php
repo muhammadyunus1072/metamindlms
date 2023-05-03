@@ -10,11 +10,11 @@ class CollectionExport implements FromView, ShouldAutoSize
 {
     private $view;
     private $collection;
-    private $request;
+    private $other;
 
-    public function __construct($request, $collection, $view)
+    public function __construct($view, $collection, $other = [])
     {
-        $this->request = $request;
+        $this->other = $other;
         $this->collection = $collection;
         $this->view = $view;
     }
@@ -22,7 +22,7 @@ class CollectionExport implements FromView, ShouldAutoSize
     public function view(): View
     {
         return view($this->view, [
-            'request' => $this->request,
+            'other' => $this->other,
             'collection' => $this->collection,
             'number_format' => false,
         ]);
