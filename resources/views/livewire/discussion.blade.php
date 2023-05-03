@@ -37,7 +37,9 @@
 
         {{ $list_discussion_data->links('pagination.livewire_pagination') }}
     @else
-        <p class="text-muted mt-2">Belum ada diskusi.</p>
+        <div class="m-2">
+            <span class="text-muted">Belum ada diskusi.</span>
+        </div>
     @endif
 
 </div>

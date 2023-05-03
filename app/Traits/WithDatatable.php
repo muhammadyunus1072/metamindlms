@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use Illuminate\Database\Eloquent\Builder;
 use Livewire\WithPagination;
 
 trait WithDatatable
@@ -16,16 +17,27 @@ trait WithDatatable
     public $sortBy = '';
     public $sortDirection = 'asc';
 
-    public function getColumns()
+    abstract public function getColumns(): array;
+    abstract public function getQuery(): Builder;
+    abstract public function getView(): String;
+
+    public function onMount()
     {
     }
 
-    public function getQuery()
+    public function mount()
     {
-    }
+        $columns = $this->getColumns();
+        if ($this->sortBy == '' && count($columns) > 0) {
+            foreach ($columns as $col) {
+                if (!isset($col['sortable']) || $col['sortable']) {
+                    $this->sortBy = $col['key'];
+                    break;
+                }
+            }
+        }
 
-    public function getView()
-    {
+        $this->onMount();
     }
 
     public function paginate($query)
@@ -38,17 +50,6 @@ trait WithDatatable
         $this->resetPage();
     }
 
-    public function mount()
-    {
-        if ($this->sortBy == '' && count($this->getColumns()) > 0) {
-            foreach ($this->getColumns() as $col) {
-                if (!isset($col['sortable']) || $col['sortable']) {
-                    $this->sortBy = $col['key'];
-                    break;
-                }
-            }
-        }
-    }
 
     public function sortBy($field)
     {
@@ -68,16 +69,30 @@ trait WithDatatable
 
     public function getData()
     {
-        $columnsKey = array_column($this->getColumns(), "key");
-
+        $columns = $this->getColumns();
         $query = $this->getQuery();
-        $query->where(function ($query) use ($columnsKey) {
-            foreach ($columnsKey as $field) {
-                $query->orWhere($field, 'LIKE', "%$this->search%");
-            }
+        $search = $this->search;
+        $sortBy = $this->sortBy;
+        $sortDirection = $this->sortDirection;
+
+        $query->when($search, function ($query) use ($search, $columns) {
+            $query->where(function ($query) use ($columns, $search) {
+                foreach ($columns as $col) {
+                    if (
+                        isset($col['key'])
+                        && (!isset($col['searchable']) || (isset($col['searchable']) && $col['searchable']))
+                    ) {
+                        $query->orWhere($col['key'], 'LIKE', "%$search%");
+                    }
+                }
+            });
         });
 
-        return $this->paginate($query->orderBy($this->sortBy, $this->sortDirection));
+        $query->when($sortBy, function ($query) use ($sortBy, $sortDirection) {
+            $query->orderBy($sortBy, $sortDirection);
+        });
+
+        return $this->paginate($query);
     }
 
     public function render()

@@ -1,18 +1,21 @@
 {{-- Filter --}}
 <div>
-    <div class="row mb-3">
-        <div class="col-md-6" wire:ignore>
-            <label for="select1" class="form-label">Kategori Kursus Offline</label>
+    <div class="row align-items-end">
+        <div class="col-md-4" wire:ignore>
+            <label for="select1" class="form-label">Kursus Offline</label>
             <select wire:model="offline_course_id" id="select_offline_course_id" class="form-control">
             </select>
         </div>
-        <div class="col-md-6" wire:ignore>
-            <label for="select2" class="form-label">Kategori Member</label>
+        <div class="col-md-4" wire:ignore>
+            <label for="select2" class="form-label">Member</label>
             <select wire:model="member_id" id="select_member_id" class="form-control">
             </select>
         </div>
+        <div class="col-auto">
+            <button class="btn btn-warning" type="button" id="reset">Reset</button>
+        </div>
     </div>
-    <button class="btn btn-warning mb-2" type="button" id="reset">Reset</button>
+    <hr>
 </div>
 
 @push('js')
@@ -44,7 +47,7 @@
                 minimumInputLength: 1,
                 placeholder: "Semua Kursus Offline",
                 ajax: {
-                    url: "{{ route('admin.get.offline_course') }}",
+                    url: "{{ route('admin.report.get.offline_course') }}",
                     dataType: "json",
                     type: "GET",
                     data: function(params) {
@@ -71,7 +74,7 @@
                 minimumInputLength: 1,
                 placeholder: "Semua Member",
                 ajax: {
-                    url: "{{ route('admin.get.user') }}",
+                    url: "{{ route('admin.report.get.user') }}",
                     dataType: "json",
                     type: "GET",
                     data: function(params) {

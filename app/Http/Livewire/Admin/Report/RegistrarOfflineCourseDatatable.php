@@ -2,17 +2,15 @@
 
 namespace App\Http\Livewire\Admin\Report;
 
-use App\Models\OfflineCourse;
-use App\Models\User;
 use Livewire\Component;
 use App\Traits\WithDatatable;
 use App\Models\OfflineCourseRegistrar;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Database\Eloquent\Builder;
 
 class RegistrarOfflineCourseDatatable extends Component
 {
     use WithDatatable;
-
 
     public $filter_offline_course_id = "";
     public $filter_member_id = "";
@@ -32,7 +30,7 @@ class RegistrarOfflineCourseDatatable extends Component
         $this->filter_member_id = $member_id;
     }
 
-    public function getColumns()
+    public function getColumns(): array
     {
         return [
             [
@@ -73,7 +71,7 @@ class RegistrarOfflineCourseDatatable extends Component
         ];
     }
 
-    public function getQuery()
+    public function getQuery(): Builder
     {
         $filter_offline_course_id = $this->filter_offline_course_id != "" ? Crypt::decrypt($this->filter_offline_course_id) : "";
         $filter_member_id = $this->filter_member_id !=  "" ? Crypt::decrypt($this->filter_member_id) : "";
@@ -87,7 +85,7 @@ class RegistrarOfflineCourseDatatable extends Component
             });
     }
 
-    public function getView()
+    public function getView(): String
     {
         return 'livewire.admin.report.registrar-offline-course-datatable';
     }

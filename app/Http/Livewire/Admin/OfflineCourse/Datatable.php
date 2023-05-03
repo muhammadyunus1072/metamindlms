@@ -6,6 +6,7 @@ use App\Models\OfflineCourse;
 use App\Traits\WithDatatable;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
 
 class Datatable extends Component
@@ -19,7 +20,7 @@ class Datatable extends Component
         $offlineCourse->delete();
     }
 
-    public function getColumns()
+    public function getColumns(): array
     {
         return [
             [
@@ -108,12 +109,12 @@ class Datatable extends Component
         ];
     }
 
-    public function getQuery()
+    public function getQuery(): Builder
     {
         return OfflineCourse::query();
     }
 
-    public function getView()
+    public function getView(): String
     {
         return 'livewire.admin.offline-course.datatable';
     }

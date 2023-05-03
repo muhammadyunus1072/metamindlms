@@ -1,7 +1,8 @@
 {{-- Filter --}}
 <div>
-    <a href="#" data-target="#library-drawer" data-toggle="sidebar" class="btn btn-sm btn-white mb-2">
-        <i class="material-icons icon--left">tune</i> Filters
+    <a href="#" data-target="#library-drawer" data-toggle="sidebar" class="btn btn-primary mb-2">
+        <i class="material-icons icon--left">tune</i>
+        Filter Kategori Kursus Offline
     </a>
 
     <div class="mdk-drawer js-mdk-drawer " id="library-drawer" data-align="end">
@@ -27,4 +28,5 @@
             </div>
         </div>
     </div>
+    <hr>
 </div>

@@ -9,7 +9,7 @@
     </form>
 </div> --}}
 
-<a href="index.html" class="sidebar-brand ">
+<a href="{{ route('admin.dashboard.index') }}" class="sidebar-brand ">
     <!-- <img class="sidebar-brand-icon" src="../../public/images/illustration/student/128/white.svg" alt="Luma"> -->
 
     <span class="avatar avatar-xl sidebar-brand-icon h-auto">
@@ -56,8 +56,6 @@
     </li>
 
     <ul class="sidebar-menu">
-        <li class="sidebar-menu-item">
-            <a class="sidebar-menu-button" data-toggle="collapse" href="#master_data_menu">
         <li class="sidebar-menu-item {{ Request::segment(2) == 'master_data' ? 'active open' : '' }}">
             <a class="sidebar-menu-button" data-toggle="collapse" href="#master_data_menu">
                 <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">folder</span>
@@ -96,29 +94,41 @@
                     </a>
                 </li>
             </ul>
+        </li>
 
-            {{-- Report --}}
-        <li
-            class="sidebar-menu-item {{ Request::is('admin/report/offline_course') ? 'active open' : '' }} {{ Request::is('admin/report/registrar_offline_course') ? 'active open' : '' }} {{ Request::is('admin/report/member_offline_course') ? 'active open' : '' }}">
+        {{-- Report --}}
+        <li class="sidebar-menu-item {{ Request::segment(2) == 'report' ? 'active open' : '' }}">
             <a class="sidebar-menu-button js-sidebar-collapse" data-toggle="collapse" href="#report_menu">
                 <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">receipt</span>
                 Laporan
                 <span class="ml-auto sidebar-menu-toggle-icon"></span>
             </a>
             <ul class="sidebar-submenu collapse sm-indent" id="report_menu">
-                <li class="sidebar-menu-item {{ request::is('admin/report/offline_course') ? 'active' : '' }}">
+                <?php $name = 'course_member'; ?>
+                <li class="sidebar-menu-item {{ Request::segment(3) == $name ? 'active' : '' }}">
+                    <a class="sidebar-menu-button" href="{{ route('admin.report.' . $name . '.index') }}">
+                        <span class="sidebar-menu-text">{{ master_sidebar($name) }}</span>
+                    </a>
+                </li>
+                <?php $name = 'recap_course'; ?>
+                <li class="sidebar-menu-item {{ Request::segment(3) == $name ? 'active' : '' }}">
+                    <a class="sidebar-menu-button" href="{{ route('admin.report.' . $name . '.index') }}">
+                        <span class="sidebar-menu-text">{{ master_sidebar($name) }}</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item {{ Request::segment(3) == 'offline_course' ? 'active' : '' }}">
                     <a class="sidebar-menu-button" href="{{ route('admin.report.offline_course') }}">
                         <span class="sidebar-menu-text">Kursus Offline</span>
                     </a>
                 </li>
-                <li
-                    class="sidebar-menu-item {{ request::is('admin/report/registrar_offline_course') ? 'active' : '' }}">
+                <li class="sidebar-menu-item {{ Request::segment(3) == 'registrar_offline_course' ? 'active' : '' }}">
                     <a class="sidebar-menu-button" href="{{ route('admin.report.registrar_offline_course') }}">
                         <span class="sidebar-menu-text">Pendaftar Kursus Offline</span>
                     </a>
                 </li>
             </ul>
         </li>
+
         {{-- <li class="sidebar-menu-item">
         <a class="sidebar-menu-button"
             href="student-my-courses.html">
@@ -204,7 +214,6 @@
             <span class="sidebar-menu-text">Skill Result</span>
         </a>
         </li> --}}
-
     </ul>
 
     {{-- <div class="sidebar-heading">Instructor</div>

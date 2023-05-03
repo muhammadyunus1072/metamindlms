@@ -4,7 +4,7 @@ namespace App\Http\Livewire\Admin\OfflineCourseRegistrar;
 
 use App\Models\OfflineCourseRegistrar;
 use App\Traits\WithDatatable;
-use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Crypt;
 use Livewire\Component;
 
@@ -26,7 +26,7 @@ class Datatable extends Component
         $this->emit('attendance-change', true);
     }
 
-    public function getColumns()
+    public function getColumns() : array
     {
         return [
             [
@@ -72,13 +72,13 @@ class Datatable extends Component
         return $query->paginate($this->length, ['*'], 'page_registrar');
     }
 
-    public function getQuery()
+    public function getQuery(): Builder
     {
         $decId = Crypt::decryptString($this->offline_course_id);
         return OfflineCourseRegistrar::where('offline_course_id', '=', $decId);
     }
 
-    public function getView()
+    public function getView(): String
     {
         return 'livewire.admin.offline-course-registrar.datatable';
     }

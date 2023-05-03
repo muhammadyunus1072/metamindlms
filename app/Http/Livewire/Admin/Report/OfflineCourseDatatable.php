@@ -4,19 +4,29 @@ namespace App\Http\Livewire\Admin\Report;
 
 use Livewire\Component;
 use App\Models\OfflineCourse;
+use App\Models\OfflineCourseAttendance;
+use App\Models\OfflineCourseRegistrar;
 use App\Traits\WithDatatable;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Crypt;
+use Illuminate\Database\Eloquent\Builder;
 
 class OfflineCourseDatatable extends Component
 {
     use WithDatatable;
 
     public $filter_categories_id = [];
+    public $total_offline_course_registrar = 0;
+    public $total_offline_course_attendance = 0;
 
     protected $listeners = [
         'filter_category'
     ];
+
+    public function onMount()
+    {
+        $this->total_offline_course_registrar = OfflineCourseRegistrar::count();
+        $this->total_offline_course_attendance = OfflineCourseAttendance::count();
+    }
 
     public function filter_category($category_id)
     {
@@ -32,12 +42,13 @@ class OfflineCourseDatatable extends Component
         }
     }
 
-    public function getColumns()
+    public function getColumns(): array
     {
         return [
             [
                 'key' => 'date_time_start',
                 'name' => 'Tanggal Mulai',
+                'searchable' => false,
                 'render' => function ($item) {
                     return Carbon::parse($item->date_time_start)->format('d M Y, H:i');
                 },
@@ -45,6 +56,7 @@ class OfflineCourseDatatable extends Component
             [
                 'key' => 'date_time_end',
                 'name' => 'Tanggal Selesai',
+                'searchable' => false,
                 'render' => function ($item) {
                     return Carbon::parse($item->date_time_end)->format('d M Y, H:i');
                 },
@@ -56,6 +68,7 @@ class OfflineCourseDatatable extends Component
             [
                 'key' => 'quota',
                 'name' => 'Quota',
+                'searchable' => false,
             ],
             [
                 'name' => 'Jumlah Pendaftar',
@@ -76,18 +89,43 @@ class OfflineCourseDatatable extends Component
         ];
     }
 
-    public function getQuery()
+    public function getQuery(): Builder
     {
-        $filter_categories_id = $this->filter_categories_id;
+        $this->total_offline_course_registrar = OfflineCourseRegistrar::when(!empty($this->search) || count($this->filter_categories_id) > 0, function ($query) {
+            $query->whereHas('offlineCourse', function ($query) {
+                if (!empty($this->search)) {
+                    $query->where('title', 'LIKE', "%$this->search%");
+                }
 
-        return OfflineCourse::when(count($filter_categories_id) > 0, function ($query) use ($filter_categories_id) {
-            $query->whereHas('offlineCourseCategories', function ($query) use ($filter_categories_id) {
-                $query->whereIn('category_course_id', $filter_categories_id);
+                if (count($this->filter_categories_id) > 0) {
+                    $query->whereHas('offlineCourseCategories', function ($query) {
+                        $query->whereIn('category_course_id', $this->filter_categories_id);
+                    });
+                }
+            });
+        })->count();
+        $this->total_offline_course_attendance = OfflineCourseAttendance::when(!empty($this->search) || count($this->filter_categories_id) > 0, function ($query) {
+            $query->whereHas('offlineCourse', function ($query) {
+                if (!empty($this->search)) {
+                    $query->where('title', 'LIKE', "%$this->search%");
+                }
+
+                if (count($this->filter_categories_id) > 0) {
+                    $query->whereHas('offlineCourseCategories', function ($query) {
+                        $query->whereIn('category_course_id', $this->filter_categories_id);
+                    });
+                }
+            });
+        })->count();
+
+        return OfflineCourse::when(count($this->filter_categories_id) > 0, function ($query) {
+            $query->whereHas('offlineCourseCategories', function ($query) {
+                $query->whereIn('category_course_id', $this->filter_categories_id);
             });
         });
     }
 
-    public function getView()
+    public function getView(): String
     {
         return 'livewire.admin.report.offline-course-datatable';
     }

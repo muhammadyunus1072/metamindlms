@@ -1,4 +1,6 @@
 <div>
+    @yield('top_content')
+
     <div class="row justify-content-between mb-3">
         <div class="col-auto">
             <label>Show</label>
@@ -7,11 +9,6 @@
                     <option value="{{ $item }}">{{ $item }}</option>
                 @endforeach
             </select>
-
-        </div>
-        <div class="col-auto">
-            <label>Total Data</label>
-            <h4 class="card-title text-center">{{ $data->total() }}</h4>
         </div>
         <div class="col col-md-6">
             <label>Kata Kunci</label>
@@ -72,6 +69,11 @@
     </div>
 
     <div class="row justify-content-end mt-3">
-        {{ $data->links() }}
+        <div class="col">
+            <label>Total Data: {{ $data->total() }}</label>
+        </div>
+        <div class="col-auto">
+            {{ $data->links() }}
+        </div>
     </div>
 </div>
