@@ -112,8 +112,9 @@
     <script src="{{ asset('/assets/js/flatpickr.js') }}"></script>
     <script src="{{ asset('/assets/vendor/moment.min.js') }}"></script>
     <script src="{{ asset('/assets/vendor/moment-range.js') }}"></script>
-    <script src="{{ asset('/assets/vendor/Chart.min.js') }}"></script>
-    <script src="{{ asset('/assets/js/chartjs.js') }}"></script>
+    {{-- <script src="{{ asset('/assets/vendor/Chart.min.js') }}"></script>
+    <script src="{{ asset('/assets/js/chartjs.js') }}"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
     {{-- <script src="{{ asset('/assets/js/page.student-dashboard.js') }}"></script> --}}
     <script src="{{ asset('/assets/vendor/list.min.js') }}"></script>
     <script src="{{ asset('/assets/js/list.js') }}"></script>

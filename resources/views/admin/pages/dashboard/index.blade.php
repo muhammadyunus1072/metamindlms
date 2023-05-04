@@ -190,11 +190,13 @@
                         labels: data.chart_labels,
                         datasets: [{
                                 label: 'Pendaftar',
+                                borderRadius: 12,
                                 data: data.registrar_data,
                                 backgroundColor: '#ffc107',
                             },
                             {
                                 label: 'Kehadiran',
+                                borderRadius: 12,
                                 data: data.attendance_data,
                                 backgroundColor: '#007bff',
                             },
