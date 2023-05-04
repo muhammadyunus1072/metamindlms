@@ -18,6 +18,7 @@ Route::middleware('role:admin')->group(function () {
     Route::group(["prefix" => "admin", "as" => "admin."], function () {
 
         Route::get("/", [DashboardController::class, "index"])->name('dashboard.index');
+        Route::post("/update_dashboard", [DashboardController::class, "update_dashboard"])->name('dashboard.update');
 
         Route::group(["prefix" => "master_data"], function () {
             // Master Data Kategori Kursus

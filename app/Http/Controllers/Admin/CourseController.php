@@ -1557,6 +1557,7 @@ class CourseController extends Controller
                 $insert_data = new CourseMember();
                 $insert_data->course_id = $results_data->id;
                 $insert_data->member_id = $member->id;
+                $insert_data->course_price = $results_data->price;
 
                 if($insert_data->save()){
                     DB::commit();
