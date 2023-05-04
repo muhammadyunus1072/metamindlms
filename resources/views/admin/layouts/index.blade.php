@@ -20,14 +20,10 @@
     <link href="{{ asset('/assets/css/fontawesome.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/assets/css/preloader.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/assets/css/app.css') }}" rel="stylesheet" type="text/css" />
-    <link type="text/css" href="{{ asset('/assets/vendor/select2/select2.min.css') }}" rel="stylesheet">
-    <link type="text/css" href="{{ asset('/assets/css/select2.css') }}" rel="stylesheet">
-
+    <link href="{{ asset('/assets/vendor/select2/select2.min.css') }}" type="text/css" rel="stylesheet">
+    <link href="{{ asset('/assets/css/select2.css') }}" type="text/css" rel="stylesheet">
     <link href="{{ asset('/css/sweetalert2.min.css') }}" rel="stylesheet" type="text/css">
-
-    <link href="https://cdn.jsdelivr.net/gh/smartintegratedsistem/JqueryPagination@1.0.0/css/jquery-pagination.css"
-        rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('vendor/datatables/dataTables.bs4.css') }}" />
+    <link href="{{ asset('vendor/datatables/dataTables.bs4.css') }}" rel="stylesheet" />
 
     <!-- Quill Theme -->
     <link type="text/css" href="{{ asset('/assets/css/quill.css') }}" rel="stylesheet">
@@ -116,8 +112,8 @@
     <script src="{{ asset('/assets/js/flatpickr.js') }}"></script>
     <script src="{{ asset('/assets/vendor/moment.min.js') }}"></script>
     <script src="{{ asset('/assets/vendor/moment-range.js') }}"></script>
-    {{-- <script src="{{ asset('/assets/vendor/Chart.min.js') }}"></script>
-        <script src="{{ asset('/assets/js/chartjs.js') }}"></script> --}}
+    <script src="{{ asset('/assets/vendor/Chart.min.js') }}"></script>
+    <script src="{{ asset('/assets/js/chartjs.js') }}"></script>
     {{-- <script src="{{ asset('/assets/js/page.student-dashboard.js') }}"></script> --}}
     <script src="{{ asset('/assets/vendor/list.min.js') }}"></script>
     <script src="{{ asset('/assets/js/list.js') }}"></script>
@@ -130,12 +126,9 @@
     </script>
     <script src="{{ asset('/js/main.js') }}"></script>
     <script src="{{ asset('/vendor/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
-
     <script src="{{ asset('/js/sweetalert2.all.min.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/gh/smartintegratedsistem/JqueryPagination@1.0.0/js/jquery-pagination.js"></script>
     <script src="{{ asset('vendor/datatables/dataTables.min.js') }}"></script>
     <script src="{{ asset('vendor/datatables/dataTables.bootstrap.min.js') }}"></script>
-
     <script src="{{ asset('/assets/vendor/daterangepicker.js') }}"></script>
 
     <!-- Quill -->

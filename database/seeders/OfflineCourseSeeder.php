@@ -45,15 +45,18 @@ class OfflineCourseSeeder extends Seeder
             $registrar = OfflineCourseRegistrar::create([
                 'user_id' => $randUserId,
                 'offline_course_id' => $offlineCourse->id,
+                'created_at' => "2023-05-0" . rand(1, 9) . " 16:00:" . rand(10, 59),
             ]);
             OfflineCourseAttendance::create([
                 'offline_course_registrar_id' => $registrar->id,
+                'created_at' => "2023-05-0" . rand(1, 9) . " 16:00:" . rand(10, 59),
             ]);
 
             $randUserId = rand(1, 10);
             OfflineCourseRegistrar::create([
                 'user_id' => $randUserId,
                 'offline_course_id' => $offlineCourse->id,
+                'created_at' => "2023-05-0" . rand(1, 9) . " 16:00:" . rand(10, 59),
             ]);
         }
     }
