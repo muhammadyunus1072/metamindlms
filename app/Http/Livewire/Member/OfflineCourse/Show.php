@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Member\OfflineCourse;
 
 use Livewire\Component;
 use App\Models\OfflineCourse;
+use App\Models\OfflineCourseAttendance;
 use Illuminate\Support\Facades\Crypt;
 
 class Show extends Component
@@ -29,12 +30,18 @@ class Show extends Component
         $this->image = $offlineCourse->getImage();
         $this->categories = $offlineCourse->categories()->select('category_courses.name')->get()->pluck('name');
 
-        $offlineCourseAttachments = $offlineCourse->attachments()->select('file', 'file_name')->get();
-        foreach ($offlineCourseAttachments as $item) {
-            array_push($this->attachments, [
-                'file' => $item->getFile(),
-                'file_name' => $item->file_name,
-            ]);
+        $is_attachment_available = OfflineCourseAttendance::where('offline_course_id', '=', $offlineCourse->id)
+            ->where('user_id', '=', info_user_id())
+            ->first();
+
+        if ($is_attachment_available) {
+            $offlineCourseAttachments = $offlineCourse->attachments()->select('file', 'file_name')->get();
+            foreach ($offlineCourseAttachments as $item) {
+                array_push($this->attachments, [
+                    'file' => $item->getFile(),
+                    'file_name' => $item->file_name,
+                ]);
+            }
         }
     }
 

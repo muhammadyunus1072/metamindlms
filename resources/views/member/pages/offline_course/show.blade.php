@@ -1,7 +1,7 @@
 @extends('member.layouts.index')
 
 @section('content')
-            @livewire('member.offline-course.show', ['offlineCourse' => $offlineCourse])
+    @livewire('member.offline-course.show', ['offlineCourse' => $offlineCourse])
 @stop
 
 

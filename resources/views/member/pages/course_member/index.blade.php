@@ -4,10 +4,10 @@
 
 @section('content')
 
-    <?php 
-        $list_route = array(
-            'search' => '',
-        );
+    <?php
+    $list_route = [
+        'search' => '',
+    ];
     ?>
 
     <div class="pt-32pt">
@@ -40,20 +40,40 @@
             @include('member.pages.course.components.filter_text')
 
             <div class="page-separator">
+                <div class="page-separator__text">Kursus Offline Saya</div>
+            </div>
+
+            <div class="row card-group-row">
+                @forelse ($offline_courses as $item)
+                    @include('member.pages.dashboard.components.card_offline_course', ['item' => $item])
+                @empty
+                    <div class="col-md-12">
+                        <h3 class="text-center">Belum Terdapat Kursus Offline Yang Diikuti</h3>
+                    </div>
+                @endforelse
+            </div>
+            <div>
+                {{ $offline_courses->links() }}
+            </div>
+
+            <div class="page-separator">
                 <div class="page-separator__text">Kursus Saya</div>
             </div>
 
-            @if (count($results_data) > 0)
-                <div class="row card-group-row">
-                    @foreach ($results_data as $v)
-                        @include('member.pages.dashboard.components.card_course_member', [
-                            'v' => $v
-                        ])
-                    @endforeach
-                </div>
-            @else
-                <p class="text-muted">Kursus tidak ditemukan.</p>
-            @endif
+            <div class="row card-group-row">
+                @forelse ($courses as $v)
+                    @include('member.pages.dashboard.components.card_course', [
+                        'v' => $v,
+                    ])
+                @empty
+                    <div class="col-md-12">
+                        <h3 class="text-center">Belum Terdapat Kursus Online Yang Diikuti</h3>
+                    </div>
+                @endforelse
+            </div>
+            <div>
+                {{ $courses->links() }}
+            </div>
 
 
         </div>

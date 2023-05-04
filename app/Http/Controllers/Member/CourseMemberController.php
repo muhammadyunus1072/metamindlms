@@ -15,6 +15,7 @@ use App\Models\LessonAnswer;
 use App\Models\LessonFile;
 use App\Models\LessonQuestion;
 use App\Models\Level;
+use App\Models\OfflineCourse;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
@@ -49,14 +50,31 @@ class CourseMemberController extends Controller
     {
         $data = $this->get_etc();
 
-        $results_data = $this->search_course($request)->get();
+        $courses = $this->search_course($request)->paginate(4, ['*'], 'course');
+        $offline_courses = $this->search_offline_course($request)->paginate(3, ['*'], 'offline_course');
+
+        $courses->appends(
+            [
+                'offline_courses' => $offline_courses->currentPage(),
+                'text_filter' => $request->text_filter,
+                'category_filter' => $request->category_filter
+            ]
+        );
+        $offline_courses->appends(
+            [
+                'courses' => $courses->currentPage(),
+                'text_filter' => $request->text_filter,
+                'category_filter' => $request->category_filter
+            ]
+        );
 
         $category_data = CategoryCourse::where('is_actived', '1')->get();
         $level_data = Level::where('is_actived', '1')->get();
 
         return view($this->view_path . 'index', [
             "data" => $data,
-            "results_data" => $results_data,
+            "courses" => $courses,
+            "offline_courses" => $offline_courses,
             "category_data" => $category_data,
             "level_data" => $level_data,
         ]);
@@ -392,6 +410,26 @@ class CourseMemberController extends Controller
         }
 
         return $query;
+    }
+
+    public function search_offline_course($request)
+    {
+        $category_filter = $request->input('category_filter');
+        $search_text = $request->input('text_filter');
+
+        return OfflineCourse::whereHas('registrars', function ($query) {
+            $query->where('user_id', '=', info_user_id());
+        })
+            ->when($request->text_filter, function ($query) use ($search_text) {
+                $query->where(function ($query) use ($search_text) {
+                    $query->where('title', 'LIKE', "%$search_text%");
+                });
+            })
+            ->when($category_filter && !in_array('semua', $category_filter), function ($query) use ($category_filter) {
+                $query->whereHas('categories', function (Builder $query) use ($category_filter) {
+                    $query->whereIn('name', $category_filter);
+                });
+            });
     }
 
     public function get_category_course($id)

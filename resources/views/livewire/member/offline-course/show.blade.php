@@ -8,9 +8,10 @@
                 <div class="container page__container">
                     <h1 class="text-white">{{ $title }}</h1>
                     <div class="d-flex flex-column flex-sm-row align-items-center justify-content-start">
-                        <button class="btn btn-outline-white mb-16pt mb-sm-0 mr-sm-16pt">
+                        <a href="{{ route('member.qr_scan.index') }}"
+                            class="btn btn-outline-white mb-16pt mb-sm-0 mr-sm-16pt">
                             Scan QR-CODE
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -19,6 +20,30 @@
 
     <div class="page-section border-bottom-2">
         <div class="container page__container">
+
+            @if (count($attachments) > 0)
+                <div class="page-separator">
+                    <div class="page-separator__text">Lampiran Kursus</div>
+                </div>
+                <div class="row mb-0">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label class="form-label">Lampiran</label>
+                                    <br>
+                                    @foreach ($attachments as $item)
+                                        <a target="_blank" href="{{ $item['file'] }}"
+                                            class="btn btn-outline-primary ml-1 mt-1">
+                                            {{ $item['file_name'] }}
+                                        </a>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
 
             <div class="page-separator">
                 <div class="page-separator__text">Konten kursus</div>
