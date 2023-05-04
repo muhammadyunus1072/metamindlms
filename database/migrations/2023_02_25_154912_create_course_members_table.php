@@ -47,6 +47,8 @@ return new class extends Migration
         $table->bigInteger('course_id')->unsigned();
         $table->bigInteger('member_id')->unsigned();
 
+        $table->double('course_price', 20, 2)->default(0)->comment('Harga Kursus');
+
         $table->bigInteger("created_by")->unsigned()->nullable()->comment('Id Admin Pembuat');
         $table->bigInteger("updated_by")->unsigned()->nullable()->comment('Id Admin pengubah');
         $table->bigInteger("deleted_by")->unsigned()->nullable()->default(null);

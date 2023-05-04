@@ -32,7 +32,7 @@ return new class extends Migration
             CREATE OR REPLACE VIEW view_course_member AS
             SELECT 
             
-            cm.code as code, cm.created_at as created_at,
+            cm.code as code, cm.created_at as created_at, cm.course_price as course_price,
 
             c.id as course_id, c.code as course_code, c.title as course_title,
             
@@ -82,6 +82,6 @@ return new class extends Migration
      */
     private function dropView(): string
     {
-        return 'DROP VIEW IF EXISTS view_procurement_pharmacies';
+        return 'DROP VIEW IF EXISTS view_course_member';
     }
 };
