@@ -29,10 +29,10 @@
             </a>
         </li>
 
-        <li class="sidebar-menu-item">
+        <li class="sidebar-menu-item {{ Request::segment(2) == 'qr_scan' ? 'active' : '' }}">
             <a class="sidebar-menu-button" href="{{ route('member.qr_scan.index') }}">
-                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">account_circle</span>
-                <span class="sidebar-menu-text">QR-Code</span>
+                <i class="fa fa-qrcode sidebar-menu-icon sidebar-menu-icon--left"></i>
+                <span class="sidebar-menu-text">Scan QR</span>
             </a>
         </li>
 
