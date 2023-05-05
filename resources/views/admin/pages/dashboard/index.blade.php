@@ -56,7 +56,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-lg-4">
                     <div class="card border-1 border-left-3 border-left-accent text-center mb-lg-0">
                         <div class="card-body">
@@ -78,6 +78,64 @@
                         <div class="card-body">
                             <h4 class="h2 mb-0"><span id="total_course">0</span></h4>
                             <div>Total Kursus yang Diambil</div>
+                        </div>
+                    </div>
+                </div>
+            </div> --}}
+
+            {{-- OFFLINE COURSE --}}
+            <div class="page-section">
+                <div class="page-separator">
+                    <div class="page-separator__text">Kursus Online</div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-lg-4">
+                        <div class="card border-1 border-left-3 border-left-accent text-center mb-lg-0">
+                            <div class="card-body">
+                                <h4 class="h2 mb-0"><span id="total_member">0</span></h4>
+                                <div>Total Member mengambil Kursus</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card border-1 border-left-3 border-left-primary text-center mb-lg-0">
+                            <div class="card-body">
+                                <h4 class="h2 mb-0"><span id="total_income">0</span></h4>
+                                <div>Total Pendapatan</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card border-1 border-left-3 border-left-warning text-center mb-lg-0">
+                            <div class="card-body">
+                                <h4 class="h2 mb-0"><span id="total_course">0</span></h4>
+                                <div>Total Kursus yang Diambil</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header bg-warning">
+                                <h6 class="card-title">Grafik Member Kursus</h6>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="chart_online_course_member" style="max-height: 20rem"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header bg-primary">
+                                <h6 class="card-title text-white">Grafik Jumlah Pendapatan</h6>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="chart_online_course_income" style="max-height: 20rem"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -131,7 +189,18 @@
         var chart_offline_course;
         var chart_offline_course_ctx;
 
+        var chart_online_course_member;
+        var chart_online_course_member_ctx;
+
+        var chart_online_course_income;
+        var chart_online_course_income_ctx;
+
         $(() => {
+            $('input[name="daterange"]').daterangepicker({
+                startDate: moment().subtract(7, 'days'),
+                endDate: moment(),
+            });
+
             update_dashboard();
 
             $('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) {
@@ -140,7 +209,6 @@
                 update_dashboard();
             });
         })
-
 
         function update_dashboard() {
             loading("show")
@@ -160,10 +228,7 @@
                 success: function(result) {
                     loading('hide')
 
-                    $('#total_course').html(result.total_course);
-                    $('#total_member').html(result.total_member);
-                    $('#total_income').html(result.total_income);
-
+                    draw_online_course_chart(result.online_course);
                     draw_offline_course_chart(result.offline_course);
 
                 },
@@ -174,6 +239,59 @@
             });
         }
 
+        function draw_online_course_chart(data){
+            $('#total_course').html(data.total_course);
+            $('#total_member').html(data.total_member);
+            $('#total_income').html(data.total_income);
+
+            if (chart_online_course_member_ctx == null) {
+                chart_online_course_member_ctx = document.getElementById('chart_online_course_member').getContext('2d');
+            }
+
+            if (chart_online_course_member == null) {
+                chart_online_course_member = new Chart(chart_online_course_member_ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.course_member_chart_labels,
+                        datasets: [{
+                                label: 'Member',
+                                borderRadius: 12,
+                                data: data.member_data,
+                                backgroundColor: '#ffc107',
+                            },
+                        ],
+                    },
+                });
+            } else {
+                chart_online_course_member.data.labels = data.course_member_chart_labels;
+                chart_online_course_member.data.datasets[0].data = data.member_data;
+                chart_online_course_member.update();
+            }
+
+            if (chart_online_course_income_ctx == null) {
+                chart_online_course_income_ctx = document.getElementById('chart_online_course_income').getContext('2d');
+            }
+
+            if (chart_online_course_income == null) {
+                chart_online_course_income = new Chart(chart_online_course_income_ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.course_member_chart_labels,
+                        datasets: [{
+                                label: 'Pendapatan',
+                                borderRadius: 12,
+                                data: data.income_data,
+                                backgroundColor: '#007bff',
+                            },
+                        ],
+                    },
+                });
+            } else {
+                chart_online_course_income.data.labels = data.course_member_chart_labels;
+                chart_online_course_income.data.datasets[0].data = data.income_data;
+                chart_online_course_income.update();
+            }
+        }
 
         function draw_offline_course_chart(data) {
             $('#div_registrar_sum').html(data.registrar_sum);
