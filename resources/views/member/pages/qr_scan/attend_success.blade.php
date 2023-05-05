@@ -25,6 +25,7 @@
             <div class="card-body text-center">
                 <img src="{{ asset('ic_success.png') }}" width="100px">
                 <p class="text-justify mt-4">{{ !empty($success) ? $success : '' }}</p>
+                <a class="btn btn-primary" href="{{ $url_show }}">Lihat Detail Kursus Offline</a>
             </div>
         </div>
     </div>

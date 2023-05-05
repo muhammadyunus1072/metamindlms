@@ -38,7 +38,10 @@ class QrScanController extends Controller
         OfflineCourseAttendance::create([
             'offline_course_registrar_id' => $registrar->id,
         ]);
-        
-        return view('member.pages.qr_scan.attend_success', ['success' => 'Pendataan Kehadiran Berhasil']);
+
+        return view('member.pages.qr_scan.attend_success', [
+            'success' => 'Pendataan Kehadiran Berhasil',
+            'url_show' => route('offline_course.show', Crypt::encrypt($decOfflineCourseId)),
+        ]);
     }
 }
