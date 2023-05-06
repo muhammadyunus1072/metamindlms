@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\EncryptionHelper;
 use App\Http\Controllers\Controller;
 use App\Models\OfflineCourse;
 use App\Models\CategoryCourse;
@@ -41,7 +42,7 @@ class OfflineCourseController extends Controller
         $decId = Crypt::decryptString($request->id);
 
         $offlineCourse = OfflineCourse::find($decId);
-        $offlineCourse->url = route('member.qr_scan.show', Crypt::encryptString($request->id));
+        $offlineCourse->url = route('member.qr_scan.show', EncryptionHelper::encrypt($decId));
 
         return view('admin.pages.master.offline_course.show_qr', ['offlineCourse' => $offlineCourse]);
     }

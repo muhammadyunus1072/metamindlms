@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Member;
 
+use App\Helpers\EncryptionHelper;
 use App\Http\Controllers\Controller;
 use App\Models\OfflineCourseAttendance;
 use App\Models\OfflineCourseRegistrar;
@@ -19,7 +20,7 @@ class QrScanController extends Controller
     public function show(Request $request)
     {
         $authUser = Auth::user();
-        $decOfflineCourseId = Crypt::decryptString($request->id);
+        $decOfflineCourseId = EncryptionHelper::decrypt($request->id);
 
         $registrar = OfflineCourseRegistrar::where('user_id', '=', $authUser->id)
             ->where('offline_course_id', '=', $decOfflineCourseId)
@@ -31,13 +32,12 @@ class QrScanController extends Controller
         $checkAttendance = OfflineCourseAttendance::where('offline_course_id', '=', $decOfflineCourseId)
             ->where('user_id', '=', $registrar->user_id)
             ->first();
-        if (!empty($checkAttendance)) {
-            return view('member.pages.qr_scan.attend_error', ['error' => 'Peserta Sudah Terdapat Dalam Daftar Kehadiran']);
-        }
 
-        OfflineCourseAttendance::create([
-            'offline_course_registrar_id' => $registrar->id,
-        ]);
+        if (empty($checkAttendance)) {
+            OfflineCourseAttendance::create([
+                'offline_course_registrar_id' => $registrar->id,
+            ]);
+        }
 
         return view('member.pages.qr_scan.attend_success', [
             'success' => 'Pendataan Kehadiran Berhasil',
