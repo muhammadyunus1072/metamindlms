@@ -4,14 +4,29 @@
 
 @section('content')
 
-    <?php 
-        $list_route = array(
-            'search' => $data['croute'] . 'search'
-        );
+    <?php
+    $list_route = [
+        'search' => $data['croute'] . 'search',
+    ];
     ?>
 
     <div class="page-section">
         <div class="container page__container">
+            <div class="row">
+                <div class="col">
+                    <a class="btn btn-block {{ Request::segment(1) == 'course' ? 'btn-primary' : 'btn-white' }}"
+                        href="{{ route('course.index') }}">
+                        Kursus Online
+                    </a>
+                </div>
+                <div class="col">
+                    <a class="btn btn-block {{ Request::segment(1) == 'offline_course' ? 'btn-primary' : 'btn-white' }}"
+                        href="{{ route('offline_course.index') }}">
+                        Kursus Offline
+                    </a>
+                </div>
+            </div>
+            <hr>
 
             @include('member.pages.course.components.filter_text')
 
@@ -30,15 +45,12 @@
             <div class="mb-lg-8pt">
 
                 <div class="position-relative carousel-card">
-                    <div class="js-mdk-carousel row d-block"
-                         id="popular_carousel">
+                    <div class="js-mdk-carousel row d-block" id="popular_carousel">
 
-                        <a class="carousel-control-next js-mdk-carousel-control mt-n24pt"
-                           href="#popular_carousel"
-                           role="button"
-                           data-slide="next">
+                        <a class="carousel-control-next js-mdk-carousel-control mt-n24pt" href="#popular_carousel"
+                            role="button" data-slide="next">
                             <span class="carousel-control-icon material-icons"
-                                  aria-hidden="true">keyboard_arrow_right</span>
+                                aria-hidden="true">keyboard_arrow_right</span>
                             <span class="sr-only">Next</span>
                         </a>
 
@@ -46,9 +58,9 @@
 
                             @foreach ($results_data as $v)
                                 @include('member.layouts.components.card_course_simple', [
-                                    'v' => $v
+                                    'v' => $v,
                                 ])
-                            @endforeach 
+                            @endforeach
 
                         </div>
                     </div>
@@ -71,15 +83,12 @@
             <div class="mb-lg-8pt">
 
                 <div class="position-relative carousel-card">
-                    <div class="js-mdk-carousel row d-block"
-                         id="newest_course">
+                    <div class="js-mdk-carousel row d-block" id="newest_course">
 
-                        <a class="carousel-control-next js-mdk-carousel-control mt-n24pt"
-                           href="#newest_course"
-                           role="button"
-                           data-slide="next">
+                        <a class="carousel-control-next js-mdk-carousel-control mt-n24pt" href="#newest_course"
+                            role="button" data-slide="next">
                             <span class="carousel-control-icon material-icons"
-                                  aria-hidden="true">keyboard_arrow_right</span>
+                                aria-hidden="true">keyboard_arrow_right</span>
                             <span class="sr-only">Next</span>
                         </a>
 
@@ -88,9 +97,9 @@
                             @foreach ($results_data as $v)
                                 @include('member.layouts.components.card_course', [
                                     'v' => $v,
-                                    'is_new' => true
+                                    'is_new' => true,
                                 ])
-                            @endforeach 
+                            @endforeach
 
                         </div>
                     </div>
@@ -113,15 +122,12 @@
             <div class="mb-lg-8pt">
 
                 <div class="position-relative carousel-card">
-                    <div class="js-mdk-carousel row d-block"
-                         id="high_rate_course">
+                    <div class="js-mdk-carousel row d-block" id="high_rate_course">
 
-                        <a class="carousel-control-next js-mdk-carousel-control mt-n24pt"
-                           href="#high_rate_course"
-                           role="button"
-                           data-slide="next">
+                        <a class="carousel-control-next js-mdk-carousel-control mt-n24pt" href="#high_rate_course"
+                            role="button" data-slide="next">
                             <span class="carousel-control-icon material-icons"
-                                  aria-hidden="true">keyboard_arrow_right</span>
+                                aria-hidden="true">keyboard_arrow_right</span>
                             <span class="sr-only">Next</span>
                         </a>
 
@@ -129,9 +135,9 @@
 
                             @foreach ($results_data as $v)
                                 @include('member.layouts.components.card_course', [
-                                    'v' => $v
+                                    'v' => $v,
                                 ])
-                            @endforeach 
+                            @endforeach
 
                         </div>
                     </div>

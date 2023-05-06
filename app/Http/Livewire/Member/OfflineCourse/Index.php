@@ -15,21 +15,18 @@ class Index extends Component
     protected $paginationTheme = 'bootstrap';
 
     protected $listeners = [
-        'add_filter_category'
+        'add_filter_search',
+        'add_filter_category',
     ];
 
-    public function add_filter_category($category_id)
+    public function add_filter_category($categories_id)
     {
-        if (in_array($category_id, $this->filter_categories_id)) {
-            $this->filter_categories_id = array_filter(
-                $this->filter_categories_id,
-                function ($element) use ($category_id) {
-                    return $element != $category_id;
-                }
-            );
-        } else {
-            array_push($this->filter_categories_id, $category_id);
-        }
+        $this->filter_categories_id = $categories_id;
+    }
+
+    public function add_filter_search($search_text)
+    {
+        $this->search = $search_text;
     }
 
     public function render()

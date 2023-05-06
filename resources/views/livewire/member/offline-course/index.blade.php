@@ -1,18 +1,4 @@
 <div>
-    {{-- Search --}}
-    <div class="d-flex flex-column flex-sm-row align-items-sm-center mb-24pt" style="white-space: nowrap;">
-        <div class="form-group flex mr-3 mb-2 mb-sm-0">
-            <div class="row">
-                <div class="col-lg">
-                    <div class="search-form form-control-rounded search-form--dark">
-                        <input id="search" type="text" class="form-control" placeholder="Cari Kursus"
-                            wire:model='search'><i class="material-icons">search</i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     {{-- Card --}}
     <div class="row">
         <div class="col">

@@ -23,9 +23,10 @@
         <div class="card-footer">
             <div class="row justify-content-between">
                 <div class="col-auto d-flex align-items-center">
-                    <span class="material-icons icon-16pt text-50 mr-4pt">people</span>
+                    <span class="material-icons icon-16pt text-50 mr-4pt">event</span>
                     <p class="flex text-50 lh-1 mb-0">
-                        <small>Kuota: {{ $item->quota }}</small>
+                        <small>Tgl Mulai :
+                            {{ Carbon\Carbon::parse($item->date_time_start)->format('d/m/Y, H:i') }}</small>
                     </p>
                     {{-- @foreach ($categories as $key => $name)
                         {{ $name }}
@@ -56,17 +57,17 @@
                     </p>
                 </div>
                 <div class="d-flex align-items-center">
-                    <span class="material-icons icon-16pt text-50 mr-4pt">assessment</span>
+                    <span class="material-icons icon-16pt text-50 mr-4pt">event</span>
                     <p class="flex text-50 lh-1 mb-0">
                         <small>Mulai Kursus :
-                            {{ Carbon\Carbon::parse($item->date_time_start)->format('d/m/Y') }}</small>
+                            {{ Carbon\Carbon::parse($item->date_time_start)->format('d/m/Y, H:i') }}</small>
                     </p>
                 </div>
                 <div class="d-flex align-items-center">
-                    <span class="material-icons icon-16pt text-50 mr-4pt">assessment</span>
+                    <span class="material-icons icon-16pt text-50 mr-4pt">event</span>
                     <p class="flex text-50 lh-1 mb-0">
                         <small>Berakhir Kursus :
-                            {{ Carbon\Carbon::parse($item->date_time_end)->format('d/m/Y') }}</small>
+                            {{ Carbon\Carbon::parse($item->date_time_end)->format('d/m/Y, H:i') }}</small>
                     </p>
                 </div>
             </div>
