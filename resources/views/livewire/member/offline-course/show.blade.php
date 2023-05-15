@@ -61,34 +61,39 @@
                                     <div class="btn btn-outline-info btn-sm mt-1">{{ $name }}</div>
                                 @endforeach
                             </div>
+
                             <div class="form-group">
-                                <label class="form-label" for="title">Judul :</label>
+                                <label class="form-label">Judul :</label>
                                 <h4>{{ $title }}</h4>
                             </div>
-
-                            <div class="form-group">
-                                <label class="form-label" for="title">Quota :</label>
-                                <h5>{{ $quota }}</h5>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label" for="title">Tanggal dan Waktu Mulai :</label>
-                                        <h5>{{ $date_time_start }}</h5>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label" for="title">Tanggal dan Waktu Selesai :</label>
-                                        <h5>{{ $date_time_end }}</h5>
-                                    </div>
-                                </div>
-                            </div>
-
                             <div class="form-group">
                                 <label class="form-label" for="description">Deskripsi :</label>
                                 <h6>{{ $description }}</h6>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="border rounded p-2 bg-info">
+                                        <label class="form-label text-white">Quota :</label>
+                                        <h5 class="mb-0 text-white">{{ $quota }}</h5>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="border rounded p-2 bg-primary">
+                                        <label class="form-label text-white">Mulai :</label>
+                                        <h5 class="mb-0 text-white">{{ Carbon\Carbon::parse($date_time_start)->format('d M Y, H:i') }}</h5>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="border rounded p-2 bg-success">
+                                        <label class="form-label text-white">Selesai :</label>
+                                        <h5 class="mb-0 text-white">{{ Carbon\Carbon::parse($date_time_end)->format('d M Y, H:i') }}</h5>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-2">
+                                {!! $content !!}
                             </div>
                         </div>
                     </div>

@@ -15,6 +15,7 @@ class OfflineCourse extends Model
     protected $fillable = [
         'title',
         'description',
+        'content',
         'quota',
         'date_time_start',
         'date_time_end',

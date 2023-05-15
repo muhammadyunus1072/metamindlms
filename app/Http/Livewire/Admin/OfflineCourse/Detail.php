@@ -18,6 +18,7 @@ class Detail extends Component
     public $offline_course_id = null;
     public $title;
     public $description;
+    public $content;
     public $quota;
     public $date_time_start;
     public $date_time_end;
@@ -58,6 +59,7 @@ class Detail extends Component
             $this->offline_course_id = Crypt::encryptString($offlineCourse->id);
             $this->title = $offlineCourse->title;
             $this->description = $offlineCourse->description;
+            $this->content = $offlineCourse->content;
             $this->quota = $offlineCourse->quota;
             $this->date_time_start = $offlineCourse->date_time_start;
             $this->date_time_end = $offlineCourse->date_time_end;
@@ -105,6 +107,7 @@ class Detail extends Component
         $validatedData = [
             'title' => $this->title,
             'description' => $this->description,
+            'content' => $this->content,
             'quota' => $this->quota,
             'date_time_start' => $this->date_time_start,
             'date_time_end' => $this->date_time_end,

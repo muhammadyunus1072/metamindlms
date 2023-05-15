@@ -12,6 +12,7 @@ class Show extends Component
     public $offline_course_id;
     public $title;
     public $description;
+    public $content;
     public $quota;
     public $date_time_start;
     public $date_time_end;
@@ -24,6 +25,7 @@ class Show extends Component
         $this->offline_course_id = Crypt::encryptString($offlineCourse->id);
         $this->title = $offlineCourse->title;
         $this->description = $offlineCourse->description;
+        $this->content = $offlineCourse->content;
         $this->quota = $offlineCourse->quota;
         $this->date_time_start = $offlineCourse->date_time_start;
         $this->date_time_end = $offlineCourse->date_time_end;

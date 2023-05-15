@@ -59,13 +59,20 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label" for="description">Deskripsi :</label>
+                        <label class="form-label" for="description">Deskripsi Singkat :</label>
                         <textarea class="form-control @error('description') is-invalid @enderror" wire:model.lazy="description" rows="6"></textarea>
                         @error('description')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
                         @enderror
+                    </div>
+
+                    <div class="form-group" wire:ignore>
+                        <label class="form-label" for="content">Konten :</label>
+                        <div>
+                            <textarea class="form-control" wire:model.lazy="content" rows="6" id="content"></textarea>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -187,7 +194,17 @@
 
 @push('js')
     <script>
+        var contentEditor;
         $(() => {
+            contentEditor = CKEDITOR.replace('content', {
+                height: '25em',
+                removePlugins: 'image',
+            });
+
+            contentEditor.on('change', function(evt) {
+                @this.set('content', evt.editor.getData());
+            });
+
             $('#categories').select2({
                 placeholder: "Pilih Kategori",
                 ajax: {
