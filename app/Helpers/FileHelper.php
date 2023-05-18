@@ -4,13 +4,18 @@ namespace App\Helpers;
 
 class FileHelper
 {
+    // const WEBSITE_USER = 'https://metamind-lms.smartisdev.com';
     const WEBSITE_USER = 'http://localhost:8000';
 
-    const IMAGE_PATH = '/attachments/images/';
-    const FILE_PATH = '/attachments/files/';
+    const U_IMAGE_PATH = 'attachments/images/';
+    const U_FILE_PATH = 'attachments/files/';
+
+    const IMAGE_PATH = '/'.self::U_IMAGE_PATH;
+    const FILE_PATH = '/'.self::U_FILE_PATH;
+
 
     // SAVE FILE
-    const COURSE_SAVE_LOCATION = self::FILE_PATH . 'course/';
+    const COURSE_SAVE_LOCATION = self::U_FILE_PATH . 'course/';
     const OFFLINE_COURSE_SAVE_LOCATION = self::FILE_PATH . 'offline_course/';
 
     // READ FILE

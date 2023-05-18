@@ -84,7 +84,7 @@
             </div>
         </div>
 
-        <p class="my-16pt text-70">{{ $v->description }}</p>
+        <p class="my-16pt text-70">{{ $v->ellipsis_description() }}</p>
 
         <div class="mb-16pt">
             @foreach ($v->learn_description as $y)

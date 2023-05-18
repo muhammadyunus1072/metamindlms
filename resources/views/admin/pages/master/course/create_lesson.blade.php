@@ -64,7 +64,7 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-12">
-                                    <label class="form-label">Default</label>
+                                    <label class="form-label">Deskripsi</label>
                                     <div style="height: 300px;" name="description" id="description">
                                         <?= $results_data->description ?>
                                     </div>

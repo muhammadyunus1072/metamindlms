@@ -75,6 +75,14 @@ class Course extends Model
         return CourseReview::where('course_id', $this->id)->where('rating', $rating)->whereNull('deleted_at')->count('id');
     }
 
+    public function ellipsis_description(){
+        $len = 200;
+        if(strlen($this->description) > $len){
+            return substr($this->description, 0, 200) . '...';
+        }
+        return $this->description;
+    }
+
     public function avg_rating_by_star($rating){
         if($this->review() <= 0){
             return numberf(0);
