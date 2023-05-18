@@ -82,7 +82,6 @@
                 <div class="border-top">
                     @livewire('discussion', ['lesson_id' => $results_data->id])
                 </div>
-                <a href="discussions.html" class="btn btn-outline-secondary">Lihat semua diskusi</a>
             </div>
         </div>
     @else

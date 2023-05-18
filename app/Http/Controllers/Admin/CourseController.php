@@ -17,6 +17,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -301,6 +302,9 @@ class CourseController extends Controller
             $section_data = $this->get_transaction_section($id);
             $learn_description_data = $this->get_transaction_learn_description($id);
             $category_data = $this->get_transaction_category($id);
+
+            // $files = File::allFiles(public_path().'/attachments/files/course');
+            // dd($files);
 
             return view($this->view_path . 'edit', compact('data', 'results_data', 'section_data', 'learn_description_data', 'category_data'));
         } else return Redirect()->route('admin.'. $this->has_access . '.index')->with("error", "Data " . $this->ctitle . " tidak ditemukan.");
