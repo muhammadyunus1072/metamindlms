@@ -76,7 +76,7 @@
             </div>
         </div>
 
-        <p class="my-16pt text-70">{{ $v->description }}</p>
+        <p class="my-16pt text-70">{{ $v->ellipsis_description() }}</p>
 
         <div class="mb-16pt">
             @foreach ($v->learn_description as $y)
@@ -87,7 +87,7 @@
             @endforeach
         </div>
 
-        <div class="my-32pt">
+        <div class="my-16pt">
             <div class="d-flex align-items-center mb-8pt justify-content-center">
                 <div class="d-flex align-items-center mr-8pt">
                     <span class="material-icons icon-16pt text-50 mr-4pt">format_list_bulleted</span> <br>
@@ -98,14 +98,12 @@
                     <p class="flex text-50 lh-1 mb-0"><small>{{ count($v->lessons) }} Pelajaran</small></p>
                 </div>
             </div>
-            <div class="d-flex align-items-center justify-content-center">
-                <a href="student-take-lesson.html"
-                   class="btn btn-primary mr-8pt">Resume</a>
+            <div class="d-flex align-items-end justify-content-end">
                 <a href="{{ route('member.course_member.show', enc($v->id)) }}"
                    class="btn btn-outline-secondary ml-0">Buka Kursus</a>
             </div>
         </div>
-
+ 
         @if ($v->review_by_user(info_user_id()))
             <div class="d-flex align-items-center">
                 <small class="text-50 mr-8pt">Rating Anda</small>
