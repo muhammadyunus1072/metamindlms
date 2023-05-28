@@ -6,10 +6,15 @@ use App\Helpers\FileHelper;
 use App\Models\OfflineCourse;
 use App\Models\OfflineCourseAttachment;
 use App\Models\OfflineCourseCategory;
+use App\Models\OfflineCourseLink;
+use App\Models\OfflineCourseVideo;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Livewire\TemporaryUploadedFile;
 
 class Detail extends Component
 {
@@ -24,14 +29,19 @@ class Detail extends Component
     public $date_time_end;
 
     public $image = null;
-    public $categories = [];
-    public $attachments = [];
-
     public $oldImage = null;
-    public $oldCategories = [];
-    public $oldAttachments = [];
 
-    public $deletedOldAttachments = [];
+    public $categories = [];
+    public $oldCategories = [];
+
+    public $attachments = [];
+    public $deletedAttachments = [];
+
+    public $links = [];
+    public $deletedLinks = [];
+
+    public $videos = [];
+    public $deletedVideos = [];
 
     protected $rules = [
         'title' => 'required',
@@ -53,6 +63,11 @@ class Detail extends Component
         'categories' => 'Kategori Harus Diisi',
     ];
 
+    public function render()
+    {
+        return view('livewire.admin.offline-course.detail');
+    }
+
     public function mount($offlineCourse = null)
     {
         if ($offlineCourse != null) {
@@ -73,12 +88,34 @@ class Detail extends Component
                 $this->oldCategories[$encId] = $item->name;
             }
 
-            $offlineCourseAttachments = $offlineCourse->attachments()->select('id', 'file', 'file_name')->get();
+            $offlineCourseAttachments = $offlineCourse->attachments()->select('id', 'title', 'file', 'file_name')->get();
             foreach ($offlineCourseAttachments as $item) {
-                array_push($this->oldAttachments, [
+                array_push($this->attachments, [
                     'id' => Crypt::encryptString($item->id),
                     'file' => $item->getFile(),
                     'file_name' => $item->file_name,
+                    'title' => $item->title,
+                    'is_old' => true,
+                ]);
+            }
+
+            $offlineCourseLinks = $offlineCourse->links()->select('id', 'title', 'url')->get();
+            foreach ($offlineCourseLinks as $item) {
+                array_push($this->links, [
+                    'id' => Crypt::encryptString($item->id),
+                    'url' => $item->url,
+                    'title' => $item->title,
+                    'is_old' => true,
+                ]);
+            }
+
+            $offlineCourseVideos = $offlineCourse->videos()->select('id', 'title', 'video')->get();
+            foreach ($offlineCourseVideos as $item) {
+                array_push($this->videos, [
+                    'id' => Crypt::encryptString($item->id),
+                    'video' => $item->video,
+                    'title' => $item->title,
+                    'is_old' => true,
                 ]);
             }
         }
@@ -97,68 +134,52 @@ class Detail extends Component
 
     public function save()
     {
-        // Validation Steps
-        $this->validate();
+            // Validation Steps
+            $this->validate();
 
-        if (count($this->categories) == 0) {
-            $this->addError('categories', 'Kategori Kursus Harus Diisi');
-        }
-
-        $validatedData = [
-            'title' => $this->title,
-            'description' => $this->description,
-            'content' => $this->content,
-            'quota' => $this->quota,
-            'date_time_start' => $this->date_time_start,
-            'date_time_end' => $this->date_time_end,
-        ];
-
-        if ($this->image != null) {
-            $this->validate([
-                'image' => 'image|max:2048',
-            ]);
-
-            $this->image->store(FileHelper::OFFLINE_COURSE_SAVE_LOCATION);
-            $validatedData['image'] = $this->image->hashName();
-        }
-
-        // Handle Offline Course
-        if ($this->offline_course_id != null) {
-            $offlineCourse = OfflineCourse::find(Crypt::decryptString($this->offline_course_id));
-        } else {
-            $offlineCourse = new OfflineCourse();
-        }
-
-        $offlineCourse->fill($validatedData);
-        $offlineCourse->save();
-
-        // Handle Attachment
-        if (count($this->deletedOldAttachments) > 0) {
-            foreach ($this->deletedOldAttachments as $encId) {
-                $decId = Crypt::decryptString($encId);
-                $offlineCourseAttachment = OfflineCourseAttachment::find($decId);
-                if ($offlineCourseAttachment) {
-                    Storage::delete(FileHelper::OFFLINE_COURSE_SAVE_LOCATION . $offlineCourseAttachment->file);
-                    $offlineCourseAttachment->delete();
-                }
+            if (count($this->categories) == 0) {
+                $this->addError('categories', 'Kategori Kursus Harus Diisi');
             }
-        }
 
-        if (count($this->attachments) > 0) {
-            $validatedData['attachments'] = [];
+            $validatedData = [
+                'title' => $this->title,
+                'description' => $this->description,
+                'content' => $this->content,
+                'quota' => $this->quota,
+                'date_time_start' => $this->date_time_start,
+                'date_time_end' => $this->date_time_end,
+            ];
 
-            foreach ($this->attachments as $attachment) {
-                $attachment->store(FileHelper::OFFLINE_COURSE_SAVE_LOCATION, 'public');
-
-                OfflineCourseAttachment::create([
-                    'offline_course_id' => $offlineCourse->id,
-                    'file' => $attachment->hashName(),
-                    'file_name' => $attachment->getClientOriginalName()
+            if ($this->image != null) {
+                $this->validate([
+                    'image' => 'image|max:2048',
                 ]);
-            }
-        }
 
-        // Handle Categories
+                $this->image->store(FileHelper::OFFLINE_COURSE_SAVE_LOCATION);
+                $validatedData['image'] = $this->image->hashName();
+            }
+
+            // Handle Offline Course
+            if ($this->offline_course_id != null) {
+                $offlineCourse = OfflineCourse::find(Crypt::decryptString($this->offline_course_id));
+            } else {
+                $offlineCourse = new OfflineCourse();
+            }
+            $offlineCourse->fill($validatedData);
+            $offlineCourse->save();
+
+            $this->handleCategories($offlineCourse);
+            $this->handleAttachment($offlineCourse);
+            $this->handleVideo($offlineCourse);
+            $this->handleLink($offlineCourse);
+
+            session()->flash('success', 'Kursus Offline Berhasil ' . ($this->offline_course_id == null ? 'Ditambahkan' : 'Diperbarui'));
+
+            return redirect()->route('admin.offline_course.index');
+    }
+
+    private function handleCategories($offlineCourse)
+    {
         $offlineCourseCategories = $offlineCourse->offlineCourseCategories()->get();
         foreach ($offlineCourseCategories as $item) {
             $item->delete();
@@ -171,28 +192,193 @@ class Detail extends Component
                 'category_course_id' => $decId,
             ]);
         }
-
-        session()->flash('success', 'Kursus Offline Berhasil ' . ($this->offline_course_id == null ? 'Ditambahkan' : 'Diperbarui'));
-
-        return redirect()->route('admin.offline_course.index');
     }
 
-    public function deleteAttachment($id, $isOld = 0)
+    // HANDLE ATTACHMENT
+    private function handleAttachment($offlineCourse)
     {
-        if ($isOld) {
-            array_push($this->deletedOldAttachments, $id);
-            $this->oldAttachments = array_filter($this->oldAttachments, function ($item) use ($id) {
-                return $item['id'] != $id;
-            });
-        } else {
+        // Handle Delete Attachment
+        foreach ($this->deletedAttachments as $encId) {
+            $decId = Crypt::decryptString($encId);
+            $offlineCourseAttachment = OfflineCourseAttachment::find($decId);
+            if ($offlineCourseAttachment) {
+                Storage::delete(FileHelper::OFFLINE_COURSE_SAVE_LOCATION . $offlineCourseAttachment->file);
+                $offlineCourseAttachment->delete();
+            }
+        }
+
+        foreach ($this->attachments as $item) {
+            if ($item['is_old']) {
+                // Handle Update Attachment
+                $attachment = OfflineCourseAttachment::find(Crypt::decryptString($item['id']));
+                $attachment->title = $item['title'];
+
+                if ($item['file'] instanceof TemporaryUploadedFile) {
+                    $item['file']->store(FileHelper::OFFLINE_COURSE_SAVE_LOCATION, 'public');
+                    $attachment->file = $item['file']->hashName();
+                    $attachment->file_name = $item['file']->getClientOriginalName();
+                }
+                $attachment->save();
+            } else {
+                // Handle Create Attachment
+                OfflineCourseAttachment::create([
+                    'offline_course_id' => $offlineCourse->id,
+                    'file' => $item['file']->hashName(),
+                    'file_name' => $item['file']->getClientOriginalName(),
+                    'title' => $item['title']
+                ]);
+            }
+        }
+    }
+
+    public function addAttachment()
+    {
+        array_push($this->attachments, [
+            'id' => Str::random(30),
+            'file' => '',
+            'file_name' => '',
+            'title' => '',
+            'is_old' => false,
+        ]);
+    }
+
+    public function deleteAttachment($id)
+    {
+        $deletedItem = null;
+        foreach ($this->attachments as $item) {
+            if ($item['id'] == $id) {
+                $deletedItem = $item;
+                if ($deletedItem['is_old']) {
+                    array_push($this->deletedAttachments, $item['id']);
+                }
+                break;
+            }
+        }
+
+        if ($deletedItem) {
             $this->attachments = array_filter($this->attachments, function ($item) use ($id) {
-                return $item->getFilename() != $id;
+                return $item['id'] != $id;
             });
         }
     }
 
-    public function render()
+    // HANDLE LINK
+    private function handleLink($offlineCourse)
     {
-        return view('livewire.admin.offline-course.detail');
+        // Handle Delete Link
+        foreach ($this->deletedLinks as $encId) {
+            $decId = Crypt::decryptString($encId);
+            $offlineCourseLink = OfflineCourseLink::find($decId);
+            if ($offlineCourseLink) {
+                $offlineCourseLink->delete();
+            }
+        }
+
+        foreach ($this->links as $item) {
+            if ($item['is_old']) {
+                // Handle Update Link
+                $link = OfflineCourseLink::find(Crypt::decryptString($item['id']));
+                $link->title = $item['title'];
+                $link->url = $item['url'];
+                $link->save();
+            } else {
+                // Handle Create Link
+                OfflineCourseLink::create([
+                    'offline_course_id' => $offlineCourse->id,
+                    'url' => $item['url'],
+                    'title' => $item['title']
+                ]);
+            }
+        }
+    }
+
+    public function addLink()
+    {
+        array_push($this->links, [
+            'id' => Str::random(30),
+            'url' => '',
+            'title' => '',
+            'is_old' => false,
+        ]);
+    }
+
+    public function deleteLink($id)
+    {
+        $deletedItem = null;
+        foreach ($this->links as $item) {
+            if ($item['id'] == $id) {
+                $deletedItem = $item;
+                if ($deletedItem['is_old']) {
+                    array_push($this->deletedLinks, $item['id']);
+                }
+                break;
+            }
+        }
+
+        if ($deletedItem) {
+            $this->links = array_filter($this->links, function ($item) use ($id) {
+                return $item['id'] != $id;
+            });
+        }
+    }
+
+    // HANDLE VIDEO
+    private function handleVideo($offlineCourse)
+    {
+        // Handle Delete Video
+        foreach ($this->deletedVideos as $encId) {
+            $decId = Crypt::decryptString($encId);
+            $offlineCourseVideo = OfflineCourseVideo::find($decId);
+            if ($offlineCourseVideo) {
+                $offlineCourseVideo->delete();
+            }
+        }
+
+        foreach ($this->videos as $item) {
+            if ($item['is_old']) {
+                // Handle Update Video
+                $video = OfflineCourseVideo::find(Crypt::decryptString($item['id']));
+                $video->title = $item['title'];
+                $video->video = $item['video'];
+                $video->save();
+            } else {
+                // Handle Create Video
+                OfflineCourseVideo::create([
+                    'offline_course_id' => $offlineCourse->id,
+                    'video' => $item['video'],
+                    'title' => $item['title']
+                ]);
+            }
+        }
+    }
+
+    public function addVideo()
+    {
+        array_push($this->videos, [
+            'id' => Str::random(30),
+            'video' => '',
+            'title' => '',
+            'is_old' => false,
+        ]);
+    }
+
+    public function deleteVideo($id)
+    {
+        $deletedItem = null;
+        foreach ($this->videos as $item) {
+            if ($item['id'] == $id) {
+                $deletedItem = $item;
+                if ($deletedItem['is_old']) {
+                    array_push($this->deletedVideos, $item['id']);
+                }
+                break;
+            }
+        }
+
+        if ($deletedItem) {
+            $this->videos = array_filter($this->videos, function ($item) use ($id) {
+                return $item['id'] != $id;
+            });
+        }
     }
 }

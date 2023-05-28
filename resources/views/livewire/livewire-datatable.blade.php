@@ -25,7 +25,7 @@
                 style="top: 50%;left: 50%;transform: translate(-50%, -50%);">Loading...</h5>
         </div>
 
-        <div class="table-responsive">
+        <div style="overflow-x: auto; overflow-y:hidden; min-height:400px;">
             <table class="table table-bordered table-nowrap w-100 h-100">
                 <thead>
                     <tr>
@@ -52,7 +52,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($data as $item)
+                    @foreach ($data as $index => $item)
                         <tr>
                             @foreach ($columns as $col)
                                 @if (isset($col['render']) && is_callable($col['render']))

@@ -20,27 +20,77 @@
 
     <div class="page-section border-bottom-2">
         <div class="container page__container">
-
+            {{-- ATTACHMENT --}}
             @if (count($attachments) > 0)
-                <div class="page-separator">
-                    <div class="page-separator__text">Lampiran Kursus</div>
-                </div>
-                <div class="row mb-0">
-                    <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label class="form-label">Lampiran</label>
-                                    <br>
-                                    @foreach ($attachments as $item)
-                                        <a target="_blank" href="{{ $item['file'] }}"
-                                            class="btn btn-outline-primary ml-1 mt-1">
-                                            {{ $item['file_name'] }}
-                                        </a>
-                                    @endforeach
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="p-0 m-0">Lampiran</h5>
+                    </div>
+                    <div class="card-header">
+                        @foreach ($attachments as $index => $item)
+                            <div class="row border rounded align-items-center p-2 ml-2 mr-2">
+                                <div class="col">
+                                    <h5 class="p-0 m-0">{{ $index + 1 }}. {{ $item['title'] }}</h5>
+                                </div>
+                                <div class="col-auto">
+                                    <a target="_blank" href="{{ $item['file'] }}"
+                                        class="btn btn-sm btn-outline-primary">
+                                        <i class="fa fa-file mr-1"></i>
+                                        Buka File
+                                    </a>
                                 </div>
                             </div>
-                        </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
+            {{-- LINK --}}
+            @if (count($links) > 0)
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="p-0 m-0">Materi Bacaan</h5>
+                    </div>
+                    <div class="card-header">
+                        @foreach ($links as $index => $item)
+                            <div class="row border rounded align-items-center p-2 ml-2 mr-2">
+                                <div class="col">
+                                    <h5 class="p-0 m-0">{{ $index + 1 }}. {{ $item['title'] }}</h5>
+                                </div>
+                                <div class="col-auto">
+                                    <a target="_blank" href="{{ $item['url'] }}"
+                                        class="btn btn-sm btn-outline-primary">
+                                        <i class="fa fa-link mr-1"></i>
+                                        Buka Link
+                                    </a>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
+            {{-- VIDEO --}}
+            @if (count($videos) > 0)
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="p-0 m-0">Materi Video</h5>
+                    </div>
+                    <div class="card-header">
+                        @foreach ($videos as $index => $item)
+                            <div class="row border rounded align-items-center p-2 ml-2 mr-2">
+                                <div class="col">
+                                    <h5 class="p-0 m-0">{{ $index + 1 }}. {{ $item['title'] }}</h5>
+                                </div>
+                                <div class="col-auto">
+                                    <a target="_blank" href="{{ $item['video'] }}"
+                                        class="btn btn-sm btn-outline-primary">
+                                        <i class="fa fa-link mr-1"></i>
+                                        Buka Link
+                                    </a>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
             @endif
@@ -81,13 +131,15 @@
                                 <div class="col-md-4">
                                     <div class="border rounded p-2 bg-primary">
                                         <label class="form-label text-white">Mulai :</label>
-                                        <h5 class="mb-0 text-white">{{ Carbon\Carbon::parse($date_time_start)->format('d M Y, H:i') }}</h5>
+                                        <h5 class="mb-0 text-white">
+                                            {{ Carbon\Carbon::parse($date_time_start)->format('d M Y, H:i') }}</h5>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="border rounded p-2 bg-success">
                                         <label class="form-label text-white">Selesai :</label>
-                                        <h5 class="mb-0 text-white">{{ Carbon\Carbon::parse($date_time_end)->format('d M Y, H:i') }}</h5>
+                                        <h5 class="mb-0 text-white">
+                                            {{ Carbon\Carbon::parse($date_time_end)->format('d M Y, H:i') }}</h5>
                                     </div>
                                 </div>
                             </div>

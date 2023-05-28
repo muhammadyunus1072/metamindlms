@@ -46,13 +46,63 @@
                     <textarea class="form-control" wire:model.lazy="description" rows="6" disabled></textarea>
                 </div>
 
+                {{-- ATTACHMENT --}}
+                <hr>
                 <div class="form-group">
                     <label class="form-label">Lampiran</label>
                     <br>
-                    @foreach ($attachments as $item)
-                        <a target="_blank" href="{{ $item['file'] }}" class="btn btn-outline-primary ml-1 mt-1">
-                            {{ $item['file_name'] }}
-                        </a>
+                    @foreach ($attachments as $index => $item)
+                        <div class="row border rounded align-items-center p-2 ml-2 mr-2">
+                            <div class="col">
+                                <h5 class="p-0 m-0">{{ $index + 1 }}. {{ $item['title'] }}</h5>
+                            </div>
+                            <div class="col-auto">
+                                <a target="_blank" href="{{ $item['file'] }}" class="btn btn-sm btn-outline-primary">
+                                    <i class="fa fa-file mr-1"></i>
+                                    Buka File
+                                </a>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                {{-- LINK --}}
+                <hr>
+                <div class="form-group">
+                    <label class="form-label">Materi Bacaan</label>
+                    <br>
+                    @foreach ($links as $index => $item)
+                        <div class="row border rounded align-items-center p-2 ml-2 mr-2">
+                            <div class="col">
+                                <h5 class="p-0 m-0">{{ $index + 1 }}. {{ $item['title'] }}</h5>
+                            </div>
+                            <div class="col-auto">
+                                <a target="_blank" href="{{ $item['url'] }}" class="btn btn-sm btn-outline-primary">
+                                    <i class="fa fa-link mr-1"></i>
+                                    Buka Link
+                                </a>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                {{-- VIDEO --}}
+                <hr>
+                <div class="form-group">
+                    <label class="form-label">Materi Video</label>
+                    <br>
+                    @foreach ($videos as $index => $item)
+                        <div class="row border rounded align-items-center p-2 ml-2 mr-2">
+                            <div class="col">
+                                <h5 class="p-0 m-0">{{ $index + 1 }}. {{ $item['title'] }}</h5>
+                            </div>
+                            <div class="col-auto">
+                                <a target="_blank" href="{{ $item['video'] }}" class="btn btn-sm btn-outline-primary">
+                                    <i class="fa fa-link mr-1"></i>
+                                    Buka Link
+                                </a>
+                            </div>
+                        </div>
                     @endforeach
                 </div>
             </div>

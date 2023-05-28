@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Member\OfflineCourse;
 use Livewire\Component;
 use App\Models\OfflineCourse;
 use App\Models\OfflineCourseAttendance;
+use App\Models\OfflineCourseRegistrar;
 use Illuminate\Support\Facades\Crypt;
 
 class Show extends Component
@@ -20,6 +21,9 @@ class Show extends Component
     public $categories = [];
     public $attachments = [];
 
+    public $links = [];
+    public $videos = [];
+
     public function mount($offlineCourse)
     {
         $this->offline_course_id = Crypt::encryptString($offlineCourse->id);
@@ -32,16 +36,32 @@ class Show extends Component
         $this->image = $offlineCourse->getImage();
         $this->categories = $offlineCourse->categories()->select('category_courses.name')->get()->pluck('name');
 
-        $is_attachment_available = OfflineCourseAttendance::where('offline_course_id', '=', $offlineCourse->id)
+        $is_attachment_available = OfflineCourseRegistrar::where('offline_course_id', '=', $offlineCourse->id)
             ->where('user_id', '=', info_user_id())
             ->first();
 
         if ($is_attachment_available) {
-            $offlineCourseAttachments = $offlineCourse->attachments()->select('file', 'file_name')->get();
+            $offlineCourseAttachments = $offlineCourse->attachments()->select('file', 'file_name', 'title')->get();
             foreach ($offlineCourseAttachments as $item) {
                 array_push($this->attachments, [
                     'file' => $item->getFile(),
                     'file_name' => $item->file_name,
+                    'title' => $item->title,
+                ]);
+            }
+
+            $offlineCourseLinks = $offlineCourse->links()->select('url', 'title')->get();
+            foreach ($offlineCourseLinks as $item) {
+                array_push($this->links, [
+                    'url' => $item->url,
+                    'title' => $item->title,
+                ]);
+            }
+            $offlineCourseVideos = $offlineCourse->videos()->select('video', 'title')->get();
+            foreach ($offlineCourseVideos as $item) {
+                array_push($this->videos, [
+                    'video' => $item->video,
+                    'title' => $item->title,
                 ]);
             }
         }

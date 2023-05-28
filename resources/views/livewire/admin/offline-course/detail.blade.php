@@ -1,12 +1,14 @@
 <form wire:submit.prevent="save">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="page-separator">
                 <div class="page-separator__text">Informasi Dasar</div>
             </div>
 
             <div class="card">
                 <div class="card-body">
+
+                    {{-- TITLE --}}
                     <div class="form-group">
                         <label class="form-label" for="title">Judul :</label>
                         <input type="text" class="form-control @error('title') is-invalid @enderror"
@@ -18,6 +20,21 @@
                         @enderror
                     </div>
 
+                    {{-- CATEGORIES --}}
+                    <div wire:ignore class="form-group">
+                        <label class="form-label">Kategori</label>
+                        <select id="categories" multiple="multiple" class="form-control custom-select select2">
+                            @foreach ($oldCategories as $key => $name)
+                                <option value="{{ $key }}" selected>{{ $name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    @error('categories')
+                        <div class='text-danger font-weight-bold'>{{ $message }}</div>
+                    @enderror
+
+                    {{-- QUOTA --}}
                     <div class="form-group">
                         <label class="form-label" for="title">Quota :</label>
                         <input type="number" class="form-control  @error('quota') is-invalid @enderror "
@@ -29,6 +46,7 @@
                         @enderror
                     </div>
 
+                    {{-- DATE TIME --}}
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -58,6 +76,8 @@
                         </div>
                     </div>
 
+
+                    {{-- DESCRIPTION --}}
                     <div class="form-group">
                         <label class="form-label" for="description">Deskripsi Singkat :</label>
                         <textarea class="form-control @error('description') is-invalid @enderror" wire:model.lazy="description" rows="6"></textarea>
@@ -68,6 +88,7 @@
                         @enderror
                     </div>
 
+                    {{-- CONTENT --}}
                     <div class="form-group" wire:ignore>
                         <label class="form-label" for="content">Konten :</label>
                         <div>
@@ -75,6 +96,7 @@
                         </div>
                     </div>
 
+                    {{-- IMAGE --}}
                     <div class="form-group">
                         <label class="form-label" for="image">Foto :</label>
                         <div class="custom-file">
@@ -106,50 +128,134 @@
                         @endif
                     </div>
 
+                    {{-- ATTACHMENT --}}
+                    <hr>
                     <div class="form-group">
-                        <label class="form-label" for="attachments">Lampiran :</label>
-                        <div class="custom-file">
-                            <input type="file" wire:model.lazy="attachments" multiple class="custom-file-input">
-                            <label for="attachments" class="custom-file-label">
-                                <div wire:loading.remove wire:target="attachments">
-                                    Pilih File
-                                </div>
-                                <div wire:loading wire:target="attachments">
-                                    Uploading...
-                                </div>
-                            </label>
+                        <div class="row align-items-center mb-3">
+                            <div class="col-auto">
+                                <label class="form-label">Lampiran:</label>
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-info btn-sm" wire:click="addAttachment">
+                                    <i class='fa fa-plus mr-1'></i>
+                                    Tambah Lampiran
+                                </button>
+                            </div>
                         </div>
-                        <div class="row ml-1 mt-1">
-                            @foreach ($attachments as $item)
-                                <div class="btn btn-outline-primary btn-sm mt-1 ml-1">
-                                    <button type="button" class="btn btn-danger mr-2 p-1"
-                                        wire:click="deleteAttachment('{{ $item->getFilename() }}', 0)">
+
+                        @foreach ($attachments as $index => $item)
+                            <div class="row align-items-end mb-3">
+                                <div class="col-md-auto">
+                                    <button type="button" class="btn btn-danger"
+                                        wire:click="deleteAttachment('{{ $item['id'] }}')">
                                         <i class='fa fa-times'></i>
                                     </button>
-                                    {{ $item->getClientOriginalName() }}
                                 </div>
-                            @endforeach
-                        </div>
-
-                        @if (count($oldAttachments) > 0)
-                            <div class="mt-3">
-                                <label class="form-label" for="attachments">Lampiran Sebelumnya :</label>
-                                <div class="row ml-1">
-                                    @foreach ($oldAttachments as $item)
-                                        <div class="btn btn-outline-primary btn-sm mt-1 ml-1">
-                                            <button type="button" class="btn btn-danger mr-2 p-1"
-                                                wire:click="deleteAttachment('{{ $item['id'] }}', 1)">
-                                                <i class='fa fa-times'></i>
-                                            </button>
-
-                                            <a target="_blank" href="{{ $item['file'] }}">
-                                                {{ $item['file_name'] }}
-                                            </a>
-                                        </div>
-                                    @endforeach
+                                <div class="col-md-7">
+                                    <label>Judul</label>
+                                    <input type="text" class="form-control"
+                                        wire:model.lazy="attachments.{{ $index }}.title">
+                                </div>
+                                <div class="col-md">
+                                    <label>File</label>
+                                    <div class="custom-file">
+                                        <input type="file" wire:model.lazy="attachments.{{ $index }}.file"
+                                            class="custom-file-input">
+                                        <label class="custom-file-label">
+                                            <div wire:loading.remove
+                                                wire:target="attachments.{{ $index }}.file">
+                                                @if ($attachments[$index]['file'])
+                                                    @if ($attachments[$index]['file'] instanceof Livewire\TemporaryUploadedFile)
+                                                        {{ $attachments[$index]['file']->getClientOriginalName() }}
+                                                    @else
+                                                        {{ $attachments[$index]['file_name'] }}
+                                                    @endif
+                                                @else
+                                                    Pilih File
+                                                @endif
+                                            </div>
+                                            <div wire:loading wire:target="attachments.{{ $index }}.file">
+                                                Uploading...
+                                            </div>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
-                        @endif
+                        @endforeach
+                    </div>
+
+                    {{-- LINKS --}}
+                    <hr>
+                    <div class="form-group">
+                        <div class="row align-items-center mb-3">
+                            <div class="col-auto">
+                                <label class="form-label">Materi Bacaan:</label>
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-info btn-sm" wire:click="addLink">
+                                    <i class='fa fa-plus mr-1'></i>
+                                    Tambah Materi Bacaan
+                                </button>
+                            </div>
+                        </div>
+
+                        @foreach ($links as $index => $item)
+                            <div class="row align-items-end mb-3">
+                                <div class="col-md-auto">
+                                    <button type="button" class="btn btn-danger"
+                                        wire:click="deleteLink('{{ $item['id'] }}')">
+                                        <i class='fa fa-times'></i>
+                                    </button>
+                                </div>
+                                <div class="col-md">
+                                    <label>Judul</label>
+                                    <input type="text" class="form-control"
+                                        wire:model.lazy="links.{{ $index }}.title">
+                                </div>
+                                <div class="col-md">
+                                    <label>URL / Link</label>
+                                    <input type="text" class="form-control"
+                                        wire:model.lazy="links.{{ $index }}.url">
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    {{-- VIDEO --}}
+                    <hr>
+                    <div class="form-group">
+                        <div class="row align-items-center mb-3">
+                            <div class="col-auto">
+                                <label class="form-label">Materi Video:</label>
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-info btn-sm" wire:click="addVideo">
+                                    <i class='fa fa-plus mr-1'></i>
+                                    Tambah Materi Video
+                                </button>
+                            </div>
+                        </div>
+
+                        @foreach ($videos as $index => $item)
+                            <div class="row align-items-end mb-3">
+                                <div class="col-md-auto">
+                                    <button type="button" class="btn btn-danger"
+                                        wire:click="deleteVideo('{{ $item['id'] }}')">
+                                        <i class='fa fa-times'></i>
+                                    </button>
+                                </div>
+                                <div class="col-md">
+                                    <label>Judul</label>
+                                    <input type="text" class="form-control"
+                                        wire:model.lazy="videos.{{ $index }}.title">
+                                </div>
+                                <div class="col-md">
+                                    <label>URL / Link</label>
+                                    <input type="text" class="form-control"
+                                        wire:model.lazy="videos.{{ $index }}.video">
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
 
@@ -168,27 +274,7 @@
 
         </div>
 
-        <div class="col-md-4">
-            <div class="page-separator">
-                <div class="page-separator__text">Kategori</div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <div wire:ignore class="form-group">
-                        <label class="form-label">Kategori</label>
-                        <select id="categories" multiple="multiple" class="form-control custom-select select2">
-                            @foreach ($oldCategories as $key => $name)
-                                <option value="{{ $key }}" selected>{{ $name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
 
-                    @error('categories')
-                        <div class='text-danger font-weight-bold'>{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-        </div>
     </div>
 </form>
 

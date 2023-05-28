@@ -51,4 +51,14 @@ class OfflineCourse extends Model
     {
         return $this->hasMany(OfflineCourseAttachment::class, 'offline_course_id', 'id');
     }
+
+    public function links()
+    {
+        return $this->hasMany(OfflineCourseLink::class, 'offline_course_id', 'id');
+    }
+
+    public function videos()
+    {
+        return $this->hasMany(OfflineCourseVideo::class, 'offline_course_id', 'id');
+    }
 }

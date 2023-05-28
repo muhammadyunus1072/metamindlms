@@ -21,6 +21,8 @@ class Show extends Component
     public $image = null;
     public $categories = [];
     public $attachments = [];
+    public $links = [];
+    public $videos = [];
 
     public $active_tab = "registrar";
     public $count_attendance = 0;
@@ -46,11 +48,26 @@ class Show extends Component
         $this->image = $offlineCourse->getImage();
         $this->categories = $offlineCourse->categories()->select('category_courses.name')->get()->pluck('name');
 
-        $offlineCourseAttachments = $offlineCourse->attachments()->select('file', 'file_name')->get();
+        $offlineCourseAttachments = $offlineCourse->attachments()->select('file', 'file_name', 'title')->get();
         foreach ($offlineCourseAttachments as $item) {
             array_push($this->attachments, [
                 'file' => $item->getFile(),
                 'file_name' => $item->file_name,
+                'title' => $item->title,
+            ]);
+        }
+        $offlineCourseLinks = $offlineCourse->links()->select('url', 'title')->get();
+        foreach ($offlineCourseLinks as $item) {
+            array_push($this->links, [
+                'url' => $item->url,
+                'title' => $item->title,
+            ]);
+        }
+        $offlineCourseVideos = $offlineCourse->videos()->select('video', 'title')->get();
+        foreach ($offlineCourseVideos as $item) {
+            array_push($this->videos, [
+                'video' => $item->video,
+                'title' => $item->title,
             ]);
         }
 
