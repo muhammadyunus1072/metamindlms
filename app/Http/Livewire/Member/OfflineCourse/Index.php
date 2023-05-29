@@ -42,6 +42,7 @@ class Index extends Component
                             $query->whereIn('category_course_id', $filter_categories_id);
                         });
                     })
+                    ->orderBy('date_time_start', 'desc')
                     ->paginate(9)
             ]
         );

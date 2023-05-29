@@ -7,6 +7,10 @@
             <div class="hero py-64pt text-center text-sm-left">
                 <div class="container page__container">
                     <h1 class="text-white">{{ $title }}</h1>
+                    <h4 class="text-white">
+                        {{ Carbon\Carbon::parse($date_time_start)->format('d M Y, H:i') }} s/d
+                        {{ Carbon\Carbon::parse($date_time_end)->format('d M Y, H:i') }}
+                    </h4>
                     <div class="d-flex flex-column flex-sm-row align-items-center justify-content-start">
                         <a href="{{ route('member.qr_scan.index') }}"
                             class="btn btn-outline-white mb-16pt mb-sm-0 mr-sm-16pt">

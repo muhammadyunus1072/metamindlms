@@ -13,6 +13,11 @@ class Datatable extends Component
 {
     use WithDatatable;
 
+    public function onMount()
+    {
+        $this->sortDirection = 'desc';
+    }
+
     public function delete($encryptedId)
     {
         $id = Crypt::decryptString($encryptedId);
