@@ -76,7 +76,6 @@
                         </div>
                     </div>
 
-
                     {{-- DESCRIPTION --}}
                     <div class="form-group">
                         <label class="form-label" for="description">Deskripsi Singkat :</label>
@@ -86,6 +85,14 @@
                                 {{ $message }}
                             </div>
                         @enderror
+                    </div>
+
+                    {{-- URL ONLINE MEET --}}
+                    <div class="form-group" wire:ignore>
+                        <label class="form-label" for="url_online_meet">Online Meet (Zoom / Google Meet) :</label>
+                        <div>
+                            <textarea class="form-control" wire:model.lazy="url_online_meet" rows="4" id="url_online_meet"></textarea>
+                        </div>
                     </div>
 
                     {{-- CONTENT --}}
@@ -122,7 +129,8 @@
                         </div>
 
                         @if ($image && empty($errors->get('image')))
-                            <img class="img-fluid" src="{{ $image->temporaryUrl() }}" style="width: 300px; height:auto">
+                            <img class="img-fluid" src="{{ $image->temporaryUrl() }}"
+                                style="width: 300px; height:auto">
                         @elseif($oldImage != null)
                             <img class="img-fluid" src="{{ $oldImage }}" style="width: 300px; height:auto">
                         @endif
@@ -281,14 +289,24 @@
 @push('js')
     <script>
         var contentEditor;
+        var urlOnlineMeetEditor;
         $(() => {
             contentEditor = CKEDITOR.replace('content', {
                 height: '25em',
                 removePlugins: 'image',
             });
 
+            urlOnlineMeetEditor = CKEDITOR.replace('url_online_meet', {
+                height: '25em',
+                removePlugins: 'image',
+            });
+
             contentEditor.on('change', function(evt) {
                 @this.set('content', evt.editor.getData());
+            });
+
+            urlOnlineMeetEditor.on('change', function(evt) {
+                @this.set('url_online_meet', evt.editor.getData());
             });
 
             $('#categories').select2({

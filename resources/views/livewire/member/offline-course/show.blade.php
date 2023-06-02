@@ -24,13 +24,25 @@
 
     <div class="page-section border-bottom-2">
         <div class="container page__container">
+            {{-- ONLINE MEET --}}
+            @if ($url_online_meet)
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="p-0 m-0">Online Meeting</h5>
+                    </div>
+                    <div class="card-body">
+                        {!! $url_online_meet !!}
+                    </div>
+                </div>
+            @endif
+
             {{-- ATTACHMENT --}}
             @if (count($attachments) > 0)
                 <div class="card">
                     <div class="card-header">
                         <h5 class="p-0 m-0">Lampiran</h5>
                     </div>
-                    <div class="card-header">
+                    <div class="card-body">
                         @foreach ($attachments as $index => $item)
                             <div class="row border rounded align-items-center p-2 ml-2 mr-2">
                                 <div class="col">
@@ -55,7 +67,7 @@
                     <div class="card-header">
                         <h5 class="p-0 m-0">Materi Bacaan</h5>
                     </div>
-                    <div class="card-header">
+                    <div class="card-body">
                         @foreach ($links as $index => $item)
                             <div class="row border rounded align-items-center p-2 ml-2 mr-2">
                                 <div class="col">
@@ -80,18 +92,18 @@
                     <div class="card-header">
                         <h5 class="p-0 m-0">Materi Video</h5>
                     </div>
-                    <div class="card-header">
+                    <div class="card-body">
                         @foreach ($videos as $index => $item)
                             <div class="row border rounded align-items-center p-2 ml-2 mr-2">
                                 <div class="col">
                                     <h5 class="p-0 m-0">{{ $index + 1 }}. {{ $item['title'] }}</h5>
                                 </div>
                                 <div class="col-auto">
-                                    <a target="_blank" href="{{ $item['video'] }}"
-                                        class="btn btn-sm btn-outline-primary">
+                                    <button class="btn btn-sm btn-outline-primary"
+                                        onclick="showVideo('{{ $item['title'] }}', '{{ $item['video'] }}')">
                                         <i class="fa fa-link mr-1"></i>
-                                        Buka Link
-                                    </a>
+                                        Buka Video
+                                    </button>
                                 </div>
                             </div>
                         @endforeach
@@ -158,3 +170,46 @@
         </div>
     </div>
 </div>
+
+@section('modal')
+    <!-- Modal -->
+    <div class="modal fade" id="modal_video" tabindex="-1" role="dialog" aria-labelledby="modal_video_label"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <form id="form-add-lesson" method="post">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="import-modal-title">Materi Video</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h3 id="modal_video_title"></h3>
+                        <div id="modal_video_content">
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+@endsection
+
+@push('js')
+    <script>
+        $('#modal_video').on('hidden.bs.modal', function(event) {
+            $('#modal_video_title').html("");
+            $('#modal_video_content').html("");
+        })
+
+        function showVideo(title, embed) {
+            embed = embed.replace(new RegExp(`width=".*?"`), `width="100%"`);
+            embed = embed.replace(new RegExp(`height=".*?"`), `height="450"`);
+
+            $('#modal_video_title').html(title);
+            $('#modal_video_content').html(embed);
+            $('#modal_video').modal('toggle')
+        }
+    </script>
+@endpush

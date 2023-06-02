@@ -20,6 +20,7 @@ class OfflineCourse extends Model
         'date_time_start',
         'date_time_end',
         'image',
+        'url_online_meet',
     ];
 
     public function getImage()

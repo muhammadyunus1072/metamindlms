@@ -17,6 +17,7 @@ class Show extends Component
     public $quota;
     public $date_time_start;
     public $date_time_end;
+    public $url_online_meet;
     public $image = null;
     public $categories = [];
     public $attachments = [];
@@ -33,6 +34,7 @@ class Show extends Component
         $this->quota = $offlineCourse->quota;
         $this->date_time_start = $offlineCourse->date_time_start;
         $this->date_time_end = $offlineCourse->date_time_end;
+        $this->url_online_meet = $offlineCourse->url_online_meet;
         $this->image = $offlineCourse->getImage();
         $this->categories = $offlineCourse->categories()->select('category_courses.name')->get()->pluck('name');
 
