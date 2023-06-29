@@ -80,7 +80,7 @@ class DashboardController extends Controller
             $query->where('user_id', '=', info_user_id());
         })
             ->where('date_time_end', '>=', $currentDate)
-            ->orderBy('date_time_start', 'ASC')
+            ->orderBy('date_time_start', 'DESC')
             ->get();
         return $results_data;
     }
