@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Member\OfflineCourse;
 
 use Livewire\WithPagination;
 use App\Models\OfflineCourse;
+use Carbon\Carbon;
 use Livewire\Component;
 
 class Index extends Component
@@ -32,6 +33,7 @@ class Index extends Component
     public function render()
     {
         $filter_categories_id = $this->filter_categories_id;
+        $currentDate = Carbon::now()->format('Y-m-d H:i:s');
 
         return view(
             'livewire.member.offline-course.index',
@@ -42,7 +44,8 @@ class Index extends Component
                             $query->whereIn('category_course_id', $filter_categories_id);
                         });
                     })
-                    ->orderBy('date_time_start', 'desc')
+                    ->where('date_time_end', '>=', $currentDate)
+                    ->orderBy('date_time_start', 'DESC')
                     ->paginate(9)
             ]
         );

@@ -79,8 +79,8 @@ class DashboardController extends Controller
         $results_data = OfflineCourse::whereHas('registrars', function ($query) {
             $query->where('user_id', '=', info_user_id());
         })
-            ->where('date_time_start', '>=', $currentDate)
-            ->take(4)
+            ->where('date_time_end', '>=', $currentDate)
+            ->orderBy('date_time_start', 'ASC')
             ->get();
         return $results_data;
     }

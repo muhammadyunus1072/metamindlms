@@ -16,6 +16,9 @@
                 <h3 class="text-center">Data Tidak Tersedia</h3>
             </div>
         @endforelse
+    </div>
+
+    <div class="row">
         {{ $data->links() }}
     </div>
 </div>
