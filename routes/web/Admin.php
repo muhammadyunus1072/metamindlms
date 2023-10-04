@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\LevelController;
 use App\Http\Controllers\Admin\OfflineCourseController;
 use App\Http\Controllers\Admin\OfflineCourseAttendanceController;
 use App\Http\Controllers\Admin\OfflineCourseRegistrarController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ReportOfflineCourseController;
@@ -127,6 +128,11 @@ Route::middleware('role:admin')->group(function () {
             Route::group(["controller" => UserController::class, "prefix" => "user", "as" => "user."], function () {
                 Route::get("select2", "select2")->name('select2');
             });
+        });
+
+        Route::group(["controller" => ProfileController::class, "prefix" => "profile", "as" => "profile."], function () {
+            Route::get('/edit', 'edit')->name('edit');
+            Route::post("/update", "update")->name('update');
         });
 
         // Report Data
