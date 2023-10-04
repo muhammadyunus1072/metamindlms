@@ -98,6 +98,18 @@
                         @enderror
                     </div>
 
+                    {{-- NAMA PERUSAHAAN --}}
+                    <div class="form-group">
+                        <label class="form-label" for="company_name">Nama Perusahaan :</label>
+                        <input type="text" class="form-control @error('company_name') is-invalid @enderror"
+                            wire:model.lazy="company_name">
+                        @error('company_name')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
                     {{-- PASSWORD --}}
                     <div class="form-group">
                         <label class="form-label" for="password">Password :</label>

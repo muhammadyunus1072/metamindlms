@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Livewire\Admin\OfflineCourse;
+namespace App\Http\Livewire\Admin\AccountMember;
 
-use App\Models\OfflineCourse;
 use App\Models\User;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -21,6 +20,7 @@ class Detail extends Component
     public $birth_date;
     public $gender;
     public $religion;
+    public $company_name;
 
     public $password;
     public $retype_password;
@@ -47,7 +47,7 @@ class Detail extends Component
 
     public function render()
     {
-        return view('livewire.admin.account_user.detail');
+        return view('livewire.admin.account-member.detail');
     }
 
     public function mount()
@@ -61,6 +61,10 @@ class Detail extends Component
             $this->birth_date = $user->birth_date;
             $this->gender = $user->gender;
             $this->religion = $user->religion;
+            $this->company_name = $user->company_name;
+        } else {
+            $this->gender = User::GENDER_PRIA;
+            $this->religion = User::RELIGION_KATOLIK;
         }
     }
 
@@ -77,37 +81,45 @@ class Detail extends Component
         if (!empty($this->user_id) || !empty($this->password) || !empty($this->retype_password)) {
             if (empty($this->password)) {
                 $this->addError('password', 'Password Harus Diisi');
+                return;
             }
             if (empty($this->retype_password)) {
                 $this->addError('retype_password', 'Ketik Ulang Password Harus Diisi');
+                return;
             }
             if ($this->retype_password != $this->password) {
                 $this->addError('retype_password', 'Ketik Ulang Password Tidak Sama');
+                return;
             }
         }
 
         $validatedData = [
             'email' => $this->email,
             'name' => $this->name,
-            'password' => Hash::make($this->password),
             'phone' => $this->phone,
             'birth_place' => $this->birth_place,
             'birth_date' => $this->birth_date,
             'gender' => $this->gender,
             'religion' => $this->religion,
+            'company_name' => $this->company_name,
         ];
+
+        if ($this->password) {
+            $validatedData['password'] = Hash::make($this->password);
+        }
 
         // Handle Offline Course
         if ($this->user_id != null) {
             $user = User::find(Crypt::decryptString($this->user_id));
         } else {
-            $user = new OfflineCourse();
+            $user = new User();
+            $user->role = User::ROLE_MEMBER;
         }
         $user->fill($validatedData);
         $user->save();
 
         session()->flash('success', 'User Berhasil ' . ($this->user_id == null ? 'Ditambahkan' : 'Diperbarui'));
 
-        return redirect()->route('admin.admin_user.index');
+        return redirect()->route('admin.account_member.index');
     }
 }

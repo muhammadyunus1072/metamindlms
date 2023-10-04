@@ -9,16 +9,16 @@ class AccountAdminController extends Controller
 {
     public function index()
     {
-        return view('admin.pages.account_admin.index');
+        return view('admin.pages.account-admin.index');
     }
 
     public function create(Request $request)
     {
-        return view('admin.pages.account_admin.detail', ['user_id' => null]);
+        return view('admin.pages.account-admin.detail', ['user_id' => null]);
     }
 
     public function edit(Request $request)
     {
-        return view('admin.pages.account_admin.detail', ['user_id' => $request->id]);
+        return view('admin.pages.account-admin.detail', ['user_id' => $request->id]);
     }
 }

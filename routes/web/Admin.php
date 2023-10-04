@@ -11,7 +11,7 @@ use App\Http\Controllers\Admin\OfflineCourseRegistrarController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ReportOfflineCourseController;
-use App\Http\Controllers\Admin\AccountUserController;
+use App\Http\Controllers\Admin\AccountAdminController;
 use App\Http\Controllers\Admin\AccountMemberController;
 use Illuminate\Support\Facades\Route;
 
@@ -164,17 +164,17 @@ Route::middleware('role:admin')->group(function () {
         // Account
         Route::group(["prefix" => "account"], function () {
             // Master Data Account User
-            Route::group(["controller" => GroupCategoryCourseController::class, "prefix" => "account_admin", "as" => "account_admin."], function () {
+            Route::group(["controller" => AccountAdminController::class, "prefix" => "account_admin", "as" => "account_admin."], function () {
                 Route::get("/", "index")->name('index');
-                Route::get("/create", "index")->name('create');
-                Route::get("/edit/{id}", "index")->name('edit');
+                Route::get("/create", "create")->name('create');
+                Route::get("/edit/{id}", "edit")->name('edit');
             });
 
             // Master Data Account Member
-            Route::group(["controller" => CategoryCourseController::class, "prefix" => "account_member", "as" => "account_member."], function () {
+            Route::group(["controller" => AccountMemberController::class, "prefix" => "account_member", "as" => "account_member."], function () {
                 Route::get("/", "index")->name('index');
-                Route::get("/create", "index")->name('create');
-                Route::get("/edit/{id}", "index")->name('edit');
+                Route::get("/create", "create")->name('create');
+                Route::get("/edit/{id}", "edit")->name('edit');
             });
         });
     });

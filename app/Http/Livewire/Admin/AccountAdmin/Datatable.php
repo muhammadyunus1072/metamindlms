@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Admin\User;
+namespace App\Http\Livewire\Admin\AccountAdmin;
 
 use App\Models\User;
 use App\Traits\WithDatatable;
@@ -14,7 +14,7 @@ class Datatable extends Component
 
     public function onMount()
     {
-        $this->sortDirection = 'desc';
+        $this->sortDirection = 'ASC';
     }
 
     public function delete($encryptedId)
@@ -36,11 +36,9 @@ class Datatable extends Component
 
                     $editUrl = route('admin.account_admin.edit', $encryptedId);
                     $editHtml = "<a href='$editUrl' class='dropdown-item'><i class='fa fa-edit mr-2'></i>Edit</a>";
-
-                    $destroyUrl = route('admin.account_admin.destroy', $encryptedId);
-                    $destroyHtml = "<form action='$destroyUrl' method='POST' wire:submit.prevent=\"delete('$encryptedId')\">"
-                        . method_field('DELETE') . csrf_field() .
-                        "<button type='submit' class='dropdown-item'
+                    
+                    $destroyHtml = "<form wire:submit.prevent=\"delete('$encryptedId')\">
+                        <button type='submit' class='dropdown-item'
                             onclick=\"return confirm('Delete Data?')\">
                             <i class='fa fa-trash mr-2'></i>Hapus
                         </button>
@@ -80,6 +78,6 @@ class Datatable extends Component
 
     public function getView(): String
     {
-        return 'livewire.admin.offline-course.datatable';
+        return 'livewire.admin.account-admin.datatable';
     }
 }

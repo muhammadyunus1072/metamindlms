@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Admin\User;
+namespace App\Http\Livewire\Admin\AccountMember;
 
 use App\Models\User;
 use App\Traits\WithDatatable;
@@ -35,13 +35,11 @@ class Datatable extends Component
                 'render' => function ($item) {
                     $encryptedId = Crypt::encryptString($item->id);
 
-                    $editUrl = route('admin.account_user.edit', $encryptedId);
+                    $editUrl = route('admin.account_member.edit', $encryptedId);
                     $editHtml = "<a href='$editUrl' class='dropdown-item'><i class='fa fa-edit mr-2'></i>Edit</a>";
 
-                    $destroyUrl = route('admin.account_user.destroy', $encryptedId);
-                    $destroyHtml = "<form action='$destroyUrl' method='POST' wire:submit.prevent=\"delete('$encryptedId')\">"
-                        . method_field('DELETE') . csrf_field() .
-                        "<button type='submit' class='dropdown-item'
+                    $destroyHtml = "<form wire:submit.prevent=\"delete('$encryptedId')\">
+                        <button type='submit' class='dropdown-item'
                             onclick=\"return confirm('Delete Data?')\">
                             <i class='fa fa-trash mr-2'></i>Hapus
                         </button>
@@ -110,6 +108,6 @@ class Datatable extends Component
 
     public function getView(): String
     {
-        return 'livewire.admin.account_user.datatable';
+        return 'livewire.admin.account-member.datatable';
     }
 }

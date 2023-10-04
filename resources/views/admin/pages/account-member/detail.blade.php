@@ -5,33 +5,21 @@
         <div class="page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left">
             <div class="flex d-flex flex-column flex-sm-row align-items-center mb-24pt mb-md-0">
                 <div class="mb-24pt mb-sm-0 mr-sm-24pt">
-                    <h2 class="mb-0">Akun Admin</h2>
+                    <h2 class="mb-0">Akun Member</h2>
 
                     <ol class="breadcrumb p-0 m-0">
                         <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">Home</a></li>
                         <li class="breadcrumb-item active">
-                            Akun Admin
+                            Akun Member
                         </li>
                     </ol>
-                </div>
-            </div>
-            <div class="row" role="tablist">
-                <div class="col-auto">
-                    <a href="{{ route('admin.account_admin.create') }}" class="btn btn-outline-secondary">Tambah</a>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="page__container page-section">
-        <div class="card">
-            <div class="card-header">
-                <h4 class="card-title">List Data Akun Admin</h4>
-            </div>
-            <div class="card-body">
-                @livewire('admin.account_admin.datatable')
-            </div>
-        </div>
+        @livewire('admin.account-member.detail', ['user_id' => $user_id])
     </div>
 
 @stop

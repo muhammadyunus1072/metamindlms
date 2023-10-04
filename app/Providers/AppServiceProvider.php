@@ -33,11 +33,11 @@ class AppServiceProvider extends ServiceProvider
             $view->with('gender_choice', User::GENDER_CHOICE);
             $view->with('religion_choice', User::RELIGION_CHOICE);
         });
-        Facades\View::composer('admin.pages.account_admin.detail', function (View $view) {
+        Facades\View::composer('livewire.admin.account-admin.detail', function (View $view) {
             $view->with('gender_choice', User::GENDER_CHOICE);
             $view->with('religion_choice', User::RELIGION_CHOICE);
         });
-        Facades\View::composer('admin.pages.account_member.detail', function (View $view) {
+        Facades\View::composer('livewire.admin.account-member.detail', function (View $view) {
             $view->with('gender_choice', User::GENDER_CHOICE);
             $view->with('religion_choice', User::RELIGION_CHOICE);
         });

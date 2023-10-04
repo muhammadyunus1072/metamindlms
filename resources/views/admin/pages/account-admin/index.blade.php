@@ -15,11 +15,23 @@
                     </ol>
                 </div>
             </div>
+            <div class="row" role="tablist">
+                <div class="col-auto">
+                    <a href="{{ route('admin.account_admin.create') }}" class="btn btn-outline-secondary">Tambah</a>
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="page__container page-section">
-        @livewire('admin.account_admin.detail', ['user_id' => $user_id])
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">List Data Akun Admin</h4>
+            </div>
+            <div class="card-body">
+                @livewire('admin.account-admin.datatable')
+            </div>
+        </div>
     </div>
 
 @stop
