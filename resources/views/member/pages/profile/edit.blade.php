@@ -55,15 +55,19 @@
 
                     <div class="col-3">
                         <label class="form-label" for="gender">Jenis Kelamin :</label>
-                        <select id="custom-select" class="form-control custom-select">
-                            <option value="1">1</option>
+                        <select id="gender" class="form-control custom-select">
+                            @foreach ($gender_choice as $key => $value)
+                                <option value="{{ $key }}" {{ $results_data->gender == $key ? 'selected' : '' }}>{{ $value }}</option>
+                            @endforeach
                         </select>
                     </div>
 
                     <div class="col-3">
                         <label class="form-label" for="religion">Agama :</label>
-                        <select id="custom-select" class="form-control custom-select">
-                            <option value="1">1</option>
+                        <select id="religion" class="form-control custom-select">
+                            @foreach ($religion_choice as $key => $value)
+                                <option value="{{ $key }}" {{ $results_data->religion == $key ? 'selected' : '' }}>{{ $value }}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>

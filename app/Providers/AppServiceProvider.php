@@ -41,5 +41,11 @@ class AppServiceProvider extends ServiceProvider
             $view->with('gender_choice', User::GENDER_CHOICE);
             $view->with('religion_choice', User::RELIGION_CHOICE);
         });
+
+
+        Facades\View::composer('member.pages.profile.edit', function (View $view) {
+            $view->with('gender_choice', User::GENDER_CHOICE);
+            $view->with('religion_choice', User::RELIGION_CHOICE);
+        });
     }
 }
