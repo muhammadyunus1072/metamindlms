@@ -11,6 +11,8 @@ use App\Http\Controllers\Admin\OfflineCourseRegistrarController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ReportOfflineCourseController;
+use App\Http\Controllers\Admin\AccountUserController;
+use App\Http\Controllers\Admin\AccountMemberController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -157,6 +159,23 @@ Route::middleware('role:admin')->group(function () {
             });
             Route::get('offline_course/get', [OfflineCourseController::class, 'search'])->name('get.offline_course');
             Route::get('user/get', [UserController::class, 'search'])->name('get.user');
+        });
+
+        // Account
+        Route::group(["prefix" => "account"], function () {
+            // Master Data Account User
+            Route::group(["controller" => GroupCategoryCourseController::class, "prefix" => "account_admin", "as" => "account_admin."], function () {
+                Route::get("/", "index")->name('index');
+                Route::get("/create", "index")->name('create');
+                Route::get("/edit/{id}", "index")->name('edit');
+            });
+
+            // Master Data Account Member
+            Route::group(["controller" => CategoryCourseController::class, "prefix" => "account_member", "as" => "account_member."], function () {
+                Route::get("/", "index")->name('index');
+                Route::get("/create", "index")->name('create');
+                Route::get("/edit/{id}", "index")->name('edit');
+            });
         });
     });
 });

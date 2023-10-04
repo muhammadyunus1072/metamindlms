@@ -117,6 +117,8 @@ const MASTER_SIDEBAR = array(
     "offline_course" => "Kursus Offline",
     "course_member" => "Kursus Member",
     "recap_course" => "Rekap Kursus",
+    "account_member" => "Akun Member",
+    "account_admin" => "Akun Admin",
 );
 
 function master_sidebar($key = null){
