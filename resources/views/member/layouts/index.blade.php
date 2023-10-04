@@ -78,6 +78,7 @@
                         <div class="dropdown-menu dropdown-menu-right">
                             <div class="dropdown-header"><strong>Account</strong></div>
                             @if (Auth::check())
+                                <a class="dropdown-item" href="{{ route('profile.edit') }}">Profile</a>
                                 <a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
                             @else
                                 <a class="dropdown-item" href="{{ route('login.index') }}">Login</a>
