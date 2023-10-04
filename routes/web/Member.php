@@ -6,6 +6,7 @@ use App\Http\Controllers\Member\CourseMemberController;
 use App\Http\Controllers\Member\DiscussionController;
 use App\Http\Controllers\Member\FavoriteController;
 use App\Http\Controllers\Member\OfflineCourseController;
+use App\Http\Controllers\Member\ProfileController;
 use App\Http\Controllers\Member\QrScanController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +32,11 @@ Route::middleware('role:member')->group(function () {
 
     Route::group(["controller" => CourseController::class, "prefix" => "course", "as" => "course."], function () {
         Route::post("/store_favorite", "store_favorite")->name('store_favorite');
+    });
+
+    Route::group(["controller" => ProfileController::class, "prefix" => "profile", "as" => "profile."], function () {
+        Route::get('/edit', 'edit')->name('edit');
+        Route::post("/update", "update")->name('update');
     });
 
     Route::group(["prefix" => "member", "as" => "member."], function () {

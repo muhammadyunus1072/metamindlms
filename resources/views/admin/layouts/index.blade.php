@@ -77,6 +77,7 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <div class="dropdown-header"><strong>Account</strong></div>
+                            <a class="dropdown-item" href="{{ route('admin.profile.edit') }}">Profile</a>
                             <a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
                         </div>
                     </div>
