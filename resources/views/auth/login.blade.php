@@ -44,8 +44,10 @@
                 </div>
             </div>
             <div class="form-group text-center">
-                <button class="btn btn-primary mb-5" type="submit">Login</button><br>
-                Belum punya akun? <a class="text-body text-underline" href="{{ route('register.index') }}">Daftar!</a>
+                <button class="btn btn-primary mb-5" type="submit">Login</button>
+                <br>Belum punya akun? <a class="text-body text-underline" href="{{ route('register.index') }}">Daftar!</a>
+                <br>Sudah punya akun tapi lupa password? <a class="text-body text-underline"
+                    href="{{ route('password.request') }}">Lupa Password</a>
             </div>
         </form>
     </div>
@@ -54,11 +56,8 @@
 @push('js')
     <script type="text/javascript">
         $("#login-form").submit(function(e) {
-
             e.preventDefault();
-
             loading("show");
-
             // Kirim data ke server
             $.ajax({
                 type: "POST",
@@ -68,7 +67,7 @@
                     var result = response.response;
                     loading("hide");
 
-                    if (response.code > 0) {
+                    if (response.code == 200) {
                         Swal.fire({
                             title: result.title,
                             text: result.message,
@@ -79,6 +78,9 @@
                         });
                         // window.location = '/';
                         location.reload();
+                    } else if (response.code == 201) {
+                        window.location =
+                        `{{ route('verification.index') }}?email=${$('#email').val()}`;
                     } else {
                         Swal.fire(result.title, result.message, result.type);
                     }

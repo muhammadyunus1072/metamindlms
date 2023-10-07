@@ -58,7 +58,7 @@
 
                     {{-- BIRTH DATE --}}
                     <div class="form-group">
-                        <label class="form-label" for="birth_date">Tempat Lahir :</label>
+                        <label class="form-label" for="birth_date">Tanggal Lahir :</label>
                         <input type="date" class="form-control @error('birth_date') is-invalid @enderror"
                             wire:model.lazy="birth_date">
                         @error('birth_date')
@@ -70,7 +70,7 @@
 
                     {{-- GENDER --}}
                     <div class="form-group">
-                        <label class="form-label" for="gender">Tempat Lahir :</label>
+                        <label class="form-label" for="gender">Jenis Kelamin :</label>
                         <select class="form-control" id="gender" wire:model.lazy="gender">
                             @foreach ($gender_choice as $key => $value)
                                 <option value="{{ $key }}">{{ $value }}</option>
@@ -85,7 +85,7 @@
 
                     {{-- RELIGION --}}
                     <div class="form-group">
-                        <label class="form-label" for="religion">Tempat Lahir :</label>
+                        <label class="form-label" for="religion">Agama :</label>
                         <select class="form-control" id="religion" wire:model.lazy="religion">
                             @foreach ($religion_choice as $key => $value)
                                 <option value="{{ $key }}">{{ $value }}</option>

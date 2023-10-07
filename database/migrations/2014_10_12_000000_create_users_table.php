@@ -36,7 +36,7 @@ return new class extends Migration
             $table->bigInteger('obj_id')->unsigned();
         } else {
         }
-        
+
         $table->string('email')->comment('Email');
         $table->string('name')->comment('Nama');
         $table->enum('role', ['admin', 'member'])->nullable()->comment('Role');
@@ -51,6 +51,9 @@ return new class extends Migration
 
         $table->boolean("is_actived")->default(1);
         $table->text("accessibility")->nullable()->comment('Hak Akses');
+
+        $table->datetime('email_verified_at')->nullable()->default(null);
+
         $table->bigInteger("created_by")->unsigned()->nullable()->comment('Id Admin Pembuat');
         $table->bigInteger("updated_by")->unsigned()->nullable()->comment('Id Admin pengubah');
         $table->bigInteger("deleted_by")->unsigned()->nullable()->default(null);

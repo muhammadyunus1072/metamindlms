@@ -139,9 +139,22 @@
                     </div>
                 </div>
             </div>
+            <div class="form-group mt-4 mb-4">
+                <div class="captcha">
+                    <span>{!! captcha_img() !!}</span>
+                    <button type="button" class="btn btn-danger" class="reload" id="reload">
+                        &#x21bb;
+                    </button>
+                </div>
+            </div>
+            <div class="form-group mb-4">
+                <input id="captcha" type="text" class="form-control" placeholder="Enter Captcha" name="captcha">
+            </div>
             <div class="form-group text-center">
-                <button class="btn btn-primary mb-5" type="submit">Daftar Sekarang</button><br>
-                Sudah punya akun? <a class="text-body text-underline" href="{{ route('login.index') }}">Login!</a>
+                <button class="btn btn-primary mb-5" type="submit">Daftar Sekarang</button>
+                <br>Sudah punya akun? <a class="text-body text-underline" href="{{ route('login.index') }}">Login!</a>
+                <br>Sudah punya akun tapi lupa password? <a class="text-body text-underline"
+                    href="{{ route('password.request') }}">Lupa Password</a>
             </div>
         </form>
     </div>
@@ -149,13 +162,19 @@
 
 @push('js')
     <script type="text/javascript">
+        $('#reload').click(function() {
+            $.ajax({
+                type: 'GET',
+                url: 'reload-captcha',
+                success: function(data) {
+                    $(".captcha span").html(data.captcha);
+                }
+            });
+        });
+
         $("#register-form").submit(function(e) {
-
             e.preventDefault();
-
             loading("show");
-
-            // Kirim data ke server
             $.ajax({
                 type: "POST",
                 url: $(this).attr('action'),
@@ -163,7 +182,6 @@
                 success: function(response) {
                     var result = response.response;
                     loading("hide");
-
                     if (response.code > 0) {
                         Swal.fire({
                             title: result.title,
@@ -173,15 +191,18 @@
                             showCancelButton: false,
                             showConfirmButton: false
                         });
-                        // window.location = '/';
-                        location.reload();
+                        window.location =
+                            `{{ route('verification.index') }}?email=${$('#email').val()}`;
                     } else {
                         Swal.fire(result.title, result.message, result.type);
                     }
+
+                    $('#reload').trigger('click');
                 },
                 error: function(xhr, request, error) {
                     loading("hide");
                     alert_error("show", xhr);
+                    $('#reload').trigger('click');
                 }
             });
         });
