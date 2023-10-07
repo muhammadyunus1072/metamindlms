@@ -1,4 +1,4 @@
-@extends('member.layouts.index')
+@extends('admin.layouts.index')
 {{-- @extends('layouts.components') --}}
 
 
