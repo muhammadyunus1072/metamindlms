@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Livewire\Admin\OfflineCourse;
+namespace App\Http\Livewire\Admin\Product;
 
+use Carbon\Carbon;
+use App\Models\Product;
+use Livewire\Component;
 use App\Models\OfflineCourse;
 use App\Traits\WithDatatable;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Database\Eloquent\Builder;
-use Livewire\Component;
 
 class Datatable extends Component
 {
@@ -34,17 +35,11 @@ class Datatable extends Component
                 'searchable' => false,
                 'render' => function ($item) {
                     $encryptedId = Crypt::encryptString($item->id);
-
-                    $showQrUrl = route('admin.offline_course.show.qr', $encryptedId);
-                    $showQrHtml = "<a href='$showQrUrl' class='dropdown-item'><i class='fa fa-qrcode mr-2'></i>QR Code</a>";
-
-                    $showUrl = route('admin.offline_course.show', $encryptedId);
-                    $showHtml = "<a href='$showUrl' class='dropdown-item'><i class='fa fa-eye mr-2'></i>Lihat Detail</a>";
-
-                    $editUrl = route('admin.offline_course.edit', $encryptedId);
+                    
+                    $editUrl = route('admin.product.edit', $encryptedId);
                     $editHtml = "<a href='$editUrl' class='dropdown-item'><i class='fa fa-edit mr-2'></i>Edit</a>";
 
-                    $destroyUrl = route('admin.offline_course.destroy', $encryptedId);
+                    $destroyUrl = route('admin.product.destroy', $encryptedId);
                     $destroyHtml = "<form action='$destroyUrl' method='POST' wire:submit.prevent=\"delete('$encryptedId')\">"
                         . method_field('DELETE') . csrf_field() .
                         "<button type='submit' class='dropdown-item'
@@ -60,10 +55,6 @@ class Datatable extends Component
                             aria-haspopup='true'
                             aria-expanded='false'>Aksi <i class='mdi mdi-chevron-down'></i></button>
                         <div class='dropdown-menu'>
-                            $showHtml
-                            <div class='dropdown-divider'></div>
-                            $showQrHtml
-                            <div class='dropdown-divider'></div>
                             $editHtml
                             <div class='dropdown-divider'></div>
                             $destroyHtml
@@ -74,26 +65,12 @@ class Datatable extends Component
                 },
             ],
             [
-                'key' => 'date_time_start',
-                'name' => 'Tanggal Mulai',
-                'render' => function ($item) {
-                    return Carbon::parse($item->date_time_start)->format('d M Y, H:i');
-                },
+                'key' => 'name',
+                'name' => 'Nama',
             ],
             [
-                'key' => 'date_time_end',
-                'name' => 'Tanggal Selesai',
-                'render' => function ($item) {
-                    return Carbon::parse($item->date_time_end)->format('d M Y, H:i');
-                },
-            ],
-            [
-                'key' => 'title',
-                'name' => 'Judul',
-            ],
-            [
-                'key' => 'quota',
-                'name' => 'Quota',
+                'key' => 'description',
+                'name' => 'Deskripsi',
             ],
             [
                 'key' => 'price',
@@ -103,28 +80,12 @@ class Datatable extends Component
                 'key' => 'price_before_discount',
                 'name' => 'Harga Sebelum Diskon',
             ],
-            [
-                'name' => 'Jumlah Pendaftar',
-                'sortable' => false,
-                'searchable' => false,
-                'render' => function ($item) {
-                    return $item->registrars()->count();
-                },
-            ],
-            [
-                'name' => 'Jumlah Kehadiran',
-                'sortable' => false,
-                'searchable' => false,
-                'render' => function ($item) {
-                    return $item->attendances()->count();
-                },
-            ],
         ];
     }
 
     public function getQuery(): Builder
     {
-        return OfflineCourse::query();
+        return Product::query();
     }
 
     public function getView(): String

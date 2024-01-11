@@ -36,6 +36,12 @@
                     <span class="sidebar-menu-text">{{ master_sidebar($name) }}</span>
                 </a>
             </li>
+            <?php $name = 'product'; ?>
+            <li class="sidebar-menu-item {{ Request::segment(3) == $name ? 'active' : '' }}">
+                <a class="sidebar-menu-button" href="{{ route('admin.' . $name . '.index') }}">
+                    <span class="sidebar-menu-text">{{ master_sidebar($name) }}</span>
+                </a>
+            </li>
             <?php $name = 'group_category_course'; ?>
             <li class="sidebar-menu-item {{ Request::segment(3) == $name ? 'active' : '' }}">
                 <a class="sidebar-menu-button" href="{{ route('admin.' . $name . '.index') }}">

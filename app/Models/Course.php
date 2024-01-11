@@ -39,6 +39,38 @@ class Course extends Model
         self::creating(function ($model) {
             $model->code = self::generateCode();
         });
+        self::created(function ($model) {
+            $product = new Product();
+            $product->name = $model->title;
+            $product->description = $model->description;
+            $product->price = $model->price;
+            $product->price_before_discount = $model->price_before_discount;
+            $product->remarks_id = $model->id;
+            $product->remarks_type = self::class;
+            $product->save();
+
+            $product_course = new ProductCourse();
+            $product_course->product_id = $product->id;
+            $product_course->course_id = $model->id;
+            $product_course->save();
+        });
+        self::updated(function ($model) {
+            $product = $model->product;
+            $product->name = $model->title;
+            $product->description = $model->description;
+            $product->price = $model->price;
+            $product->price_before_discount = $model->price_before_discount;
+            $product->save();
+        });
+        self::deleted(function ($model) {
+            $product = $model->product;
+            $product->delete();
+        });
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'id', 'remarks_id')->where('remarks_type', self::class);
     }
 
     public static function generateCode()
@@ -113,4 +145,5 @@ class Course extends Model
         // ->leftJoin('course_categories as cc', 'cc.id', '=', 'courses.category_id')
         ->paginate(10);
     }
+
 }

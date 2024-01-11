@@ -52,6 +52,24 @@ class CourseController extends Controller
         ]);
     }
 
+    public function search(Request $request){
+        $data = Course::select(
+            'id',
+            'title as text'
+        )
+        ->when($request->search, function ($query) use ($request) {
+            $query->where(function ($query) use ($request) {
+                $query->where('title', 'LIKE', "%$request->search%");
+            });
+        })
+        ->orderBy('title')
+        ->limit(100)
+        ->get()
+        ->toArray();
+
+        return json_encode($data);
+    }
+
     public function json(Request $request){
         // Saat request ajax datatable
         if ($request->ajax()) {
@@ -86,6 +104,10 @@ class CourseController extends Controller
                 })
                 ->addColumn('vprice', function ($row) {
                     $view = numberf($row->price);
+                    return $view;
+                })
+                ->addColumn('vprice_before_discount', function ($row) {
+                    $view = numberf($row->price_before_discount);
                     return $view;
                 })
                 ->addColumn('vstatus_text', function ($row) {
@@ -187,7 +209,7 @@ class CourseController extends Controller
                 $data['st'] = 'e';
 
                 //VALIDATION
-                if(!$request->title || !$request->url_video || !$request->category_id || !$request->level_id || !$request->price){
+                if(!$request->title || !$request->url_video || !$request->category_id || !$request->level_id || !$request->price || !$request->price_before_discount){
                     DB::rollBack();
                     return response()->json(['s' => "Terdapat data yang belum diisi, Harap melengkapi seluruh data sebelum disimpan.", 'st' => 'e']);
                 }
@@ -227,6 +249,7 @@ class CourseController extends Controller
                 $insert_data->url_video = $request->url_video;
                 $insert_data->level_id = $level->id;
                 $insert_data->price = $request->price;
+                $insert_data->price_before_discount = $request->price_before_discount;
 
                 if($insert_data->save()){
                     //Save Data
@@ -365,6 +388,7 @@ class CourseController extends Controller
                     $results_data->url_video = $request->url_video;
                     $results_data->level_id = $level->id;
                     $results_data->price = $request->price;
+                    $results_data->price_before_discount = $request->price_before_discount;
 
                     if($results_data->save()){
 

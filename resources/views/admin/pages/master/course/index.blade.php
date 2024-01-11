@@ -53,6 +53,7 @@
 							<th>Nama</th>
 							<th>Level</th>
 							<th>Harga</th>
+							<th>Harga Sebelum Diskon</th>
 							<th>Status</th>
 							<th>Dibuat Oleh</th>
 							<th>Dibuat</th>
@@ -104,6 +105,9 @@
 		},
 		{
 			data: "vprice"
+		},
+		{
+			data: "vprice_before_discount"
 		},
 		{
 			data: "vstatus",

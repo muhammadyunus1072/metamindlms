@@ -21,7 +21,45 @@ class OfflineCourse extends Model
         'date_time_end',
         'image',
         'url_online_meet',
+        'price',
+        'price_before_discount',
     ];
+
+    protected static function onBoot()
+    {
+        self::created(function ($model) {
+            $product = new Product();
+            $product->name = $model->title;
+            $product->description = $model->description;
+            $product->price = $model->price;
+            $product->price_before_discount = $model->price_before_discount;
+            $product->remarks_id = $model->id;
+            $product->remarks_type = self::class;
+            $product->save();
+
+            $product_offline_course = new ProductOfflineCourse();
+            $product_offline_course->product_id = $product->id;
+            $product_offline_course->offline_course_id = $model->id;
+            $product_offline_course->save();
+        });
+        self::updated(function ($model) {
+            $product = $model->product;
+            $product->name = $model->title;
+            $product->description = $model->description;
+            $product->price = $model->price;
+            $product->price_before_discount = $model->price_before_discount;
+            $product->save();
+        });
+        self::deleted(function ($model) {
+            $product = $model->product;
+            $product->delete();
+        });
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'id', 'remarks_id')->where('remarks_type', self::class);
+    }
 
     public function getImage()
     {

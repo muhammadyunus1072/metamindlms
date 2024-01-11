@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('courses', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $this->scheme($table);
         });
 
-        Schema::create('_history_courses', function (Blueprint $table) {
+        Schema::create('_history_products', function (Blueprint $table) {
             $this->scheme($table, true);
         });
     }
@@ -29,8 +29,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('courses');
-        Schema::dropIfExists('_history_courses');
+        Schema::dropIfExists('products');
+        Schema::dropIfExists('_history_products');
     }
 
     private function scheme(Blueprint $table, $is_history = false)
@@ -39,24 +39,19 @@ return new class extends Migration
 
         if ($is_history) {
             $table->bigInteger('obj_id')->unsigned();
-            $table->string('code')->comment('Kode');
         } else {
-            $table->string('code')->unique()->comment('Kode');
+            $table->index('name', 'products_name_index');
+            $table->index(['remarks_id', 'remarks_type'], 'products_remarks_index');
         }
         
-        $table->bigInteger("level_id")->unsigned()->comment('Id Level');
+        $table->string('name')->comment('Nama Produk');
+        $table->text('description')->nullable()->comment('Nama Produk');
+        $table->double('price', 20, 2)->default(0)->comment('Harga Produk');
+        $table->double('price_before_discount', 20, 2)->default(0)->comment('Harga Sebelum Diskon');
 
-        $table->string('title')->comment('Judul');
-        $table->text('description')->nullable()->comment('Deskripsi');
-        $table->text('about')->nullable()->comment('Tentang');
+        $table->bigInteger("remarks_id")->unsigned()->nullable();
+        $table->string("remarks_type");
 
-        $table->string('url_image')->nullable()->comment('Url Image');
-        $table->string('url_icon')->nullable()->comment('Url Icon');
-        $table->string('url_video')->nullable()->comment('Url Video');
-
-        $table->double('price', 20, 2)->default(0)->comment('Harga');
-
-        $table->boolean("is_actived")->default(1);
         $table->bigInteger("created_by")->unsigned()->nullable()->comment('Id Admin Pembuat');
         $table->bigInteger("updated_by")->unsigned()->nullable()->comment('Id Admin pengubah');
         $table->bigInteger("deleted_by")->unsigned()->nullable()->default(null);

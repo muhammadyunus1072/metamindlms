@@ -115,6 +115,7 @@ const MASTER_SIDEBAR = array(
     "level" => "Level Kursus",
     "course" => "Kursus",
     "offline_course" => "Kursus Offline",
+    "product" => "Produk",
     "course_member" => "Kursus Member",
     "recap_course" => "Rekap Kursus",
     "account_member" => "Akun Member",

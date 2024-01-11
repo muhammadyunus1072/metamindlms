@@ -46,6 +46,36 @@
                         @enderror
                     </div>
 
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{-- PRICE --}}
+                            <div class="form-group">
+                                <label class="form-label" for="title">Harga :</label>
+                                <input type="number" class="form-control  @error('price') is-invalid @enderror "
+                                    wire:model.lazy="price" step="0.01" min="0">
+                                @error('price')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            {{-- PRICE BEFORE DISCOUNT --}}
+                            <div class="form-group">
+                                <label class="form-label" for="title">Harga Sebelum Diskon :</label>
+                                <input type="number" class="form-control  @error('price_before_discount') is-invalid @enderror "
+                                    wire:model.lazy="price_before_discount" step="0.01" min="0">
+                                @error('price_before_discount')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+
                     {{-- DATE TIME --}}
                     <div class="row">
                         <div class="col-md-6">

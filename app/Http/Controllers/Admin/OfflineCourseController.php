@@ -66,6 +66,24 @@ class OfflineCourseController extends Controller
         return $res;
     }
 
+    public function searchOfflineCourse(Request $request){
+        $data = OfflineCourse::select(
+            'id',
+            'title as text'
+        )
+        ->when($request->search, function ($query) use ($request) {
+            $query->where(function ($query) use ($request) {
+                $query->where('title', 'LIKE', "%$request->search%");
+            });
+        })
+        ->orderBy('title')
+        ->limit(100)
+        ->get()
+        ->toArray();
+
+        return json_encode($data);
+    }
+
     // Select 2 Offline Course
     public function search(Request $request)
     {

@@ -25,6 +25,8 @@ class Detail extends Component
     public $description;
     public $content;
     public $quota;
+    public $price;
+    public $price_before_discount;
     public $date_time_start;
     public $date_time_end;
     public $url_online_meet;
@@ -48,6 +50,8 @@ class Detail extends Component
         'title' => 'required',
         'description' => 'required',
         'quota' => 'required',
+        'price' => 'required:numeric',
+        'price_before_discount' => 'required|numeric',
         'date_time_start' => 'required',
         'date_time_end' => 'required',
         'categories' => 'required',
@@ -57,6 +61,8 @@ class Detail extends Component
         'title' => 'Judul Harus Diisi',
         'description' => 'Deskripsi Harus Diisi',
         'quota' => 'Quota Harus Diisi',
+        'price' => 'Harga Harus Diisi',
+        'price_before_discount' => 'Harga Sebelum Diskon Harus Diisi',
         'date_time_start' => 'Tanggal dan Waktu Mulai Harus Diisi',
         'date_time_end' => 'Tanggal dan Waktu Selesai Harus Diisi',
         'image.image' => 'Foto harus berupa file gambar',
@@ -77,6 +83,8 @@ class Detail extends Component
             $this->description = $offlineCourse->description;
             $this->content = $offlineCourse->content;
             $this->quota = $offlineCourse->quota;
+            $this->price = $offlineCourse->price;
+            $this->price_before_discount = $offlineCourse->price_before_discount;
             $this->date_time_start = $offlineCourse->date_time_start;
             $this->date_time_end = $offlineCourse->date_time_end;
             $this->url_online_meet = $offlineCourse->url_online_meet;
@@ -148,6 +156,8 @@ class Detail extends Component
             'description' => $this->description,
             'content' => $this->content,
             'quota' => $this->quota,
+            'price' => $this->price,
+            'price_before_discount' => $this->price_before_discount,
             'date_time_start' => $this->date_time_start,
             'date_time_end' => $this->date_time_end,
             'url_online_meet' => $this->url_online_meet,
