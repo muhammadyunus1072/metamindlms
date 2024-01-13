@@ -20,7 +20,23 @@
             <span class="sidebar-menu-text">Cari Kursus Offline</span>
         </a>
     </li> --}}
+
     @if (Auth::check())
+       
+        <li
+            class="sidebar-menu-item {{ Request::segment(2) == 'cart' ? 'active' : '' }}">
+            <a class="sidebar-menu-button" href="{{ route('member.cart.index') }}">
+                <i class="fa fa-shopping-cart sidebar-menu-icon sidebar-menu-icon--left"></i>
+                <span class="sidebar-menu-text">Keranjang</span>
+            </a>
+        </li>
+        <li
+            class="sidebar-menu-item {{ Request::segment(2) == 'transaction_history' ? 'active' : '' }}">
+            <a class="sidebar-menu-button" href="{{ route('member.transaction.index') }}">
+                <i class="fa fa-history sidebar-menu-icon sidebar-menu-icon--left"></i>
+                <span class="sidebar-menu-text">Riwayat Transaksi</span>
+            </a>
+        </li>
         <li
             class="sidebar-menu-item {{ Request::segment(1) == 'member' && Request::segment(2) === null ? 'active' : '' }}">
             <a class="sidebar-menu-button" href="{{ route('member.dashboard.index') }}">
@@ -28,7 +44,6 @@
                 <span class="sidebar-menu-text">Dashboard</span>
             </a>
         </li>
-
         <li class="sidebar-menu-item {{ Request::segment(2) == 'qr_scan' ? 'active' : '' }}">
             <a class="sidebar-menu-button" href="{{ route('member.qr_scan.index') }}">
                 <i class="fa fa-qrcode sidebar-menu-icon sidebar-menu-icon--left"></i>

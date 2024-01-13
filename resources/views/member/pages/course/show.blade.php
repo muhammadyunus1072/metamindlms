@@ -112,8 +112,17 @@
                     <div class="card">
                         <div class="card-body py-16pt">
                             <h2>Rp{{ numberf($results_data->price) }}</h2>
-
-                            <button class="btn btn-block btn-primary mb-3">Beli Sekarang</button>
+ 
+                            @if (Auth::check() && info_user()->role == "member")
+                                <a
+                                    class="btn btn-block btn-primary mb-2"
+                                    onclick="action_product_cart('{{ enc($results_data->product->id) }}', true)"
+                                    >Beli Sekarang</a>
+                                <a
+                                    class="btn btn-block btn-success mb-3"
+                                    onclick="action_product_cart('{{ enc($results_data->product->id) }}', false)"
+                                    >Tambah Ke Keranjang</a>
+                            @endif
 
                             <h6 class="card-title mb-2">Kursus ini mencakup</h6>
                             <div class="row align-items-center">
@@ -380,5 +389,6 @@
 
 @push('js')
     @include('member.layouts.components.js_action_favorite')
+    @include('member.layouts.components.js_action_product_to_cart')
     @include('member.layouts.components.js_show_trailer')
 @endpush

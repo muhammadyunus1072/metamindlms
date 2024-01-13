@@ -25,6 +25,8 @@ class OfflineCourseSeeder extends Seeder
                 "title" => "Pengembangan Pola Pikir Sebagai Kunci menjadi Percaya Diri $i",
                 "description" => "Apakah Anda selalu bermain aman? Khawatir gagal? Ngeri ketika menerima umpan balik yang membangun? Apakah Anda lebih suka membawa hidup dan karier Anda ke tingkat berikutnya, memperluas kemungkinan Anda, meningkatkan kenyamanan Anda dalam mengambil risiko, dan meningkatkan kinerja Anda di tempat kerja? Cari tahu bagaimana mengubah pola pikir Anda menjadi pertumbuhan dapat menuai hasil besar, baik dalam pekerjaan maupun kehidupan. Pola pikir berkembang adalah keyakinan bahwa Anda dapat terus belajar, tumbuh, dan berkembang. Dengan merasa nyaman mengambil risiko, menerima umpan balik, belajar dari pengalaman, dan membingkai ulang 'kegagalan', Anda sedang menuju pola pikir berkembang dan kehidupan yang lebih bahagia dan lebih memuaskan.",
                 "quota" => 100,
+                "price" => 100_000 * ($i +1),
+                "price_before_discount" => 200_000 * ($i +1),
                 "date_time_start" => Carbon::now()->addDays(3)->format('Y-m-d 09:00:00'),
                 "date_time_end" => Carbon::now()->addDays(3)->format('Y-m-d 12:00:00'),
             ]);

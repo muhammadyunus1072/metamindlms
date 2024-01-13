@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('payment_methods', function (Blueprint $table) {
             $this->scheme($table);
         });
 
-        Schema::create('_history_products', function (Blueprint $table) {
+        Schema::create('_history_payment_methods', function (Blueprint $table) {
             $this->scheme($table, true);
         });
     }
@@ -29,8 +29,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('products');
-        Schema::dropIfExists('_history_products');
+        Schema::dropIfExists('payment_methods');
+        Schema::dropIfExists('_history_payment_methods');
     }
 
     private function scheme(Blueprint $table, $is_history = false)
@@ -39,18 +39,11 @@ return new class extends Migration
 
         if ($is_history) {
             $table->bigInteger('obj_id')->unsigned();
-        } else {
-            $table->index('name', 'products_name_index');
-            $table->index(['remarks_id', 'remarks_type'], 'products_remarks_index');
-        }
-        
-        $table->string('name')->comment('Nama Produk');
-        $table->text('description')->nullable()->comment('Nama Produk');
-        $table->double('price', 20, 2)->default(0)->comment('Harga Produk');
-        $table->double('price_before_discount', 20, 2)->nullable()->comment('Harga Sebelum Diskon');
+        } 
 
-        $table->bigInteger("remarks_id")->unsigned()->nullable();
-        $table->string("remarks_type")->nullable();
+        $table->string("name")->comment('Nama Metode');
+        $table->text("description")->nullable()->comment('Deskripsi Dari Metode');
+        $table->boolean("is_editable")->default(true)->comment('Penanda Metode Bisa diedit');
 
         $table->bigInteger("created_by")->unsigned()->nullable()->comment('Id Admin Pembuat');
         $table->bigInteger("updated_by")->unsigned()->nullable()->comment('Id Admin pengubah');

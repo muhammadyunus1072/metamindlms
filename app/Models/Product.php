@@ -34,4 +34,8 @@ class Product extends Model
     {
         return $this->hasMany(ProductOfflineCourse::class, 'product_id', 'id');
     }
+    public function cart()
+    {
+        return $this->belongsTo(Cart::class, 'id', 'product_id');
+    }
 }

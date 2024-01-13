@@ -18,8 +18,9 @@ class OfflineCourseController extends Controller
     public function show($id)
     {
         $id = Crypt::decrypt($id);
-        $offlineCourse = OfflineCourse::find($id);
-
+        $offlineCourse = OfflineCourse::where('id', $id)
+        ->with('product', 'product.cart')->first();
+        
         return view('member.pages.offline_course.show', ['offlineCourse' => $offlineCourse]);
     }
 }

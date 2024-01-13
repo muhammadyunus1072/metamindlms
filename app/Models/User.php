@@ -72,4 +72,13 @@ class User extends Authenticatable implements MustVerifyEmail
 
     const ADMIN = "admin";
     const MEMBER = "member";
+    
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
+    }
+    public function transactions()
+    {
+        return $this->hasMany(transaction::class);
+    }
 }

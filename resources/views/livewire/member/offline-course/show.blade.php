@@ -115,7 +115,7 @@
                 <div class="page-separator__text">Konten kursus</div>
             </div>
             <div class="row mb-0">
-                <div class="col-lg-12">
+                <div class="col-lg-8">
                     <div class="card">
                         <div class="card-body">
                             <img class="img-fluid" src="{{ $image }}"
@@ -163,6 +163,23 @@
                             <div class="mt-2">
                                 {!! $content !!}
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h2>Rp{{ numberf($price) }}</h2>
+                            @if (Auth::check() && info_user()->role == "member")
+                            <button type="button"
+                                class="btn btn-block btn-primary mb-2"
+                                wire:click="store('{{$product->id}}', true)"
+                                >Beli Sekarang</button>
+                            <button type="button"
+                                class="btn btn-block btn-success mb-3"
+                                wire:click="store('{{$product->id}}', false)"
+                                >Tambah Ke Keranjang</button>
+                            @endif
                         </div>
                     </div>
                 </div>

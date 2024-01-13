@@ -25,6 +25,7 @@ class CourseSeeder extends Seeder
             "description" => "Temukan bagaimana cara mengembangkan pola pikir serta kesempatan dalam karir dan kehidepan",
             "about" => "Apakah Anda selalu bermain aman? Khawatir gagal? Ngeri ketika menerima umpan balik yang membangun? Apakah Anda lebih suka membawa hidup dan karier Anda ke tingkat berikutnya, memperluas kemungkinan Anda, meningkatkan kenyamanan Anda dalam mengambil risiko, dan meningkatkan kinerja Anda di tempat kerja? Cari tahu bagaimana mengubah pola pikir Anda menjadi pertumbuhan dapat menuai hasil besar, baik dalam pekerjaan maupun kehidupan. Pola pikir berkembang adalah keyakinan bahwa Anda dapat terus belajar, tumbuh, dan berkembang. Dengan merasa nyaman mengambil risiko, menerima umpan balik, belajar dari pengalaman, dan membingkai ulang 'kegagalan', Anda sedang menuju pola pikir berkembang dan kehidupan yang lebih bahagia dan lebih memuaskan.",
             "price" => 279000,
+            "price_before_discount" => 300_000,
             "url_image" => 'default.png',
         ]);
 
@@ -34,6 +35,7 @@ class CourseSeeder extends Seeder
             "description" => "Temukan bagaimana cara mengembangkan pola pikir serta kesempatan dalam karir dan kehidepan",
             "about" => "Apakah Anda selalu bermain aman? Khawatir gagal? Ngeri ketika menerima umpan balik yang membangun? Apakah Anda lebih suka membawa hidup dan karier Anda ke tingkat berikutnya, memperluas kemungkinan Anda, meningkatkan kenyamanan Anda dalam mengambil risiko, dan meningkatkan kinerja Anda di tempat kerja? Cari tahu bagaimana mengubah pola pikir Anda menjadi pertumbuhan dapat menuai hasil besar, baik dalam pekerjaan maupun kehidupan. Pola pikir berkembang adalah keyakinan bahwa Anda dapat terus belajar, tumbuh, dan berkembang. Dengan merasa nyaman mengambil risiko, menerima umpan balik, belajar dari pengalaman, dan membingkai ulang 'kegagalan', Anda sedang menuju pola pikir berkembang dan kehidupan yang lebih bahagia dan lebih memuaskan.",
             "price" => 279000,
+            "price_before_discount" => 300_000,
             "url_image" => 'default.png',
         ]);
 
@@ -43,6 +45,7 @@ class CourseSeeder extends Seeder
             "description" => "Temukan bagaimana cara mengembangkan pola pikir serta kesempatan dalam karir dan kehidepan",
             "about" => "Apakah Anda selalu bermain aman? Khawatir gagal? Ngeri ketika menerima umpan balik yang membangun? Apakah Anda lebih suka membawa hidup dan karier Anda ke tingkat berikutnya, memperluas kemungkinan Anda, meningkatkan kenyamanan Anda dalam mengambil risiko, dan meningkatkan kinerja Anda di tempat kerja? Cari tahu bagaimana mengubah pola pikir Anda menjadi pertumbuhan dapat menuai hasil besar, baik dalam pekerjaan maupun kehidupan. Pola pikir berkembang adalah keyakinan bahwa Anda dapat terus belajar, tumbuh, dan berkembang. Dengan merasa nyaman mengambil risiko, menerima umpan balik, belajar dari pengalaman, dan membingkai ulang 'kegagalan', Anda sedang menuju pola pikir berkembang dan kehidupan yang lebih bahagia dan lebih memuaskan.",
             "price" => 279000,
+            "price_before_discount" => 300_000,
             "url_image" => 'default.png',
         ]);
 
@@ -52,6 +55,7 @@ class CourseSeeder extends Seeder
             "description" => "Temukan bagaimana cara mengembangkan pola pikir serta kesempatan dalam karir dan kehidepan",
             "about" => "Apakah Anda selalu bermain aman? Khawatir gagal? Ngeri ketika menerima umpan balik yang membangun? Apakah Anda lebih suka membawa hidup dan karier Anda ke tingkat berikutnya, memperluas kemungkinan Anda, meningkatkan kenyamanan Anda dalam mengambil risiko, dan meningkatkan kinerja Anda di tempat kerja? Cari tahu bagaimana mengubah pola pikir Anda menjadi pertumbuhan dapat menuai hasil besar, baik dalam pekerjaan maupun kehidupan. Pola pikir berkembang adalah keyakinan bahwa Anda dapat terus belajar, tumbuh, dan berkembang. Dengan merasa nyaman mengambil risiko, menerima umpan balik, belajar dari pengalaman, dan membingkai ulang 'kegagalan', Anda sedang menuju pola pikir berkembang dan kehidupan yang lebih bahagia dan lebih memuaskan.",
             "price" => 279000,
+            "price_before_discount" => 300_000,
             "url_image" => 'default.png',
         ]);
 
@@ -61,6 +65,7 @@ class CourseSeeder extends Seeder
             "description" => "Temukan bagaimana cara mengembangkan pola pikir serta kesempatan dalam karir dan kehidepan",
             "about" => "Apakah Anda selalu bermain aman? Khawatir gagal? Ngeri ketika menerima umpan balik yang membangun? Apakah Anda lebih suka membawa hidup dan karier Anda ke tingkat berikutnya, memperluas kemungkinan Anda, meningkatkan kenyamanan Anda dalam mengambil risiko, dan meningkatkan kinerja Anda di tempat kerja? Cari tahu bagaimana mengubah pola pikir Anda menjadi pertumbuhan dapat menuai hasil besar, baik dalam pekerjaan maupun kehidupan. Pola pikir berkembang adalah keyakinan bahwa Anda dapat terus belajar, tumbuh, dan berkembang. Dengan merasa nyaman mengambil risiko, menerima umpan balik, belajar dari pengalaman, dan membingkai ulang 'kegagalan', Anda sedang menuju pola pikir berkembang dan kehidupan yang lebih bahagia dan lebih memuaskan.",
             "price" => 279000,
+            "price_before_discount" => 300_000,
             "url_image" => 'default.png',
         ]);
 

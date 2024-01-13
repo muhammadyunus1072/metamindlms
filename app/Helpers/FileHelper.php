@@ -17,8 +17,10 @@ class FileHelper
     // SAVE FILE
     const COURSE_SAVE_LOCATION = self::U_FILE_PATH . 'course/';
     const OFFLINE_COURSE_SAVE_LOCATION = self::FILE_PATH . 'offline_course/';
+    const PROOF_OF_PAYMENT_SAVE_LOCATION = self::FILE_PATH . 'proof_of_payment/';
 
     // READ FILE
     const COURSE_READ_LOCATION = self::WEBSITE_USER . self::FILE_PATH . 'course/';
     const OFFLINE_COURSE_READ_LOCATION = self::WEBSITE_USER . self::FILE_PATH . 'offline_course/';
+    const PROOF_OF_PAYMENT_READ_LOCATION = self::WEBSITE_USER . self::FILE_PATH . 'proof_of_payment/';
 }

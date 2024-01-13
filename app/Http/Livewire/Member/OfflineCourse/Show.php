@@ -2,11 +2,14 @@
 
 namespace App\Http\Livewire\Member\OfflineCourse;
 
+use App\Models\Cart;
+use App\Models\User;
 use Livewire\Component;
 use App\Models\OfflineCourse;
-use App\Models\OfflineCourseAttendance;
-use App\Models\OfflineCourseRegistrar;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Crypt;
+use App\Models\OfflineCourseRegistrar;
+use App\Models\OfflineCourseAttendance;
 
 class Show extends Component
 {
@@ -15,6 +18,8 @@ class Show extends Component
     public $description;
     public $content;
     public $quota;
+    public $price;
+    public $price_before_discount;
     public $date_time_start;
     public $date_time_end;
     public $url_online_meet;
@@ -22,16 +27,22 @@ class Show extends Component
     public $categories = [];
     public $attachments = [];
 
+    public $product;
+
     public $links = [];
     public $videos = [];
 
     public function mount($offlineCourse)
     {
+
+        $this->product = $offlineCourse->product;
         $this->offline_course_id = Crypt::encryptString($offlineCourse->id);
         $this->title = $offlineCourse->title;
         $this->description = $offlineCourse->description;
         $this->content = $offlineCourse->content;
         $this->quota = $offlineCourse->quota;
+        $this->price = $offlineCourse->price;
+        $this->price_before_discount = $offlineCourse->price_before_discount;
         $this->date_time_start = $offlineCourse->date_time_start;
         $this->date_time_end = $offlineCourse->date_time_end;
         $this->url_online_meet = $offlineCourse->url_online_meet;
@@ -66,7 +77,63 @@ class Show extends Component
                     'title' => $item->title,
                 ]);
             }
+            
+
         }
+    }
+
+    public function store($product_id, $is_buy_now)
+    {
+        try {
+            DB::beginTransaction();
+            
+            $data = array();
+            $data['st'] = 'e';
+            
+            $member = User::where('role', User::MEMBER)->where('id', info_user_id())->first();
+            if(!$member){
+                $this->emit('onFailSweetAlert', "Data Member tidak ditemukan.");
+                return;
+            }
+
+            if($this->is_product_in_cart($product_id))
+            {
+                $this->emit('onFailSweetAlert', "Kursus sudah ada dalam keranjang.");
+                return;
+            }
+
+            $insert_data = new Cart();
+            $insert_data->product_id = $product_id;
+            $insert_data->user_id = $member->id;
+
+            if($insert_data->save()){
+                DB::commit();
+                if($is_buy_now){
+                    return redirect()->route('course.cart_index');
+                }
+                $this->emit('onSuccessSweetAlert', "Kursus berhasil masuk keranjang anda.");
+            }
+            else{
+                DB::rollBack();
+                $this->emit('onSuccessSweetAlert', "Data Kursus gagal masuk keranjang.");
+            }
+
+        } catch (Exception $e) {
+
+            DB::rollBack();
+            $this->emit('onFailSweetAlert', "Kursus gagal masuk keranjang.");
+        }
+    }
+
+    private function is_product_in_cart($product_id)
+    {
+        $product = Cart::where('user_id', info_user_id())
+        ->where('product_id', $product_id)
+        ->first();
+        if(!$product){
+            return false;
+        }
+        return true;
     }
 
     public function render()

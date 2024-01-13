@@ -15,20 +15,20 @@ return new class extends Migration
     {
         // Courses
         Schema::table('courses', function (Blueprint $table) {
-            $table->double('price_before_discount', 20, 2)->default(0)->comment('Harga Sebelum Diskon');
+            $table->double('price_before_discount', 20, 2)->nullable()->comment('Harga Sebelum Diskon');
         });
         Schema::table('_history_courses', function (Blueprint $table) {
-            $table->double('price_before_discount', 20, 2)->default(0)->comment('Harga Sebelum Diskon');
+            $table->double('price_before_discount', 20, 2)->nullable()->comment('Harga Sebelum Diskon');
         });
 
         // Offline Courses
         Schema::table('offline_courses', function (Blueprint $table) {
             $table->double('price', 20, 2)->default(0)->comment('Harga');
-            $table->double('price_before_discount', 20, 2)->default(0)->comment('Harga Sebelum Diskon');
+            $table->double('price_before_discount', 20, 2)->nullable()->comment('Harga Sebelum Diskon');
         });
         Schema::table('_history_offline_courses', function (Blueprint $table) {
             $table->double('price', 20, 2)->default(0)->comment('Harga');
-            $table->double('price_before_discount', 20, 2)->default(0)->comment('Harga Sebelum Diskon');
+            $table->double('price_before_discount', 20, 2)->nullable()->comment('Harga Sebelum Diskon');
         });
     }
 
