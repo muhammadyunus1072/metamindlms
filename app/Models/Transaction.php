@@ -26,7 +26,7 @@ class Transaction extends Model
     {
         self::creating(function ($model) {
             $model->number = NumberGenerator::generate('INV', self::class);
-            $payment_method = $model->payment_method;
+            $payment_method = $model->paymentMethod;
             $model->payment_method_name = $payment_method->name;
             $model->payment_method_description = $payment_method->description;
         });
@@ -57,6 +57,8 @@ class Transaction extends Model
             $transaction_status->name = TransactionStatus::STATUS_PAYMENT_PENDING;
             $transaction_status->description = TransactionStatus::STATUS_PAYMENT_PENDING;
             $transaction_status->save();
+
+            $user->carts()->delete();
         });
 
     }

@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\AccountAdminController;
 use App\Http\Controllers\Admin\AccountMemberController;
 use App\Http\Controllers\Admin\OfflineCourseController;
 use App\Http\Controllers\Admin\CategoryCourseController;
+use App\Http\Controllers\Admin\TransactionAdminController;
 use App\Http\Controllers\Admin\GroupCategoryCourseController;
 use App\Http\Controllers\Admin\ReportOfflineCourseController;
 use App\Http\Controllers\Admin\OfflineCourseRegistrarController;
@@ -20,6 +21,10 @@ use App\Http\Controllers\Admin\OfflineCourseAttendanceController;
 
 Route::middleware('role:admin')->group(function () {
     Route::group(["prefix" => "admin", "as" => "admin."], function () {
+        Route::group(["controller" => TransactionAdminController::class, "prefix" => "transaction", "as" => "transaction."], function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/detail/{id}', 'detail')->name('detail');
+        });
 
         Route::get("/", [DashboardController::class, "index"])->name('dashboard.index');
         Route::post("/update_dashboard", [DashboardController::class, "update_dashboard"])->name('dashboard.update');

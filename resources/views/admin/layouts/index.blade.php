@@ -30,6 +30,7 @@
     <link type="text/css" href="{{ asset('/assets/vendor/daterangepicker.css') }}" rel="stylesheet">
 
     @stack('css')
+    @livewireStyles
 </head>
 
 <body class="layout-app ">
@@ -224,6 +225,9 @@
     </script>
 
     @stack('js')
+
+    @livewireScripts
+
     <script>
         window.livewire.on('onSuccessSweetAlert', (message) => {
             Swal.fire({

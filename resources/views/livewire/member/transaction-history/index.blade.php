@@ -9,7 +9,7 @@
             <div class="col-md-12">
                 <div class="card card-sm">
                     @forelse ($user->transactions as $transaction)
-                        <div class="card-body">
+                        <a class="card-body" href="{{route('member.transaction.detail', ['id' => $transaction->id])}}">
                             <ul class="list-group list-group-custom">
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     <p class="bold h5">{{Carbon\Carbon::parse($transaction->created_at)->format('d M Y')}}</p>
@@ -25,14 +25,11 @@
                                     </li>
                                 @endforeach
                             </ul>
-                        </div>
+                        </a>
                     @empty
                         
                     @endforelse
                 </div>
             </div>
-    </div>
-
-    <div class="card">
     </div>
 </div>

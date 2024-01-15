@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Member\TransactionHistory;
+namespace App\Http\Livewire\Admin\Transaction;
 
 use App\Models\Cart;
 use App\Models\User;
@@ -24,6 +24,16 @@ class Detail extends Component
 
     protected $rules = [
     ];
+    protected $listeners = [
+        'addFilter',
+    ];
+
+    public function addFilter($filter)
+    {
+        foreach ($filter as $key => $value) {
+            $this->$key = $value;
+        }
+    }
 
     public function mount($transaction_id)
     {
@@ -33,7 +43,6 @@ class Detail extends Component
     private function getData()
     {
         $this->transaction = Transaction::where('id', $this->transaction_id)
-        ->where('user_id', info_user_id())
         ->with(
             'transactionDetails',
             'status',
@@ -55,6 +64,22 @@ class Detail extends Component
         }
     }
 
+    public function confirmDoneTransaction()
+    {
+        $this->dispatchBrowserEvent('openConfirTransactionModal');
+    }
+
+    public function confirmTransaction()
+    {
+        $transaction_status = new TransactionStatus();
+        $transaction_status->transaction_id = $this->transaction_id;
+        $transaction_status->name = TransactionStatus::STATUS_DONE;
+        $transaction_status->description = TransactionStatus::STATUS_DONE;
+        if($transaction_status->save())
+        {
+            return redirect()->route('admin.transaction.index');
+        }
+    }
     public function confirmCancelTransaction()
     {
         $this->dispatchBrowserEvent('openConfirmCancellationModal');
@@ -67,34 +92,12 @@ class Detail extends Component
         $transaction_status->description = TransactionStatus::STATUS_CANCEL;
         if($transaction_status->save())
         {
-            return redirect()->route('member.transaction.index');
+            return redirect()->route('admin.transaction.index');
         }
-    }
-
-    public function save()
-    {
-        $validatedData = [];
-        if ($this->image != null) {
-            $this->validate([
-                'image' => 'image|max:2048',
-            ]);
-
-            $this->image->store(FileHelper::PROOF_OF_PAYMENT_SAVE_LOCATION);
-            $validatedData['proof_of_payment'] = $this->image->hashName();
-        }
-        $transaction = Transaction::find($this->transaction_id);
-        $transaction->fill($validatedData);
-        if($transaction->save())
-        {
-            $this->emit('onSuccessSweetAlert', 'Berhasil Menyimpan Bukti Bayar');
-        }else{
-            $this->emit('onFailSweetAlert', 'Gagal Menyimpan Bukti Bayar');
-        }
-
     }
     public function render()
     {
-        return view('livewire.member.transaction-history.detail',);
+        return view('livewire.admin.transaction.detail',);
     }
 
 }

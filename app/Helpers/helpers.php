@@ -116,6 +116,7 @@ const MASTER_SIDEBAR = array(
     "course" => "Kursus",
     "cart" => "Keranjang",
     "transaction_history" => "Riwayat Transaksi",
+    "transaction" => "Transaksi",
     "offline_course" => "Kursus Offline",
     "product" => "Produk",
     "course_member" => "Kursus Member",

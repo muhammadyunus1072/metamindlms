@@ -77,7 +77,7 @@
                                         <label class="form-label" for="image">Upload Bukti Bayar :</label>
                                         <div class="custom-file">
                                             <input type="file" wire:model.lazy="image"
-                                                class="custom-file-input  @error('image') is-invalid @enderror" required>
+                                                class="custom-file-input  @error('image') is-invalid @enderror">
                                             <label for="image" class="custom-file-label">
                                                 <div wire:loading.remove wire:target="image">
                                                     @if ($image)
@@ -106,13 +106,14 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <button type="submit"
-                                    class="btn btn-block btn-success mb-2"
-                                    >Simpan Bukti Bayar</button>
-                                <button type="button"
-                                    class="btn btn-block btn-danger mb-3"
-                                    wire:click="cancelTransaction"
-                                    >Batalkan Transaksi</button>
+                                    @if($transaction->status->name != App\Models\TransactionStatus::STATUS_CANCEL && $transaction->status->name != App\Models\TransactionStatus::STATUS_DONE)
+                                        <button type="submit"
+                                        class="btn btn-block btn-success mb-2"
+                                        >Simpan Bukti Bayar</button>
+                                        <button type='button' class='btn btn-block btn-danger mb-3' wire:click="confirmCancelTransaction()">
+                                            <i class='fa fa-trash mr-2'></i> Batalkan Transaksi
+                                        </button>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -129,3 +130,13 @@
     <div class="card">
     </div>
 </div>
+
+@push('js')
+    <script>
+        window.addEventListener('openConfirmCancellationModal', event => {
+            if (confirm('Batalkan Transaksi?')) {
+                @this.cancelTransaction();
+            }
+        });
+    </script>
+@endpush

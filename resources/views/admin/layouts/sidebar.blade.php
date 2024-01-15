@@ -15,6 +15,14 @@
             <span class="sidebar-menu-text">Dashboard</span>
         </a>
     </li>
+    {{-- Transaction --}}
+    <li
+        class="sidebar-menu-item {{ Request::segment(2) == 'transaction' ? 'active' : '' }}">
+        <a class="sidebar-menu-button" href="{{ route('admin.transaction.index') }}">
+            <i class="fa fa-file sidebar-menu-icon sidebar-menu-icon--left"></i>
+            <span class="sidebar-menu-text">Transaksi</span>
+        </a>
+    </li>
 
     {{-- Kursus --}}
     <li class="sidebar-menu-item {{ Request::segment(2) == 'master_data' ? 'active open' : '' }}">

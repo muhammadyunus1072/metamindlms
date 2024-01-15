@@ -17,6 +17,13 @@ class TransactionStatus extends Model
     const STATUS_DONE = "Selesai";
     const STATUS_CANCEL = "Batal";
 
+    const STATUS_CHOICE = [
+        self::STATUS_PAYMENT_PENDING => self::STATUS_PAYMENT_PENDING,
+        self::STATUS_ORDER_CONFIRMATION_PENDING => self::STATUS_ORDER_CONFIRMATION_PENDING,
+        self::STATUS_DONE => self::STATUS_DONE,
+        self::STATUS_CANCEL => self::STATUS_CANCEL,
+    ];
+
     protected $fillable = [
         'transaction_id',
         'name',
