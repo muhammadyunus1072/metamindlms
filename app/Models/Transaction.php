@@ -70,6 +70,10 @@ class Transaction extends Model
     {
         return $this->belongsTo(PaymentMethod::class, 'payment_method_id', 'id');
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
     public function status()
     {
         return $this->belongsTo(TransactionStatus::class, 'last_status_id', 'id');

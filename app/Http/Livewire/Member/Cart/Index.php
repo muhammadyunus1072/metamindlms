@@ -7,11 +7,13 @@ use App\Models\User;
 use Livewire\Component;
 use App\Models\Transaction;
 use App\Models\PaymentMethod;
+use App\Helpers\MidtransPayment;
 use Illuminate\Support\Facades\DB;
 
 class Index extends Component
 {
     public $user;
+    public $carts;
     public $total;
     public $input_payment_method = [];
     public $payment_method_choices = [];
@@ -32,10 +34,21 @@ class Index extends Component
             return $cart->product->price ?? 0;
         });
         $this->user = $user;
+        $this->carts = $user->carts;
     }
     public function render()
     {
         return view('livewire.member.cart.index',);
+    }
+
+    public function paymentStatus($status)
+    {
+        if($status)
+        {
+            DB::commit();
+        }else{
+            DB::rollBack();
+        }
     }
 
     public function checkout()
@@ -49,16 +62,30 @@ class Index extends Component
                 return;
             }
 
-            $insert_data = new Transaction();
-            $insert_data->user_id = $member->id;
-            $insert_data->payment_method_id = $this->input_payment_method;
+            $transaction = new Transaction();
+            $transaction->user_id = $member->id;
+            $transaction->payment_method_id = $this->input_payment_method;
 
-            if($insert_data->save()){
-                DB::commit();
-                return redirect()->route('member.transaction.index');
+            if($transaction->save()){
+                if($transaction->payment_method_id == 1 && $transaction->payment_method_name == PaymentMethod::MIDTRANS_PAYMENT_METHOD)
+                {
+                    $snapToken = MidtransPayment::getSnapToken(
+                        $transaction->id, 
+                        $transaction->transactionDetails->sum('product_price'), 
+                        [
+                            'first_name' => $transaction->user->name,
+                            'last_name' => '',
+                            'email' => $transaction->user->email,
+                            'phone' => $transaction->user->phone,
+                        ]
+                    );
+                    $this->emit('midtransCheckout', $snapToken);
+                }else{
+                    DB::commit();
+                    return redirect()->route('member.transaction.index');
+                }
             }
             else{
-                DB::rollBack();
                 $this->emit('onSuccessSweetAlert', "Data Kursus gagal masuk keranjang.");
             }
 

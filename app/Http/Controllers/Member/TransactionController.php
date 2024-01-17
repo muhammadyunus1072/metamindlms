@@ -10,6 +10,7 @@ use App\Models\Level;
 use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\LessonFile;
+use App\Models\Transaction;
 use App\Models\CourseReview;
 use Illuminate\Http\Request;
 use App\Models\CourseSection;
@@ -51,6 +52,28 @@ class TransactionController extends Controller
     {
         $transaction_id = $id;
         return view("member.pages.transaction.detail", compact('transaction_id'));
+    }
+
+    public function callback(Request $request)
+    {
+        $serverKey = config('midtrans.server_key');
+        $hashed = hash('sha512', $request->order_id.$request->status_code.$request->gross_amount.$serverKey);
+    
+        if ($hashed === $request->signature_key) {
+            if ($request->transaction_status === 'capture' || $request->transaction_status === 'settlement') {
+                $transaction = Transaction::find($request->order_id);
+                if ($transaction) {
+                    $transaction_status = new TransactionStatus();
+                    $transaction_status->transaction_id = $transaction->id;
+                    $transaction_status->name = TransactionStatus::STATUS_DONE;
+                    $transaction_status->description = TransactionStatus::STATUS_DONE;
+                    $transaction_status->save();
+                } else {
+                    // Log transaction not found
+                    Log::error('Transaction with ID ' . $request->order_id . ' not found.');
+                }
+            }
+        }
     }
 
 
