@@ -46,8 +46,10 @@ class Index extends Component
         if($status)
         {
             DB::commit();
+            $this->emit('onSuccessSweetAlert', 'Commit');
         }else{
             DB::rollBack();
+            $this->emit('onSuccessSweetAlert', 'Rolback');
         }
     }
 
