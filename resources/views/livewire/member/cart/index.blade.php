@@ -63,6 +63,15 @@
                                             </select>
                                         </td>
                                     </tr>
+                                    @if (isset($instruction->instruction))
+                                        <tr>
+                                            <td colspan="4">
+                                                <div class="d-flex justify-content-center">
+                                                    {!! $instruction->instruction !!}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endif
                                     <tr>
                                         <td class="card-title text-right" colspan="3">
                                             <div class="d-flex justify-content-end">
@@ -92,16 +101,13 @@
                 console.log(snapToken)
                 window.snap.pay(snapToken, {
                     onSuccess: function(result){
-                    Livewire.emit('paymentStatus', true);
                     window.location.href = "{{route('member.transaction.index')}}";
                     },
                     onError: function(result){
-                    Livewire.emit('paymentStatus', false);
-                    alert("Pembayaran Gagal!"); 
+                    Livewire.emit('onFailSweetAlert', 'Pembayaran Gagal!');
                     },
                     onClose: function(){
-                    Livewire.emit('paymentStatus', false);
-                    alert('Anda menutup pembayaran tanpa menyelesaikannya!');
+                    Livewire.emit('onFailSweetAlert', 'Pembayaran Ditutup!');
                     }
                 })
             });

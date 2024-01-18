@@ -16,11 +16,21 @@
         </a>
     </li>
     {{-- Transaction --}}
+    <?php $name = 'transaction'; ?>
     <li
-        class="sidebar-menu-item {{ Request::segment(2) == 'transaction' ? 'active' : '' }}">
-        <a class="sidebar-menu-button" href="{{ route('admin.transaction.index') }}">
+        class="sidebar-menu-item {{ Request::segment(2) == $name ? 'active' : '' }}">
+        <a class="sidebar-menu-button" href="{{ route('admin.'. $name .'.index') }}">
             <i class="fa fa-file sidebar-menu-icon sidebar-menu-icon--left"></i>
-            <span class="sidebar-menu-text">Transaksi</span>
+            <span class="sidebar-menu-text">{{ master_sidebar($name) }}</span>
+        </a>
+    </li>
+    {{-- Payment Method --}}
+    <?php $name = 'payment_method'; ?>
+    <li
+        class="sidebar-menu-item {{ Request::segment(2) == $name ? 'active' : '' }}">
+        <a class="sidebar-menu-button" href="{{ route('admin.'. $name .'.index') }}">
+            <i class="fa fa-file sidebar-menu-icon sidebar-menu-icon--left"></i>
+            <span class="sidebar-menu-text">{{ master_sidebar($name) }}</span>
         </a>
     </li>
 

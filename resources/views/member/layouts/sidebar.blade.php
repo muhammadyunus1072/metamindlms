@@ -14,6 +14,12 @@
             <span class="sidebar-menu-text">Cari Kursus</span>
         </a>
     </li>
+    <li class="sidebar-menu-item {{ Request::segment(2) == 'e_commerce'? 'active' : '' }}">
+        <a class="sidebar-menu-button" href="{{ route('member.e_commerce.index') }}">
+            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">shopping_cart</span>
+            <span class="sidebar-menu-text">E-Commerce</span>
+        </a>
+    </li>
     {{-- <li class="sidebar-menu-item {{ Request::segment(1) == 'offline_course' ? 'active' : '' }}">
         <a class="sidebar-menu-button" href="{{ route('offline_course.index') }}">
             <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">search</span>

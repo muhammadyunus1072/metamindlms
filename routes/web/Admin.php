@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AccountAdminController;
 use App\Http\Controllers\Admin\AccountMemberController;
 use App\Http\Controllers\Admin\OfflineCourseController;
+use App\Http\Controllers\Admin\PaymentMethodController;
 use App\Http\Controllers\Admin\CategoryCourseController;
 use App\Http\Controllers\Admin\TransactionAdminController;
 use App\Http\Controllers\Admin\GroupCategoryCourseController;
@@ -24,6 +25,15 @@ Route::middleware('role:admin')->group(function () {
         Route::group(["controller" => TransactionAdminController::class, "prefix" => "transaction", "as" => "transaction."], function () {
             Route::get('/', 'index')->name('index');
             Route::get('/detail/{id}', 'detail')->name('detail');
+        });
+        Route::group(["controller" => PaymentMethodController::class, "prefix" => "payment_method", "as" => "payment_method."], function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/detail/{id}', 'detail')->name('detail');
+            Route::get("/create", "create")->name('create');
+            Route::post("/store", "store")->name('store');
+            Route::get("/edit/{id}", "edit")->name('edit');
+            Route::post("/update/{id}", "update")->name('update');
+            Route::post("/delete/{id}", "destroy")->name('destroy');
         });
 
         Route::get("/", [DashboardController::class, "index"])->name('dashboard.index');

@@ -70,41 +70,6 @@
                         </table>
                         <div class="row mx-2">
                             <div class="col-md-12">
-                                
-                                {{-- FILE --}}
-                                <div class="form-group">
-                                    <label class="form-label" for="image">Upload Bukti Bayar :</label>
-                                    <div class="custom-file">
-                                        <input type="file" wire:model.lazy="image"
-                                            class="custom-file-input  @error('image') is-invalid @enderror">
-                                        <label for="image" class="custom-file-label">
-                                            <div wire:loading.remove wire:target="image">
-                                                @if ($image)
-                                                    {{ $image->getClientOriginalName() }}
-                                                @else
-                                                    Pilih Gambar
-                                                @endif
-                                            </div>
-                                            <div wire:loading wire:target="image">
-                                                Uploading...
-                                            </div>
-                                        </label>
-                                        @error('image')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-
-                                    @if ($image && empty($errors->get('image')))
-                                        <img class="img-fluid" src="{{ $image->temporaryUrl() }}"
-                                            style="width: 300px; height:auto">
-                                    @elseif($oldImage != null)
-                                        <img class="img-fluid" src="{{ $oldImage }}" style="width: 300px; height:auto">
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="col-md-12">
                                 @if($transaction->status->name != App\Models\TransactionStatus::STATUS_CANCEL && $transaction->status->name != App\Models\TransactionStatus::STATUS_DONE)
                                     <button type="button" class="btn btn-block btn-success mb-2" wire:click="confirmDoneTransaction()"
                                     >Selesai</button>

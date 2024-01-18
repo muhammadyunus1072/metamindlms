@@ -7,6 +7,7 @@ use App\Http\Controllers\Member\QrScanController;
 use App\Http\Controllers\Member\ProfileController;
 use App\Http\Controllers\Member\FavoriteController;
 use App\Http\Controllers\Member\DashboardController;
+use App\Http\Controllers\Member\ECommerceController;
 use App\Http\Controllers\Member\DiscussionController;
 use App\Http\Controllers\Member\TransactionController;
 use App\Http\Controllers\Member\CourseMemberController;
@@ -48,6 +49,10 @@ Route::middleware('role:member')->group(function () {
         Route::get("/", [DashboardController::class, "index"])->name('dashboard.index');
         
         Route::group(["controller" => CartController::class, "prefix" => "cart", "as" => "cart."], function () {
+            Route::get('/', 'index')->name('index');
+            Route::post("/store_product_to_cart", "store_product_to_cart")->name('store_product_to_cart');
+        });
+        Route::group(["controller" => ECommerceController::class, "prefix" => "e_commerce", "as" => "e_commerce."], function () {
             Route::get('/', 'index')->name('index');
             Route::post("/store_product_to_cart", "store_product_to_cart")->name('store_product_to_cart');
         });

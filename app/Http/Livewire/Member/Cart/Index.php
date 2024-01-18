@@ -17,6 +17,11 @@ class Index extends Component
     public $total;
     public $input_payment_method = [];
     public $payment_method_choices = [];
+    public $instruction;
+
+    protected $listeners = [
+        'paymentStatus',
+    ];
 
     public function mount()
     {
@@ -41,16 +46,9 @@ class Index extends Component
         return view('livewire.member.cart.index',);
     }
 
-    public function paymentStatus($status)
+    public function updatedInputPaymentMethod($payment_method_id)
     {
-        if($status)
-        {
-            DB::commit();
-            $this->emit('onSuccessSweetAlert', 'Commit');
-        }else{
-            DB::rollBack();
-            $this->emit('onSuccessSweetAlert', 'Rolback');
-        }
+        $this->instruction = PaymentMethod::select('instruction')->where('id', $payment_method_id)->first();
     }
 
     public function checkout()
@@ -69,6 +67,8 @@ class Index extends Component
             $transaction->payment_method_id = $this->input_payment_method;
 
             if($transaction->save()){
+
+                DB::commit();
                 if($transaction->payment_method_id == 1 && $transaction->payment_method_name == PaymentMethod::MIDTRANS_PAYMENT_METHOD)
                 {
                     $snapToken = MidtransPayment::getSnapToken(
@@ -83,7 +83,6 @@ class Index extends Component
                     );
                     $this->emit('midtransCheckout', $snapToken);
                 }else{
-                    DB::commit();
                     return redirect()->route('member.transaction.index');
                 }
             }

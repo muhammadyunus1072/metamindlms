@@ -144,51 +144,52 @@ class Detail extends Component
 
     public function save()
     {
-        // Validation Steps
-        $this->validate();
+        $this->emit('consoleLog', $this->content);
+        // // Validation Steps
+        // $this->validate();
 
-        if (count($this->categories) == 0) {
-            $this->addError('categories', 'Kategori Kursus Harus Diisi');
-        }
+        // if (count($this->categories) == 0) {
+        //     $this->addError('categories', 'Kategori Kursus Harus Diisi');
+        // }
 
-        $validatedData = [
-            'title' => $this->title,
-            'description' => $this->description,
-            'content' => $this->content,
-            'quota' => $this->quota,
-            'price' => $this->price,
-            'price_before_discount' => $this->price_before_discount,
-            'date_time_start' => $this->date_time_start,
-            'date_time_end' => $this->date_time_end,
-            'url_online_meet' => $this->url_online_meet,
-        ];
+        // $validatedData = [
+        //     'title' => $this->title,
+        //     'description' => $this->description,
+        //     'content' => $this->content,
+        //     'quota' => $this->quota,
+        //     'price' => $this->price,
+        //     'price_before_discount' => $this->price_before_discount,
+        //     'date_time_start' => $this->date_time_start,
+        //     'date_time_end' => $this->date_time_end,
+        //     'url_online_meet' => $this->url_online_meet,
+        // ];
 
-        if ($this->image != null) {
-            $this->validate([
-                'image' => 'image|max:2048',
-            ]);
+        // if ($this->image != null) {
+        //     $this->validate([
+        //         'image' => 'image|max:2048',
+        //     ]);
 
-            $this->image->store(FileHelper::OFFLINE_COURSE_SAVE_LOCATION);
-            $validatedData['image'] = $this->image->hashName();
-        }
+        //     $this->image->store(FileHelper::OFFLINE_COURSE_SAVE_LOCATION);
+        //     $validatedData['image'] = $this->image->hashName();
+        // }
 
-        // Handle Offline Course
-        if ($this->offline_course_id != null) {
-            $offlineCourse = OfflineCourse::find(Crypt::decryptString($this->offline_course_id));
-        } else {
-            $offlineCourse = new OfflineCourse();
-        }
-        $offlineCourse->fill($validatedData);
-        $offlineCourse->save();
+        // // Handle Offline Course
+        // if ($this->offline_course_id != null) {
+        //     $offlineCourse = OfflineCourse::find(Crypt::decryptString($this->offline_course_id));
+        // } else {
+        //     $offlineCourse = new OfflineCourse();
+        // }
+        // $offlineCourse->fill($validatedData);
+        // $offlineCourse->save();
 
-        $this->handleCategories($offlineCourse);
-        $this->handleAttachment($offlineCourse);
-        $this->handleVideo($offlineCourse);
-        $this->handleLink($offlineCourse);
+        // $this->handleCategories($offlineCourse);
+        // $this->handleAttachment($offlineCourse);
+        // $this->handleVideo($offlineCourse);
+        // $this->handleLink($offlineCourse);
 
-        session()->flash('success', 'Kursus Offline Berhasil ' . ($this->offline_course_id == null ? 'Ditambahkan' : 'Diperbarui'));
+        // session()->flash('success', 'Kursus Offline Berhasil ' . ($this->offline_course_id == null ? 'Ditambahkan' : 'Diperbarui'));
 
-        return redirect()->route('admin.offline_course.index');
+        // return redirect()->route('admin.offline_course.index');
     }
 
     private function handleCategories($offlineCourse)
