@@ -96,6 +96,14 @@ class Datatable extends Component
                 'name' => 'Quota',
             ],
             [
+                'key' => 'price',
+                'name' => 'Harga',
+            ],
+            [
+                'key' => 'price_before_discount',
+                'name' => 'Harga Sebelum Diskon',
+            ],
+            [
                 'name' => 'Jumlah Pendaftar',
                 'sortable' => false,
                 'searchable' => false,

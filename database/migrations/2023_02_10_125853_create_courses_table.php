@@ -54,7 +54,7 @@ return new class extends Migration
         $table->string('url_icon')->nullable()->comment('Url Icon');
         $table->string('url_video')->nullable()->comment('Url Video');
 
-        $table->double('price', 20, 2)->default(0)->comment('Password');
+        $table->double('price', 20, 2)->default(0)->comment('Harga');
 
         $table->boolean("is_actived")->default(1);
         $table->bigInteger("created_by")->unsigned()->nullable()->comment('Id Admin Pembuat');

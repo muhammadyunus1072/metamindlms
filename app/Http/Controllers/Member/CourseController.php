@@ -124,6 +124,7 @@ class CourseController extends Controller
         $id = dec($id);
         $results_data = $this->get_transaction($id)->first();
 
+        // return $results_data;
         if($results_data){
 
             $section_data = $this->get_section($id);
@@ -287,6 +288,7 @@ class CourseController extends Controller
             'l.name as level_name',
             // 'cc.name as categories_name'
             )
+            ->with('product', 'product.cart')
             ->leftJoin('levels as l', 'l.id', '=', 'courses.level_id')
             // ->leftJoin('course_categories as cc', 'cc.id', '=', 'courses.category_id')
             ->where('courses.id', $id);

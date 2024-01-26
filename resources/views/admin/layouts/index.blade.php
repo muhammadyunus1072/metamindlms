@@ -30,6 +30,7 @@
     <link type="text/css" href="{{ asset('/assets/vendor/daterangepicker.css') }}" rel="stylesheet">
 
     @stack('css')
+    @livewireStyles
 </head>
 
 <body class="layout-app ">
@@ -220,9 +221,33 @@
                 icon: info_type
             });
         }
+
     </script>
 
     @stack('js')
+
+    @livewireScripts
+
+    <script>
+        window.livewire.on('onSuccessSweetAlert', (message) => {
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: message,
+            });
+        });
+
+        window.livewire.on('onFailSweetAlert', (message) => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: message,
+            });
+        });
+        window.livewire.on('consoleLog', (data) => {
+            console.log(data)
+        });
+    </script>
 
 </body>
 

@@ -118,7 +118,7 @@
                         <div class="form-group">
 
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="form-label">Level</label>
                                         <select name="level_id" id="level_id" class="form-control custom-select select2">
@@ -133,6 +133,17 @@
                                             <div class="input-group form-inline">
                                                 <span class="input-group-prepend"><span class="input-group-text">Rp</span></span>
                                                 <input type="number" class="form-control" id="price" name="price" step="0.01" min="0">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Harga Sebelum Diskon</label>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="input-group form-inline">
+                                                <span class="input-group-prepend"><span class="input-group-text">Rp</span></span>
+                                                <input type="number" class="form-control" id="price_before_discount" name="price_before_discount" step="0.01" min="0">
                                             </div>
                                         </div>
                                     </div>
@@ -185,6 +196,7 @@
 		file_data.append('description', $('#description').val());
 		file_data.append('level_id', $('#level_id').val());
 		file_data.append('price', $('#price').val());
+		file_data.append('price_before_discount', $('#price_before_discount').val());
 		file_data.append('url_video', $('#url_video').val());
         file_data.append('url_image', $("#url_image").get(0).files[0]); 
 

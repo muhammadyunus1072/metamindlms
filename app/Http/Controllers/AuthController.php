@@ -410,6 +410,11 @@ class AuthController extends Controller
         }
     }
 
+    public function coba(){
+        $user = User::find(1);
+        return sha1($user->getEmailForVerification());
+    }
+
     public function email_verification_verify(Request $request)
     {
         $user = User::find($request->id);

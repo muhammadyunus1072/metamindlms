@@ -15,6 +15,24 @@
             <span class="sidebar-menu-text">Dashboard</span>
         </a>
     </li>
+    {{-- Transaction --}}
+    <?php $name = 'transaction'; ?>
+    <li
+        class="sidebar-menu-item {{ Request::segment(2) == $name ? 'active' : '' }}">
+        <a class="sidebar-menu-button" href="{{ route('admin.'. $name .'.index') }}">
+            <i class="fa fa-file sidebar-menu-icon sidebar-menu-icon--left"></i>
+            <span class="sidebar-menu-text">{{ master_sidebar($name) }}</span>
+        </a>
+    </li>
+    {{-- Payment Method --}}
+    <?php $name = 'payment_method'; ?>
+    <li
+        class="sidebar-menu-item {{ Request::segment(2) == $name ? 'active' : '' }}">
+        <a class="sidebar-menu-button" href="{{ route('admin.'. $name .'.index') }}">
+            <i class="fa fa-file sidebar-menu-icon sidebar-menu-icon--left"></i>
+            <span class="sidebar-menu-text">{{ master_sidebar($name) }}</span>
+        </a>
+    </li>
 
     {{-- Kursus --}}
     <li class="sidebar-menu-item {{ Request::segment(2) == 'master_data' ? 'active open' : '' }}">
@@ -31,6 +49,12 @@
                 </a>
             </li>
             <?php $name = 'offline_course'; ?>
+            <li class="sidebar-menu-item {{ Request::segment(3) == $name ? 'active' : '' }}">
+                <a class="sidebar-menu-button" href="{{ route('admin.' . $name . '.index') }}">
+                    <span class="sidebar-menu-text">{{ master_sidebar($name) }}</span>
+                </a>
+            </li>
+            <?php $name = 'product'; ?>
             <li class="sidebar-menu-item {{ Request::segment(3) == $name ? 'active' : '' }}">
                 <a class="sidebar-menu-button" href="{{ route('admin.' . $name . '.index') }}">
                     <span class="sidebar-menu-text">{{ master_sidebar($name) }}</span>

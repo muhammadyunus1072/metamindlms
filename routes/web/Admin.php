@@ -1,24 +1,40 @@
 <?php
 
-use App\Http\Controllers\Admin\CategoryCourseController;
-use App\Http\Controllers\Admin\CourseController;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\GroupCategoryCourseController;
-use App\Http\Controllers\Admin\LevelController;
-use App\Http\Controllers\Admin\OfflineCourseController;
-use App\Http\Controllers\Admin\OfflineCourseAttendanceController;
-use App\Http\Controllers\Admin\OfflineCourseRegistrarController;
-use App\Http\Controllers\Admin\ProfileController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\LevelController;
+use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\ReportController;
-use App\Http\Controllers\Admin\ReportOfflineCourseController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AccountAdminController;
 use App\Http\Controllers\Admin\AccountMemberController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\OfflineCourseController;
+use App\Http\Controllers\Admin\PaymentMethodController;
+use App\Http\Controllers\Admin\CategoryCourseController;
+use App\Http\Controllers\Admin\TransactionAdminController;
+use App\Http\Controllers\Admin\GroupCategoryCourseController;
+use App\Http\Controllers\Admin\ReportOfflineCourseController;
+use App\Http\Controllers\Admin\OfflineCourseRegistrarController;
+use App\Http\Controllers\Admin\OfflineCourseAttendanceController;
 
 
 Route::middleware('role:admin')->group(function () {
     Route::group(["prefix" => "admin", "as" => "admin."], function () {
+        Route::group(["controller" => TransactionAdminController::class, "prefix" => "transaction", "as" => "transaction."], function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/detail/{id}', 'detail')->name('detail');
+        });
+        Route::group(["controller" => PaymentMethodController::class, "prefix" => "payment_method", "as" => "payment_method."], function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/detail/{id}', 'detail')->name('detail');
+            Route::get("/create", "create")->name('create');
+            Route::post("/store", "store")->name('store');
+            Route::get("/edit/{id}", "edit")->name('edit');
+            Route::post("/update/{id}", "update")->name('update');
+            Route::post("/delete/{id}", "destroy")->name('destroy');
+        });
 
         Route::get("/", [DashboardController::class, "index"])->name('dashboard.index');
         Route::post("/update_dashboard", [DashboardController::class, "update_dashboard"])->name('dashboard.update');
@@ -111,6 +127,19 @@ Route::middleware('role:admin')->group(function () {
                 Route::get("show/qr/{id}", "showQr")->name('show.qr');
                 Route::delete("destroy/{id}", "edit")->name('destroy');
                 Route::get("select2/category", "select2Category")->name('select2.category');
+            });
+            // Master Data Product
+            Route::group(["controller" => ProductController::class, "prefix" => "product", "as" => "product."], function () {
+                Route::get("/", "index")->name('index');
+                Route::get("create", "create")->name('create');
+                Route::get("edit/{id}", "edit")->name('edit');
+                Route::get("show/{id}", "show")->name('show');
+                Route::get("show/qr/{id}", "showQr")->name('show.qr');
+                Route::delete("destroy/{id}", "edit")->name('destroy');
+                Route::get("select2/category", "select2Category")->name('select2.category');
+
+                Route::get('/course/get', [CourseController::class, 'search'])->name('get.course');
+                Route::get('/offline-course/get', [OfflineCourseController::class, 'searchOfflineCourse'])->name('get.offline_course');
             });
 
             // Master Data Kursus Offline Pendaftaran

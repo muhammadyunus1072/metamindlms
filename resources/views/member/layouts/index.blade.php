@@ -294,6 +294,27 @@
     @stack('js')
 
     @livewireScripts
+
+    <script>
+        window.livewire.on('onSuccessSweetAlert', (message) => {
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: message,
+            });
+        });
+
+        window.livewire.on('onFailSweetAlert', (message) => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: message,
+            });
+        });
+        window.livewire.on('consoleLog', (data) => {
+            console.log(data)
+        });
+    </script>
 </body>
 
 </html>

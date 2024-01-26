@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             CourseSeeder::class,
             LevelSeeder::class,
             OfflineCourseSeeder::class,
+            MidtransPaymentMethodSeeder::class,
         ]);
     }
 }

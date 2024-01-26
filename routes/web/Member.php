@@ -1,14 +1,17 @@
 <?php
 
-use App\Http\Controllers\Member\CourseController;
-use App\Http\Controllers\Member\DashboardController;
-use App\Http\Controllers\Member\CourseMemberController;
-use App\Http\Controllers\Member\DiscussionController;
-use App\Http\Controllers\Member\FavoriteController;
-use App\Http\Controllers\Member\OfflineCourseController;
-use App\Http\Controllers\Member\ProfileController;
-use App\Http\Controllers\Member\QrScanController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Member\CartController;
+use App\Http\Controllers\Member\CourseController;
+use App\Http\Controllers\Member\QrScanController;
+use App\Http\Controllers\Member\ProfileController;
+use App\Http\Controllers\Member\FavoriteController;
+use App\Http\Controllers\Member\DashboardController;
+use App\Http\Controllers\Member\ECommerceController;
+use App\Http\Controllers\Member\DiscussionController;
+use App\Http\Controllers\Member\TransactionController;
+use App\Http\Controllers\Member\CourseMemberController;
+use App\Http\Controllers\Member\OfflineCourseController;
 
 Route::group(["controller" => CourseController::class, "prefix" => "course", "as" => "course."], function () {
     Route::get('/', 'index')->name('index');
@@ -32,6 +35,8 @@ Route::middleware('role:member')->group(function () {
 
     Route::group(["controller" => CourseController::class, "prefix" => "course", "as" => "course."], function () {
         Route::post("/store_favorite", "store_favorite")->name('store_favorite');
+        Route::post('/store_product_to_cart', [CartController::class, 'store_product_to_cart'])->name('store_product_to_cart');
+        Route::get('/cart_index', [CartController::class, 'index'])->name('cart_index');
     });
 
     Route::group(["controller" => ProfileController::class, "prefix" => "profile", "as" => "profile."], function () {
@@ -42,6 +47,19 @@ Route::middleware('role:member')->group(function () {
     Route::group(["prefix" => "member", "as" => "member."], function () {
 
         Route::get("/", [DashboardController::class, "index"])->name('dashboard.index');
+        
+        Route::group(["controller" => CartController::class, "prefix" => "cart", "as" => "cart."], function () {
+            Route::get('/', 'index')->name('index');
+            Route::post("/store_product_to_cart", "store_product_to_cart")->name('store_product_to_cart');
+        });
+        Route::group(["controller" => ECommerceController::class, "prefix" => "e_commerce", "as" => "e_commerce."], function () {
+            Route::get('/', 'index')->name('index');
+            Route::post("/store_product_to_cart", "store_product_to_cart")->name('store_product_to_cart');
+        });
+        Route::group(["controller" => TransactionController::class, "prefix" => "transaction", "as" => "transaction."], function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/detail/{id}', 'detail')->name('detail');
+        });
 
         Route::group(["controller" => CourseMemberController::class, "prefix" => "course_member", "as" => "course_member."], function () {
             Route::get('/', 'index')->name('index');

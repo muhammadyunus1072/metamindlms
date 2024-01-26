@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Member;
 
-use App\Http\Controllers\Controller;
-use App\Models\CategoryCourse;
-use App\Models\Course;
-use App\Models\CourseMember;
-use App\Models\Lesson;
-use App\Models\Level;
-use App\Models\OfflineCourse;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
+use App\Models\Cart;
+use App\Models\Level;
+use App\Models\Course;
+use App\Models\Lesson;
+use App\Models\CourseMember;
 use Illuminate\Http\Request;
+use App\Models\OfflineCourse;
+use App\Models\CategoryCourse;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
 
 class DashboardController extends Controller
 {
@@ -41,9 +42,10 @@ class DashboardController extends Controller
         $data = $this->get_etc();
 
         $course_member = $this->get_course_by_member();
+        $count_cart = Cart::where('user_id', '=', info_user_id())->count();
         $offline_courses = $this->get_offline_course_by_member();
 
-        return view($this->view_path . "index", compact('data', 'course_member', 'offline_courses'));
+        return view($this->view_path . "index", compact('data', 'course_member', 'offline_courses', 'count_cart'));
     }
 
 
