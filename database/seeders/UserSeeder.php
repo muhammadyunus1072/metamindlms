@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Admin;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -16,6 +17,7 @@ class UserSeeder extends Seeder
             "password" => Hash::make('secret'),
             "name" => "Member",
             "role" => "member",
+            'email_verified_at' => Carbon::now(),
         ]);
 
         for ($i = 1; $i < 10; $i++) {
