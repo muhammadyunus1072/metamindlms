@@ -12,7 +12,7 @@ class NumberGenerator
     
     public const RESET_TYPE_DAILY = 3;
 
-    public const SEPARATOR = '/';
+    public const SEPARATOR = '-';
 
 
     public static function generate(
@@ -34,7 +34,7 @@ class NumberGenerator
             ->first();
 
         if (!empty($lastModel)) {
-            $lastNumber = intval(explode(self::SEPARATOR, $lastModel->number)[0]);
+            $lastNumber = intval(explode(self::SEPARATOR, $lastModel->number)[2]);
         } else {
             $lastNumber = 0;
         }
@@ -44,7 +44,7 @@ class NumberGenerator
         $currentNumber = str_pad($currentNumber, $zeroPad, '0', STR_PAD_LEFT);
 
         // Generate Format Number
-        $formattedNumber = "$code-$year_now"."$month_now"."$day_now-$currentNumber";
+        $formattedNumber = "$code".self::SEPARATOR."$year_now"."$month_now"."$day_now".self::SEPARATOR."$currentNumber";
 
         return $formattedNumber;
     }
