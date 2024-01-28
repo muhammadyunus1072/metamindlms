@@ -39,10 +39,12 @@ return new class extends Migration
 
         if ($is_history) {
             $table->bigInteger('obj_id')->unsigned();
-        } 
+        }
 
         $table->string("name")->comment('Nama Metode');
         $table->text("description")->nullable()->comment('Deskripsi Dari Metode');
+        $table->text('instruction')->nullable()->comment('Instruksi');
+        
         $table->boolean("is_editable")->default(true)->comment('Penanda Metode Bisa diedit');
 
         $table->bigInteger("created_by")->unsigned()->nullable()->comment('Id Admin Pembuat');

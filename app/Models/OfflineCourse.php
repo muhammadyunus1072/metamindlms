@@ -56,14 +56,14 @@ class OfflineCourse extends Model
         });
     }
 
-    public function product()
-    {
-        return $this->belongsTo(Product::class, 'id', 'remarks_id')->where('remarks_type', self::class);
-    }
-
     public function getImage()
     {
         return $this->image ? FileHelper::OFFLINE_COURSE_READ_LOCATION . $this->image : null;
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'id', 'remarks_id')->where('remarks_type', self::class);
     }
 
     public function offlineCourseCategories()

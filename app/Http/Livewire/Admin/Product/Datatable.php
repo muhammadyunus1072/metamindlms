@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Admin\Product;
 
+use App\Helpers\NumberFormatter;
 use Carbon\Carbon;
 use App\Models\Product;
 use Livewire\Component;
@@ -35,7 +36,7 @@ class Datatable extends Component
                 'searchable' => false,
                 'render' => function ($item) {
                     $encryptedId = Crypt::encryptString($item->id);
-                    
+
                     $editUrl = route('admin.product.edit', $encryptedId);
                     $editHtml = "<a href='$editUrl' class='dropdown-item'><i class='fa fa-edit mr-2'></i>Edit</a>";
 
@@ -69,23 +70,27 @@ class Datatable extends Component
                 'name' => 'Nama',
             ],
             [
-                'key' => 'description',
-                'name' => 'Deskripsi',
-            ],
-            [
                 'key' => 'price',
                 'name' => 'Harga',
+                'searchable' => false,
+                'render' => function ($item) {
+                    return NumberFormatter::format($item->price);
+                },
             ],
             [
                 'key' => 'price_before_discount',
                 'name' => 'Harga Sebelum Diskon',
+                'searchable' => false,
+                'render' => function ($item) {
+                    return NumberFormatter::format($item->price_before_discount);
+                },
             ],
         ];
     }
 
     public function getQuery(): Builder
     {
-        return Product::query();
+        return Product::whereNull('remarks_id');
     }
 
     public function getView(): String

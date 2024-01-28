@@ -10,7 +10,7 @@
 
                     {{-- NAME --}}
                     <div class="form-group">
-                        <label class="form-label" for="name">Nama Produk :</label>
+                        <label class="form-label" for="name">Nama Produk / Paket :</label>
                         <input type="text" class="form-control @error('name') is-invalid @enderror"
                             wire:model.lazy="name">
                         @error('name')

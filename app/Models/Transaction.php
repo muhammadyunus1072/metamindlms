@@ -22,6 +22,7 @@ class Transaction extends Model
         'proof_of_payment',
         'number',
     ];
+
     protected static function onBoot()
     {
         self::creating(function ($model) {
@@ -30,17 +31,16 @@ class Transaction extends Model
             $model->payment_method_name = $payment_method->name;
             $model->payment_method_description = $payment_method->description;
         });
-        self::created(function ($model) {
 
+        self::created(function ($model) {
             $user = User::where('id', info_user_id())->with([
                 'carts',
                 'carts.product',
             ])
-            ->first();
+                ->first();
 
-            foreach($user->carts as $cart)
-            {
-                $transaction_detail = New TransactionDetail();
+            foreach ($user->carts as $cart) {
+                $transaction_detail = new TransactionDetail();
                 $transaction_detail->transaction_id = $model->id;
                 $transaction_detail->product_id = $cart->product->id;
                 $transaction_detail->product_name = $cart->product->name;
@@ -52,7 +52,7 @@ class Transaction extends Model
                 $transaction_detail->save();
             }
 
-            $transaction_status = New TransactionStatus();
+            $transaction_status = new TransactionStatus();
             $transaction_status->transaction_id = $model->id;
             $transaction_status->name = TransactionStatus::STATUS_PAYMENT_PENDING;
             $transaction_status->description = TransactionStatus::STATUS_PAYMENT_PENDING;
@@ -60,26 +60,30 @@ class Transaction extends Model
 
             $user->carts()->delete();
         });
-
     }
+
+    public function getImage()
+    {
+        return $this->proof_of_payment ? FileHelper::PROOF_OF_PAYMENT_READ_LOCATION . $this->proof_of_payment : null;
+    }
+
     public function transactionDetails()
     {
         return $this->hasMany(TransactionDetail::class, 'transaction_id', 'id');
     }
+
     public function paymentMethod()
     {
         return $this->belongsTo(PaymentMethod::class, 'payment_method_id', 'id');
     }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
     public function status()
     {
         return $this->belongsTo(TransactionStatus::class, 'last_status_id', 'id');
-    }
-    public function getImage()
-    {
-        return $this->proof_of_payment ? FileHelper::PROOF_OF_PAYMENT_READ_LOCATION . $this->proof_of_payment : null;
     }
 }

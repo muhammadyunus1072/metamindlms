@@ -20,7 +20,7 @@
     <li
         class="sidebar-menu-item {{ Request::segment(2) == $name ? 'active' : '' }}">
         <a class="sidebar-menu-button" href="{{ route('admin.'. $name .'.index') }}">
-            <i class="fa fa-file sidebar-menu-icon sidebar-menu-icon--left"></i>
+            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">receipt</span>
             <span class="sidebar-menu-text">{{ master_sidebar($name) }}</span>
         </a>
     </li>
@@ -29,7 +29,7 @@
     <li
         class="sidebar-menu-item {{ Request::segment(2) == $name ? 'active' : '' }}">
         <a class="sidebar-menu-button" href="{{ route('admin.'. $name .'.index') }}">
-            <i class="fa fa-file sidebar-menu-icon sidebar-menu-icon--left"></i>
+            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">money</span>
             <span class="sidebar-menu-text">{{ master_sidebar($name) }}</span>
         </a>
     </li>

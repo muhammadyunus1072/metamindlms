@@ -28,36 +28,35 @@ class Index extends Component
         $this->getData();
         $this->payment_method_choices = PaymentMethod::select('name', 'id', 'description')->get();
     }
+
     private function getData()
     {
         $user = User::where('id', info_user_id())->with([
             'carts',
             'carts.product',
-        ])
-        ->first();
+        ])->first();
+
         $this->total = $user->carts->sum(function ($cart) {
             return $cart->product->price ?? 0;
         });
+
         $this->user = $user;
         $this->carts = $user->carts;
-    }
-    public function render()
-    {
-        return view('livewire.member.cart.index',);
     }
 
     public function updatedInputPaymentMethod($payment_method_id)
     {
-        $this->instruction = PaymentMethod::select('instruction')->where('id', $payment_method_id)->first();
+        $paymentMethod = PaymentMethod::select('instruction')->where('id', $payment_method_id)->first();
+        $this->instruction = $paymentMethod->instruction;
     }
 
     public function checkout()
     {
         try {
             DB::beginTransaction();
-            
+
             $member = User::where('role', User::MEMBER)->where('id', info_user_id())->first();
-            if(!$member){
+            if (!$member) {
                 $this->emit('onFailSweetAlert', "Data Member tidak ditemukan.");
                 return;
             }
@@ -66,14 +65,12 @@ class Index extends Component
             $transaction->user_id = $member->id;
             $transaction->payment_method_id = $this->input_payment_method;
 
-            if($transaction->save()){
-
+            if ($transaction->save()) {
                 DB::commit();
-                if($transaction->payment_method_id == 1 && $transaction->payment_method_name == PaymentMethod::MIDTRANS_PAYMENT_METHOD)
-                {
+                if ($transaction->payment_method_id == PaymentMethod::MIDTRANS_ID) {
                     $snapToken = MidtransPayment::getSnapToken(
-                        $transaction->id, 
-                        $transaction->transactionDetails->sum('product_price'), 
+                        $transaction->id,
+                        $transaction->transactionDetails->sum('product_price'),
                         [
                             'first_name' => $transaction->user->name,
                             'last_name' => '',
@@ -82,16 +79,13 @@ class Index extends Component
                         ]
                     );
                     $this->emit('midtransCheckout', $snapToken);
-                }else{
+                } else {
                     return redirect()->route('member.transaction.index');
                 }
-            }
-            else{
+            } else {
                 $this->emit('onSuccessSweetAlert', "Data Kursus gagal masuk keranjang.");
             }
-
-        } catch (Exception $e) {
-
+        } catch (\Exception $e) {
             DB::rollBack();
             $this->emit('onFailSweetAlert', "Kursus gagal masuk keranjang.");
         }
@@ -102,5 +96,10 @@ class Index extends Component
         $cart = Cart::find($cart_id);
         $cart->delete();
         $this->getData();
+    }
+
+    public function render()
+    {
+        return view('livewire.member.cart.index',);
     }
 }

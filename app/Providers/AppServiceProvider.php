@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\View\View;
 
 class AppServiceProvider extends ServiceProvider
@@ -28,6 +29,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Paginator::useBootstrapFive();
+
+        Blade::directive('currency', function ($expression) {
+            return "<?php echo App\Helpers\NumberFormatter::format($expression); ?>";
+        });
 
         Facades\View::composer('auth.register', function (View $view) {
             $view->with('gender_choice', User::GENDER_CHOICE);

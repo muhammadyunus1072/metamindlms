@@ -11,7 +11,7 @@ class PaymentMethod extends Model
 {
     use HasFactory, SoftDeletes, HasTrackHistory;
 
-    const MIDTRANS_PAYMENT_METHOD = 'Midtrans';
+    const MIDTRANS_ID = 1;
 
     protected $fillable = [
         'name',

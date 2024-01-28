@@ -47,12 +47,14 @@ return new class extends Migration
         }
 
         $table->bigInteger("user_id")->unsigned()->comment('Id User');
+        $table->bigInteger("last_status_id")->unsigned()->comment('Id Transaksi Status');
+
         $table->bigInteger("payment_method_id")->unsigned()->comment('Id Payment Method');
         $table->string("payment_method_name")->comment('Nama Payment Method');
         $table->text("payment_method_description")->nullable()->comment('Deskripsi Payment Method');
-        $table->bigInteger("last_status_id")->unsigned()->comment('Id Transaksi Status');
-        $table->string("proof_of_payment")->nullable()->comment('Nama File Gambar');
+
         $table->string("number")->comment('Nomor Auto Generate');
+        $table->string("proof_of_payment")->nullable()->comment('Nama File Gambar');
 
         $table->bigInteger("created_by")->unsigned()->nullable()->comment('Id Admin Pembuat');
         $table->bigInteger("updated_by")->unsigned()->nullable()->comment('Id Admin pengubah');

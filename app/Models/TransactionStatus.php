@@ -11,7 +11,6 @@ class TransactionStatus extends Model
 {
     use HasFactory, SoftDeletes, HasTrackHistory;
 
-
     const STATUS_PAYMENT_PENDING = "Menunggu Pembayaran";
     const STATUS_ORDER_CONFIRMATION_PENDING = "Menunggu Konfirmasi";
     const STATUS_DONE = "Selesai";
@@ -29,6 +28,7 @@ class TransactionStatus extends Model
         'name',
         'description',
     ];
+
     protected static function onBoot()
     {
         self::created(function ($model) {
@@ -36,10 +36,6 @@ class TransactionStatus extends Model
             $transaction->last_status_id = $model->id;
             $transaction->save();
         });
-    }
-    public function transaction()
-    {
-        return $this->belongsTo(Transaction::class, 'transaction_id', 'id');
     }
 
     public function get_beautify()
@@ -58,7 +54,12 @@ class TransactionStatus extends Model
                 $class = "danger";
                 break;
         }
-        
-        return "<div class=' bg-$class rounded-pill p-2 text-white border border-0'>$this->name</div>";
+
+        return "<div class='bg-$class rounded-pill p-2 text-white border border-0'>$this->name</div>";
+    }
+
+    public function transaction()
+    {
+        return $this->belongsTo(Transaction::class, 'transaction_id', 'id');
     }
 }

@@ -13,29 +13,35 @@
                             <table class="table table-borderless table-nowrap col-md-7 col-12">
                                 <tbody>
                                     <tr>
-                                        <td class="card-title text-left"><p class="my-0 py-0">Tanggal</p></td>
+                                        <td class="card-title text-left">
+                                            <p class="my-0 py-0">Tanggal</p>
+                                        </td>
                                         <td>:</td>
                                         <td colspan="3" class="card-title text-left">
                                             <p class="my-0 py-0">
-                                                {{Carbon\Carbon::parse($transaction->created_at)->format('d M Y')}}
+                                                {{ Carbon\Carbon::parse($transaction->created_at)->format('d M Y') }}
                                             </p>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="card-title text-left"><p class="my-0 py-0">Nomor</p></td>
+                                        <td class="card-title text-left">
+                                            <p class="my-0 py-0">Nomor</p>
+                                        </td>
                                         <td>:</td>
                                         <td colspan="3" class="card-title text-left">
                                             <p class="my-0 py-0">
-                                                {{$transaction->number}}
+                                                {{ $transaction->number }}
                                             </p>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="card-title text-left"><p class="my-0 py-0">Metode Pembayaran</p></td>
+                                        <td class="card-title text-left">
+                                            <p class="my-0 py-0">Metode Pembayaran</p>
+                                        </td>
                                         <td>:</td>
                                         <td colspan="3" class="card-title text-left">
                                             <p class="my-0 py-0">
-                                                {{$transaction->payment_method_name ."-". $transaction->payment_method_description}}
+                                                {{ $transaction->payment_method_name . '-' . $transaction->payment_method_description }}
                                             </p>
                                         </td>
                                     </tr>
@@ -43,35 +49,38 @@
                             </table>
                             <table class="table table-bordered table-nowrap col-12">
                                 <tbody>
-                                        @foreach ($transaction->transactionDetails as $transactionDetail)
-                                            <tr>
-                                                <td class="card-title text-left"><p class="my-0 py-0">{{$transactionDetail->product_name}}</p></td>
-                                                <td class="card-title text-left">
-                                                    @if ($transactionDetail->product_price)
-                                                        
-                                                    <p class="my-0 py-0 d-inline mr-2">
-                                                        <del>{{App\Helpers\NumberFormatter::format($transactionDetail->product_price, 0, '.', '.')}}</del>
-                                                    </p>
-                                                    @endif
-                                                    <p class="my-0 py-0 d-inline">
-                                                        {{App\Helpers\NumberFormatter::format($transactionDetail->product_price, 0, '.', '.')}}
-                                                    </p>
-                                                </td>
-                                            </tr>
-                                        @endforeach
+                                    @foreach ($transaction->transactionDetails as $transactionDetail)
                                         <tr>
-                                            <td class="card-title text-center"><p class="my-0 py-0 h3">TOTAL</p></td>
                                             <td class="card-title text-left">
+                                                <p class="my-0 py-0">{{ $transactionDetail->product_name }}</p>
+                                            </td>
+                                            <td class="card-title text-right">
+                                                @if ($transactionDetail->product_price)
+                                                    <p class="my-0 py-0 d-inline mr-2">
+                                                        <del>@currency($transactionDetail->product_price)</del>
+                                                    </p>
+                                                @endif
                                                 <p class="my-0 py-0 d-inline">
-                                                    {{App\Helpers\NumberFormatter::format($total, 0, '.', '.')}}
+                                                    @currency($transactionDetail->product_price)
                                                 </p>
                                             </td>
                                         </tr>
+                                    @endforeach
+                                    <tr>
+                                        <td class="card-title text-right">
+                                            <p class="my-0 py-0 h3">TOTAL</p>
+                                        </td>
+                                        <td class="card-title text-right">
+                                            <p class="my-0 py-0 d-inline">
+                                                @currency($total)
+                                            </p>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                             <div class="row mx-2">
                                 <div class="col-md-12">
-                                    
+
                                     {{-- FILE --}}
                                     <div class="form-group">
                                         <label class="form-label" for="image">Upload Bukti Bayar :</label>
@@ -101,16 +110,19 @@
                                             <img class="img-fluid" src="{{ $image->temporaryUrl() }}"
                                                 style="width: 300px; height:auto">
                                         @elseif($oldImage != null)
-                                            <img class="img-fluid" src="{{ $oldImage }}" style="width: 300px; height:auto">
+                                            <img class="img-fluid" src="{{ $oldImage }}"
+                                                style="width: 300px; height:auto">
                                         @endif
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    @if($transaction->status->name != App\Models\TransactionStatus::STATUS_CANCEL && $transaction->status->name != App\Models\TransactionStatus::STATUS_DONE)
-                                        <button type="submit"
-                                        class="btn btn-block btn-success mb-2"
-                                        >Simpan Bukti Bayar</button>
-                                        <button type='button' class='btn btn-block btn-danger mb-3' wire:click="confirmCancelTransaction()">
+                                    @if (
+                                        $transaction->status->name != App\Models\TransactionStatus::STATUS_CANCEL &&
+                                            $transaction->status->name != App\Models\TransactionStatus::STATUS_DONE)
+                                        <button type="submit" class="btn btn-block btn-success mb-2">Simpan Bukti
+                                            Bayar</button>
+                                        <button type='button' class='btn btn-block btn-danger mb-3'
+                                            wire:click="confirmCancelTransaction()">
                                             <i class='fa fa-trash mr-2'></i> Batalkan Transaksi
                                         </button>
                                     @endif

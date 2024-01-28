@@ -43,7 +43,7 @@ class CartController extends Controller
         return $data;
     }
 
-    public function index(Request $request) 
+    public function index(Request $request)
     {
         return view("member.pages.cart.index");
     }
@@ -57,63 +57,41 @@ class CartController extends Controller
     {
         // if (!has_access($this->has_access, "view")) return abort(403);
 
-        if(request()->ajax()){
+        if (request()->ajax()) {
             try {
                 DB::beginTransaction();
-                
+
                 $data = array();
                 $data['st'] = 'e';
                 $product_id = dec($request->product_id);
-                
-                
+
+
                 $member = User::where('role', User::MEMBER)->where('id', info_user_id())->first();
-                if(!$member){
+                if (!$member) {
                     return response()->json(['s' => "Data Member tidak ditemukan.", 'st' => 'e']);
                 }
 
-                if($this->is_product_in_cart($product_id))
-                {
-                    return response()->json(['s' => "Kursus sudah ada dalam keranjang.", 'st' => 'e']);
-                }
-
-                $insert_data = new Cart();
-                $insert_data->product_id = $product_id;
-                $insert_data->user_id = $member->id;
-
-                if($insert_data->save()){
+                if (!Cart::is_product_in_cart($product_id)) {
+                    $insert_data = new Cart();
+                    $insert_data->product_id = $product_id;
+                    $insert_data->user_id = $member->id;
+                    if (!$insert_data->save()) {
+                        DB::rollBack();
+                        return response()->json(['s' => "Data Kursus gagal masuk keranjang.", 'st' => 'e']);
+                    }
                     DB::commit();
-                    $data['st'] = 's';
-                    $data['d'] = 1;
-                    $data['s'] = "Kursus berhasil masuk keranjang anda.";
                 }
-                else{
-                    DB::rollBack();
-                    $data['s'] = "Data Kursus gagal masuk keranjang.";
-                }
-    
+
+                $data['st'] = 's';
+                $data['d'] = 1;
+                $data['s'] = "Kursus berhasil masuk keranjang anda.";
             } catch (Exception $e) {
-    
                 DB::rollBack();
                 $data['s'] = "Data Kursus gagal masuk keranjang.";
                 $data['m'] = $e->getMessage();
             }
+
             return response_json($data);
         }
     }
-
-    //------------------------------
-    //----------DATA----------------
-    //------------------------------
-
-    public function is_product_in_cart($product_id)
-    {
-        $product = Cart::where('user_id', info_user_id())
-        ->where('product_id', $product_id)
-        ->first();
-        if(!$product){
-            return false;
-        }
-        return true;
-    }
-    
 }

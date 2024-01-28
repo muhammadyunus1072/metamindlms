@@ -22,8 +22,8 @@ class Datatable extends Component
     public function delete($encryptedId)
     {
         $id = Crypt::decryptString($encryptedId);
-        $offlineCourse = OfflineCourse::find($id);
-        $offlineCourse->delete();
+        $obj = PaymentMethod::find($id);
+        $obj->delete();
     }
 
     public function getColumns(): array
@@ -36,16 +36,22 @@ class Datatable extends Component
                 'render' => function ($item) {
                     $encryptedId = Crypt::encryptString($item->id);
 
-                    $editHtml = "<button type=''button class='dropdown-item'><i class='fa fa-edit mr-2'></i>Edit</button>";
+                    $editHtml = "";
+                    if ($item->is_editable) {
+                        $editHtml = "<button type=''button class='dropdown-item'><i class='fa fa-edit mr-2'></i>Edit</button>";
+                    }
 
                     $destroyUrl = '';
-                    $destroyHtml = "<form action='$destroyUrl' method='POST' wire:submit.prevent=\"delete('$encryptedId')\">"
-                        . method_field('DELETE') . csrf_field() .
-                        "<button type='submit' class='dropdown-item'
+                    $destroyHtml = "";
+                    if ($item->is_editable) {
+                        $destroyHtml = "<form action='$destroyUrl' method='POST' wire:submit.prevent=\"delete('$encryptedId')\">"
+                            . method_field('DELETE') . csrf_field() .
+                            "<button type='submit' class='dropdown-item'
                             onclick=\"return confirm('Delete Data?')\">
                             <i class='fa fa-trash mr-2'></i>Hapus
                         </button>
                     </form>";
+                    }
 
                     $html = "<div class='btn-group'>
                         <button type='button'
@@ -70,13 +76,6 @@ class Datatable extends Component
             [
                 'key' => 'description',
                 'name' => 'Deskripsi',
-            ],
-            [
-                'key' => 'instruction',
-                'name' => 'Instruksi',
-                'render' => function($item){
-                    return $item->instruction;
-                }
             ],
         ];
     }

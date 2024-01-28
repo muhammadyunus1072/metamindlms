@@ -33,6 +33,11 @@ class Course extends Model
         return $this->hasManyThrough(Lesson::class, CourseSection::class, 'course_id', 'course_section_id', 'id', 'id')->where('course_sections.is_actived', '1')->where('lessons.is_actived', '1');
     }
 
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'id', 'remarks_id')->where('remarks_type', self::class);
+    }
+
     //Track History
     protected static function onBoot()
     {
@@ -68,11 +73,6 @@ class Course extends Model
         });
     }
 
-    public function product()
-    {
-        return $this->belongsTo(Product::class, 'id', 'remarks_id')->where('remarks_type', self::class);
-    }
-
     public static function generateCode()
     {
         $numberLength = 8;
@@ -95,55 +95,60 @@ class Course extends Model
     }
 
     //Attribut
-    public function is_favorite(){
+    public function is_favorite()
+    {
         return CourseFavorite::where('course_id', $this->id)->where('member_id', info_user_id())->first() !== null;
     }
 
-    public function rating(){
+    public function rating()
+    {
         return CourseReview::where('course_id', $this->id)->whereNull('deleted_at')->avg('rating');
     }
 
-    public function rating_by_star($rating){
+    public function rating_by_star($rating)
+    {
         return CourseReview::where('course_id', $this->id)->where('rating', $rating)->whereNull('deleted_at')->count('id');
     }
 
-    public function ellipsis_description(){
+    public function ellipsis_description()
+    {
         $len = 200;
-        if(strlen($this->description) > $len){
+        if (strlen($this->description) > $len) {
             return substr($this->description, 0, 200) . '...';
         }
         return $this->description;
     }
 
-    public function avg_rating_by_star($rating){
-        if($this->review() <= 0){
+    public function avg_rating_by_star($rating)
+    {
+        if ($this->review() <= 0) {
             return numberf(0);
-        }
-        else{
-            return numberf(($this->rating_by_star($rating) / $this->review()) * 100) ;
+        } else {
+            return numberf(($this->rating_by_star($rating) / $this->review()) * 100);
         }
     }
 
-    public function review(){
+    public function review()
+    {
         return CourseReview::where('course_id', $this->id)->whereNull('deleted_at')->count('id');
     }
 
-    public function review_by_user($user_id){
-        return CourseReview::
-            select(
-                'course_reviews.*',
-            )
+    public function review_by_user($user_id)
+    {
+        return CourseReview::select(
+            'course_reviews.*',
+        )
             ->where('course_reviews.course_id', $this->id)
             ->where('course_reviews.member_id', $user_id)
             ->first();
     }
 
     //Static Function
-    public static function course_popular(){
+    public static function course_popular()
+    {
         return Course::select('courses.*', 'l.name as level_name')
-        ->leftJoin('levels as l', 'l.id', '=', 'courses.level_id')
-        // ->leftJoin('course_categories as cc', 'cc.id', '=', 'courses.category_id')
-        ->paginate(10);
+            ->leftJoin('levels as l', 'l.id', '=', 'courses.level_id')
+            // ->leftJoin('course_categories as cc', 'cc.id', '=', 'courses.category_id')
+            ->paginate(10);
     }
-
 }

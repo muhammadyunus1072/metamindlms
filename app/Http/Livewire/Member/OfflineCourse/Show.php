@@ -34,7 +34,6 @@ class Show extends Component
 
     public function mount($offlineCourse)
     {
-
         $this->product = $offlineCourse->product;
         $this->offline_course_id = Crypt::encryptString($offlineCourse->id);
         $this->title = $offlineCourse->title;
@@ -77,8 +76,6 @@ class Show extends Component
                     'title' => $item->title,
                 ]);
             }
-            
-
         }
     }
 
@@ -86,54 +83,36 @@ class Show extends Component
     {
         try {
             DB::beginTransaction();
-            
+
             $data = array();
             $data['st'] = 'e';
-            
+
             $member = User::where('role', User::MEMBER)->where('id', info_user_id())->first();
-            if(!$member){
+            if (!$member) {
                 $this->emit('onFailSweetAlert', "Data Member tidak ditemukan.");
                 return;
             }
 
-            if($this->is_product_in_cart($product_id))
-            {
-                $this->emit('onFailSweetAlert', "Kursus sudah ada dalam keranjang.");
-                return;
-            }
-
-            $insert_data = new Cart();
-            $insert_data->product_id = $product_id;
-            $insert_data->user_id = $member->id;
-
-            if($insert_data->save()){
-                DB::commit();
-                if($is_buy_now){
-                    return redirect()->route('course.cart_index');
+            if (!Cart::is_product_in_cart($product_id)) {
+                $insert_data = new Cart();
+                $insert_data->product_id = $product_id;
+                $insert_data->user_id = $member->id;
+                if (!$insert_data->save()) {
+                    DB::rollBack();
+                    $this->emit('onSuccessSweetAlert', "Data Kursus gagal masuk keranjang.");
                 }
-                $this->emit('onSuccessSweetAlert', "Kursus berhasil masuk keranjang anda.");
-            }
-            else{
-                DB::rollBack();
-                $this->emit('onSuccessSweetAlert', "Data Kursus gagal masuk keranjang.");
+
+                DB::commit();
             }
 
-        } catch (Exception $e) {
-
+            $this->emit('onSuccessSweetAlert', "Kursus berhasil masuk keranjang anda.");
+            if ($is_buy_now) {
+                return redirect()->route('member.cart.index');
+            }
+        } catch (\Exception $e) {
             DB::rollBack();
             $this->emit('onFailSweetAlert', "Kursus gagal masuk keranjang.");
         }
-    }
-
-    private function is_product_in_cart($product_id)
-    {
-        $product = Cart::where('user_id', info_user_id())
-        ->where('product_id', $product_id)
-        ->first();
-        if(!$product){
-            return false;
-        }
-        return true;
     }
 
     public function render()

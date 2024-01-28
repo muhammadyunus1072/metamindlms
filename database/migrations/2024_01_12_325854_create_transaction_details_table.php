@@ -47,6 +47,7 @@ return new class extends Migration
         }
 
         $table->bigInteger("transaction_id")->unsigned()->comment('Id Transaksi');
+        
         $table->bigInteger("product_id")->unsigned()->comment('Id Produk');
         $table->string("product_name")->comment('Nama Produk');
         $table->text("product_description")->nullable()->comment('Deskripsi Produk');

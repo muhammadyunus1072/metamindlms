@@ -42,14 +42,14 @@ class CourseController extends Controller
         return $data;
     }
 
-    public function index(Request $request) 
+    public function index(Request $request)
     {
         $data = $this->get_etc();
 
         $results_data = Course::select('courses.*', 'l.name as level_name')
-                                ->leftJoin('levels as l', 'l.id', '=', 'courses.level_id')
-                                // ->leftJoin('course_categories as cc', 'cc.id', '=', 'courses.category_id')
-                                ->paginate(10);
+            ->leftJoin('levels as l', 'l.id', '=', 'courses.level_id')
+            // ->leftJoin('course_categories as cc', 'cc.id', '=', 'courses.category_id')
+            ->paginate(10);
 
         $category_data = CategoryCourse::where('is_actived', '1')->get();
         $level_data = Level::where('is_actived', '1')->get();
@@ -62,44 +62,42 @@ class CourseController extends Controller
         ]);
     }
 
-    public function search(Request $request) 
+    public function search(Request $request)
     {
         $data = $this->get_etc();
 
         $query = Course::select('courses.*', 'l.name as level_name')
-                                ->leftJoin('levels as l', 'l.id', '=', 'courses.level_id')
-                                ;
+            ->leftJoin('levels as l', 'l.id', '=', 'courses.level_id');
 
 
-        if($request->input('text_filter')){
-            $search_text = '%'.$request->input('text_filter').'%';
+        if ($request->input('text_filter')) {
+            $search_text = '%' . $request->input('text_filter') . '%';
             $query->where('courses.title', 'LIKE', $search_text);
-        }
-        else{
+        } else {
             $category_filter = $request->input('category_filter');
-            if($category_filter){
-                if(!in_array('semua', $category_filter)){
-                    $query->whereHas('categories', function(Builder $q) use($category_filter){
-                        $q->whereHas('category_course', function(Builder $q) use($category_filter){
+            if ($category_filter) {
+                if (!in_array('semua', $category_filter)) {
+                    $query->whereHas('categories', function (Builder $q) use ($category_filter) {
+                        $q->whereHas('category_course', function (Builder $q) use ($category_filter) {
                             $q->whereIn('name', $category_filter);
                         });
                     });
                 }
             }
-    
+
             $level_filter = $request->input('level_filter');
-            if($level_filter){
-                if(!in_array('semua', $level_filter)){
+            if ($level_filter) {
+                if (!in_array('semua', $level_filter)) {
                     $query->whereIn('l.name', $level_filter);
                 }
             }
         }
-        
+
         $results_data = $query->paginate(12);
 
         $category_data = CategoryCourse::where('is_actived', '1')->get();
         $level_data = Level::where('is_actived', '1')->get();
-        
+
         return view($this->view_path . 'search', [
             "data" => $data,
             "results_data" => $results_data,
@@ -117,7 +115,7 @@ class CourseController extends Controller
 
 
 
-    public function show(Request $request, $id) 
+    public function show(Request $request, $id)
     {
         $data = $this->get_etc();
 
@@ -125,7 +123,7 @@ class CourseController extends Controller
         $results_data = $this->get_transaction($id)->first();
 
         // return $results_data;
-        if($results_data){
+        if ($results_data) {
 
             $section_data = $this->get_section($id);
             $learn_description_data = $this->get_learn_description($id);
@@ -149,16 +147,16 @@ class CourseController extends Controller
     //------------------------------
     //-------PREVIEW LESSON---------
     //------------------------------
-    public function preview_lesson(Request $request, $id) 
+    public function preview_lesson(Request $request, $id)
     {
         $data = $this->get_etc();
 
         $id = dec($id);
         $results_data = $this->get_lesson($id);
 
-        if($results_data){
+        if ($results_data) {
 
-            if(!$results_data->can_preview){
+            if (!$results_data->can_preview) {
                 return Redirect()->route($this->has_access . '.show', enc($results_data->course_id))->with("error", "Data Pelajaran tidak ditemukan.");
             }
 
@@ -184,56 +182,52 @@ class CourseController extends Controller
     {
         // if (!has_access($this->has_access, "view")) return abort(403);
 
-        if(request()->ajax()){
+        if (request()->ajax()) {
             try {
                 DB::beginTransaction();
-                
+
                 $data = array();
                 $data['st'] = 'e';
                 $id = dec($request->course_id);
 
                 $results_data = $this->get_transaction($id)->first();
-                if(!$results_data){
+                if (!$results_data) {
                     return response()->json(['s' => "Data " . $this->ctitle . " tidak ditemukan.", 'st' => 'e']);
                 }
 
                 $member = User::where('role', User::MEMBER)->where('id', info_user_id())->first();
-                if(!$member){
+                if (!$member) {
                     return response()->json(['s' => "Data Member tidak ditemukan.", 'st' => 'e']);
                 }
 
                 $favorite = CourseFavorite::where('course_id', $id)->where('member_id', $member->id)->first();
-                if(!$favorite){
+                if (!$favorite) {
                     $insert_data = new CourseFavorite();
                     $insert_data->course_id = $results_data->id;
                     $insert_data->member_id = $member->id;
 
-                    if($insert_data->save()){
+                    if ($insert_data->save()) {
                         DB::commit();
                         $data['st'] = 's';
                         $data['d'] = 1;
                         $data['s'] = "Anda menyimpan " . $this->ctitle . " ini sebagai favorit anda.";
-                    }
-                    else{
+                    } else {
                         DB::rollBack();
                         $data['s'] = "Data Favorite " . $this->ctitle . " gagal disimpan.";
                     }
-                }
-                else{
-                    if($favorite->delete()){
+                } else {
+                    if ($favorite->delete()) {
                         DB::commit();
                         $data['st'] = 's';
                         $data['d'] = 0;
                         $data['s'] = "Anda menghapus " . $this->ctitle . " ini dari daftar favorite anda.";
-                    }
-                    else{
+                    } else {
                         DB::rollBack();
                         $data['s'] = "Data Favorite " . $this->ctitle . " gagal disimpan.";
                     }
                 }
-    
             } catch (Exception $e) {
-    
+
                 DB::rollBack();
                 $data['s'] = "Data Favorite " . $this->ctitle . " gagal disimpan.";
                 $data['m'] = $e->getMessage();
@@ -260,13 +254,13 @@ class CourseController extends Controller
         $id = dec($request->course_id);
 
         $results_data = $this->get_transaction($id)->first();
-        
+
         if ($results_data) {
 
             $data['st'] = 's';
             $data['url_video'] = $results_data->url_video;
             return response()->json(['st' => $data['st'], 'url_video' => $data['url_video']]);
-        } else return response()->json(['s' => "Data ". $this->ctitle ." tidak ditemukan.", 'st' => 'e']);
+        } else return response()->json(['s' => "Data " . $this->ctitle . " tidak ditemukan.", 'st' => 'e']);
     }
 
 
@@ -275,7 +269,7 @@ class CourseController extends Controller
 
 
 
-    
+
 
 
     //------------------------------
@@ -284,10 +278,10 @@ class CourseController extends Controller
     public function get_transaction($id)
     {
         $results_data = Course::select(
-            'courses.*', 
+            'courses.*',
             'l.name as level_name',
             // 'cc.name as categories_name'
-            )
+        )
             ->with('product', 'product.cart')
             ->leftJoin('levels as l', 'l.id', '=', 'courses.level_id')
             // ->leftJoin('course_categories as cc', 'cc.id', '=', 'courses.category_id')
@@ -299,7 +293,7 @@ class CourseController extends Controller
     {
         $results_data = CourseSection::select(
             'course_sections.*'
-            )
+        )
             ->leftJoin('courses as c', 'c.id', '=', 'course_sections.course_id')
             ->where('course_sections.course_id', $id)
             ->where('course_sections.is_actived', '1')
@@ -312,7 +306,7 @@ class CourseController extends Controller
     {
         $results_data = CourseLearnDescription::select(
             'course_learn_descriptions.*'
-            )
+        )
             ->leftJoin('courses as c', 'c.id', '=', 'course_learn_descriptions.course_id')
             ->where('course_learn_descriptions.course_id', $id)
             ->get();
@@ -323,7 +317,7 @@ class CourseController extends Controller
     {
         $results_data = Lesson::select(
             'lessons.*'
-            )
+        )
             ->leftJoin('course_sections as cs', 'cs.id', '=', 'lessons.course_section_id')
             ->leftJoin('courses as c', 'c.id', '=', 'cs.course_id')
             ->where('cs.is_actived', '1')
@@ -341,7 +335,7 @@ class CourseController extends Controller
             'c.url_image as course_url_image',
             'c.title as course_title',
             'l.name as level_name'
-            )
+        )
             ->leftJoin('course_sections as cs', 'cs.id', '=', 'lessons.course_section_id')
             ->leftJoin('courses as c', 'c.id', '=', 'cs.course_id')
             ->leftJoin('levels as l', 'l.id', '=', 'c.level_id')
@@ -355,8 +349,7 @@ class CourseController extends Controller
 
     public function get_lesson_file($id)
     {
-        $results_data = LessonFile::
-            select(
+        $results_data = LessonFile::select(
                 'lesson_files.*',
             )
             ->where('lesson_files.lesson_id', $id)
@@ -364,5 +357,4 @@ class CourseController extends Controller
             ->get();
         return $results_data;
     }
-    
 }

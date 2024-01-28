@@ -22,8 +22,7 @@ class Detail extends Component
     public $image = null;
     public $oldImage = null;
 
-    protected $rules = [
-    ];
+    protected $rules = [];
 
     public function mount($transaction_id)
     {
@@ -33,13 +32,13 @@ class Detail extends Component
     private function getData()
     {
         $this->transaction = Transaction::where('id', $this->transaction_id)
-        ->where('user_id', info_user_id())
-        ->with(
-            'transactionDetails',
-            'status',
-        )
-        ->withSum('transactionDetails', 'product_price')
-        ->first();
+            ->where('user_id', info_user_id())
+            ->with(
+                'transactionDetails',
+                'status',
+            )
+            ->withSum('transactionDetails', 'product_price')
+            ->first();
 
         $this->oldImage = $this->transaction->getImage();
         $this->total = $this->transaction->transaction_details_sum_product_price;
@@ -65,8 +64,7 @@ class Detail extends Component
         $transaction_status->transaction_id = $this->transaction_id;
         $transaction_status->name = TransactionStatus::STATUS_CANCEL;
         $transaction_status->description = TransactionStatus::STATUS_CANCEL;
-        if($transaction_status->save())
-        {
+        if ($transaction_status->save()) {
             return redirect()->route('member.transaction.index');
         }
     }
@@ -82,19 +80,18 @@ class Detail extends Component
             $this->image->store(FileHelper::PROOF_OF_PAYMENT_SAVE_LOCATION);
             $validatedData['proof_of_payment'] = $this->image->hashName();
         }
+
         $transaction = Transaction::find($this->transaction_id);
         $transaction->fill($validatedData);
-        if($transaction->save())
-        {
+
+        if ($transaction->save()) {
             $this->emit('onSuccessSweetAlert', 'Berhasil Menyimpan Bukti Bayar');
-        }else{
+        } else {
             $this->emit('onFailSweetAlert', 'Gagal Menyimpan Bukti Bayar');
         }
-
     }
     public function render()
     {
         return view('livewire.member.transaction-history.detail',);
     }
-
 }

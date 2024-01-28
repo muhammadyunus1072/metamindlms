@@ -33,11 +33,9 @@ class Detail extends Component
 
     public function mount($paymend_method_id = null)
     {
-        if($paymend_method_id)
-        {
+        if ($paymend_method_id) {
             $paymend_method = PaymentMethod::find($paymend_method_id);
-            if($paymend_method)
-            {
+            if ($paymend_method) {
                 $this->paymend_method_id = $paymend_method->id;
                 $this->paymend_method_name = $paymend_method->name;
                 $this->paymend_method_description = $paymend_method->description;
@@ -48,19 +46,19 @@ class Detail extends Component
 
     public function store()
     {
-        if($this->paymend_method_id)
-        {
+        if ($this->paymend_method_id) {
             $paymend_method = PaymentMethod::find($this->paymend_method_id);
-        }else{
+        } else {
             $paymend_method = new PaymentMethod();
         }
         $paymend_method->name = $this->paymend_method_name;
         $paymend_method->description = $this->paymend_method_description;
         $paymend_method->instruction = $this->paymend_method_instruction;
-        if($paymend_method->save())
-        {
+
+        if ($paymend_method->save()) {
             $this->emit('onSuccessSweetAlert', 'Berhasil Menyimpan Data');
-        }else{
+            return redirect()->route('admin.payment_method.index');
+        } else {
             $this->emit('onFailSweetAlert', 'Gagal Menyimpan Data');
         }
     }
@@ -69,5 +67,4 @@ class Detail extends Component
     {
         return view('livewire.admin.payment-method.detail',);
     }
-
 }

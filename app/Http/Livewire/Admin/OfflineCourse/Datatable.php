@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Admin\OfflineCourse;
 
+use App\Helpers\NumberFormatter;
 use App\Models\OfflineCourse;
 use App\Traits\WithDatatable;
 use Carbon\Carbon;
@@ -94,14 +95,23 @@ class Datatable extends Component
             [
                 'key' => 'quota',
                 'name' => 'Quota',
+                'searchable' => false,
             ],
             [
                 'key' => 'price',
                 'name' => 'Harga',
+                'searchable' => false,
+                'render' => function ($item) {
+                    return NumberFormatter::format($item->price);
+                },
             ],
             [
                 'key' => 'price_before_discount',
                 'name' => 'Harga Sebelum Diskon',
+                'searchable' => false,
+                'render' => function ($item) {
+                    return NumberFormatter::format($item->price_before_discount);
+                },
             ],
             [
                 'name' => 'Jumlah Pendaftar',
