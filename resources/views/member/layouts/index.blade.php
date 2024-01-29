@@ -298,7 +298,9 @@
     <script>
         $(() => {
             get_notification();
-            function get_notification(){
+        })
+
+        function get_notification(){
                 $.ajax({
                     type: "get",
                     processData: false,
@@ -321,7 +323,6 @@
                     }
                 });
             }
-        })
         window.livewire.on('onSuccessSweetAlert', (message) => {
             Swal.fire({
                 icon: 'success',
