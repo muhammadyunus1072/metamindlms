@@ -67,7 +67,7 @@ class TransactionStatus extends Model
                         $transactionDetailOfflineCourse->offline_course_date_time_end = $productOfflineCourse->offlineCourse->date_time_end;
                         $transactionDetailOfflineCourse->offline_url_online_meet = $productOfflineCourse->offlineCourse->url_online_meet;
                         $transactionDetailOfflineCourse->offline_course_price = $productOfflineCourse->offlineCourse->price;
-                        $transactionDetailOfflineCourse->offline_course_price_before_discount = $productOfflineCourse->course->price_before_discount;
+                        $transactionDetailOfflineCourse->offline_course_price_before_discount = $productOfflineCourse->offlineCourse->price_before_discount;
                         $transactionDetailOfflineCourse->save();
                     }
                 }
