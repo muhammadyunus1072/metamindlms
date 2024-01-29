@@ -29,12 +29,16 @@ class TransactionDetailCourse extends Model
         self::created(function ($model) {
             $courseMember = new CourseMember();
             $courseMember->course_id = $model->course_id;
-            $courseMember->member_id = info_user_id();
+            $courseMember->member_id = $model->transactionDetail->transaction->user_id;
             $courseMember->course_price = $model->course_price;
             $courseMember->save();
         });
     }
 
+    public function transactionDetail()
+    {
+        return $this->belongsTo(TransactionDetail::class, 'transaction_detail_id', 'id');
+    }
     public function course()
     {
         return $this->belongsTo(Course::class, 'course_id', 'id');
