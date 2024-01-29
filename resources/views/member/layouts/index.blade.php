@@ -315,7 +315,7 @@
                                 if (element.body > 0) {
                                     $(`#notif_${element.id_menu}`).remove();
                                     $(`#${element.id_menu}`).append(
-                                        `<span class="badge ms-2 bg-${element.style}" style="margin-left:10px;" id="notif_${element.id_menu}">${element.body}</span>`
+                                        `<span class="badge ms-2 bg-${element.style} text-white p-2 fs-4" style="margin-left:10px;" id="notif_${element.id_menu}">${element.body}</span>`
                                     )
                                 }
                             });
