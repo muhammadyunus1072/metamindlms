@@ -39,7 +39,7 @@ class TransactionStatus extends Model
             if($model->name  === self::STATUS_DONE) {
                 $transactionDetails = $model->transaction->transactionDetails;
                 foreach ($transactionDetails as $transactionDetailIndex => $transactionDetail) {
-                    if($transactionDetail->remarks_type === Course::class){
+                    if($transactionDetail->product_remarks_type === Course::class){
                         $productCourses = $transactionDetail->product->productCourses;
                         foreach ($productCourses as $productCourseIndex => $productCourse) {
                             $transactionDetailCourse = new TransactionDetailCourse();
@@ -55,7 +55,7 @@ class TransactionStatus extends Model
                             $transactionDetailCourse->course_price_before_discount = $productCourse->course->price_before_discount;
                             $transactionDetailCourse->save();
                         }
-                    }else if($transactionDetail->remarks_type === OfflineCourse::class) {
+                    }else if($transactionDetail->product_remarks_type === OfflineCourse::class) {
                         $productOfflineCourses = $transactionDetail->product->productOfflineCourses;
                         foreach ($productOfflineCourses as $productOfflineCourseIndex => $productOfflineCourse) {
                             $transactionDetailOfflineCourse = new TransactionDetailOfflineCourse();
