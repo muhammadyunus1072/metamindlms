@@ -21,4 +21,9 @@ class TransactionDetail extends Model
         'product_remarks_id',
         'product_remarks_type',
     ];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'id');
+    }
 }
