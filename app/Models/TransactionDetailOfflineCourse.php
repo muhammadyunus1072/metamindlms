@@ -23,4 +23,19 @@ class TransactionDetailOfflineCourse extends Model
         "offline_course_date_time_end",
         "offline_url_online_meet",
     ];
+
+    protected static function onBoot()
+    {
+        self::created(function ($model) {
+            $offlineCourseRegistrar = new OfflineCourseRegistrar();
+            $offlineCourseRegistrar->offline_course_id = $model->offline_course_id;
+            $offlineCourseRegistrar->user_id = info_user_id();
+            $offlineCourseRegistrar->save();
+        });
+    }
+
+    public function offlineCourse()
+    {
+        return $this->belongsTo(offlineCourse::class, 'offline_course_id', 'id');
+    }
 }

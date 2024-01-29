@@ -24,4 +24,19 @@ class TransactionDetailCourse extends Model
         "course_price",
         "course_price_before_discount",
     ];
+    protected static function onBoot()
+    {
+        self::created(function ($model) {
+            $courseMember = new CourseMember();
+            $courseMember->course_id = $model->course_id;
+            $courseMember->member_id = info_user_id();
+            $courseMember->course_price = $model->course_price;
+            $courseMember->save();
+        });
+    }
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class, 'course_id', 'id');
+    }
 }
