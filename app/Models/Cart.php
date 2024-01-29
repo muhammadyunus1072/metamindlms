@@ -31,4 +31,19 @@ class Cart extends Model
     {
         return $this->hasOne(Product::class, 'id', 'product_id');
     }
+
+    public static function get_notification_cart()
+    {
+        $data = [];
+        $carts = self::where('user_id', info_user_id())
+            ->count();
+            
+        array_push($data, [
+            'id_menu' => "cart",
+            'body' => $carts,
+            'style' => 'danger'
+        ]);
+
+        return $data;
+    }
 }

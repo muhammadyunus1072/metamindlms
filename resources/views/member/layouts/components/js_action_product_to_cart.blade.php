@@ -23,6 +23,7 @@
                     } else {
                         info_server('success', result['s']);
                     }
+                    livewire.emit('refreshNotification');
                 } else {
                     info_server('error', result['s']);
                 }

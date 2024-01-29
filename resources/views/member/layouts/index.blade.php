@@ -296,6 +296,32 @@
     @livewireScripts
 
     <script>
+        $(() => {
+            get_notification();
+            function get_notification(){
+                $.ajax({
+                    type: "get",
+                    processData: false,
+                    contentType: false,
+                    url: "{{ route('member.menu_notification.get') }}",
+                    success: function(data) {
+                        var response = data;
+    
+                        response.forEach(data => {
+                            
+                            data.forEach(element => {
+                                if (element.body > 0) {
+                                    $(`#notif_${element.id_menu}`).remove();
+                                    $(`#${element.id_menu}`).append(
+                                        `<span class="badge ms-2 bg-${element.style}" style="margin-left:10px;" id="notif_${element.id_menu}">${element.body}</span>`
+                                    )
+                                }
+                            });
+                        });
+                    }
+                });
+            }
+        })
         window.livewire.on('onSuccessSweetAlert', (message) => {
             Swal.fire({
                 icon: 'success',
@@ -313,6 +339,9 @@
         });
         window.livewire.on('consoleLog', (data) => {
             console.log(data)
+        });
+        window.livewire.on('refreshNotification', () => {
+            get_notification();
         });
     </script>
 </body>

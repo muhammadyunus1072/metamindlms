@@ -8,6 +8,7 @@ use App\Http\Controllers\Member\ProfileController;
 use App\Http\Controllers\Member\FavoriteController;
 use App\Http\Controllers\Member\DashboardController;
 use App\Http\Controllers\Member\ECommerceController;
+use App\Http\Controllers\MenuNotificationController;
 use App\Http\Controllers\Member\DiscussionController;
 use App\Http\Controllers\Member\TransactionController;
 use App\Http\Controllers\Member\CourseMemberController;
@@ -44,6 +45,7 @@ Route::middleware('role:member')->group(function () {
 
     Route::group(["prefix" => "member", "as" => "member."], function () {
         Route::get("/", [DashboardController::class, "index"])->name('dashboard.index');
+        Route::get("/notification/get", [MenuNotificationController::class, "get"])->name('notification.get');
 
         Route::group(["controller" => CartController::class, "prefix" => "cart", "as" => "cart."], function () {
             Route::get('/', 'index')->name('index');

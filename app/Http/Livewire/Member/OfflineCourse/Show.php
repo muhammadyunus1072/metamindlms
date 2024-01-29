@@ -106,6 +106,7 @@ class Show extends Component
             }
 
             $this->emit('onSuccessSweetAlert', "Kursus berhasil masuk keranjang anda.");
+            $this->emit('refreshNotification');
             if ($is_buy_now) {
                 return redirect()->route('member.cart.index');
             }

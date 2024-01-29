@@ -37,7 +37,7 @@
             </a>
         </li>
         <li class="sidebar-menu-item {{ Request::segment(2) == 'cart' ? 'active' : '' }}">
-            <a class="sidebar-menu-button" href="{{ route('member.cart.index') }}">
+            <a class="sidebar-menu-button" href="{{ route('member.cart.index') }}" id="cart">
                 <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">shopping_cart</span>
                 <span class="sidebar-menu-text">Keranjang</span>
             </a>
