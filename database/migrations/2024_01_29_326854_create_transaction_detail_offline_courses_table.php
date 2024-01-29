@@ -57,7 +57,7 @@ return new class extends Migration
         $table->text("offline_url_online_meet")->nullable()->comment('URL Online Meet');
 
         $table->double("offline_course_price")->comment('Harga');
-        $table->double("offline_course_price_before_discount")->comment('Harga Sebelum Diskon');
+        $table->double("offline_course_price_before_discount")->nullable()->comment('Harga Sebelum Diskon');
 
         $table->bigInteger("created_by")->unsigned()->nullable()->comment('Id Admin Pembuat');
         $table->bigInteger("updated_by")->unsigned()->nullable()->comment('Id Admin pengubah');
