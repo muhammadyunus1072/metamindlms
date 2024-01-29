@@ -29,9 +29,13 @@ class TransactionDetailOfflineCourse extends Model
         self::created(function ($model) {
             $offlineCourseRegistrar = new OfflineCourseRegistrar();
             $offlineCourseRegistrar->offline_course_id = $model->offline_course_id;
-            $offlineCourseRegistrar->user_id = info_user_id();
+            $offlineCourseRegistrar->user_id = $model->transactionDetail->transaction->user_id;
             $offlineCourseRegistrar->save();
         });
+    }
+    public function transactionDetail()
+    {
+        return $this->belongsTo(TransactionDetail::class, 'transaction_detail_id', 'id');
     }
 
     public function offlineCourse()
