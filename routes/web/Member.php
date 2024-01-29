@@ -45,7 +45,7 @@ Route::middleware('role:member')->group(function () {
 
     Route::group(["prefix" => "member", "as" => "member."], function () {
         Route::get("/", [DashboardController::class, "index"])->name('dashboard.index');
-        Route::get("/notification/get", [MenuNotificationController::class, "get"])->name('notification.get');
+        Route::get("/notification/get", [MenuNotificationController::class, "get"])->name('menu_notification.get');
 
         Route::group(["controller" => CartController::class, "prefix" => "cart", "as" => "cart."], function () {
             Route::get('/', 'index')->name('index');
