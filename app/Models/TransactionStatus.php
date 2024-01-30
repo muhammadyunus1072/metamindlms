@@ -72,6 +72,38 @@ class TransactionStatus extends Model
                             $transactionDetailOfflineCourse->offline_course_price_before_discount = $productOfflineCourse->offlineCourse->price_before_discount;
                             $transactionDetailOfflineCourse->save();
                         }
+                    }else{
+                        $productCourses = $transactionDetail->product->productCourses;
+                        foreach ($productCourses as $productCourseIndex => $productCourse) {
+                            $transactionDetailCourse = new TransactionDetailCourse();
+                            $transactionDetailCourse->transaction_detail_id = $transactionDetail->id;
+                            $transactionDetailCourse->course_id = $productCourse->course->id;
+                            $transactionDetailCourse->course_title = $productCourse->course->title;
+                            $transactionDetailCourse->course_description = $productCourse->course->description;
+                            $transactionDetailCourse->course_about = $productCourse->course->about;
+                            $transactionDetailCourse->course_url_image = $productCourse->course->url_image;
+                            $transactionDetailCourse->course_url_icon = $productCourse->course->url_icon;
+                            $transactionDetailCourse->course_url_video = $productCourse->course->url_video;
+                            $transactionDetailCourse->course_price = $productCourse->course->price;
+                            $transactionDetailCourse->course_price_before_discount = $productCourse->course->price_before_discount;
+                            $transactionDetailCourse->save();
+                        }
+                        $productOfflineCourses = $transactionDetail->product->productOfflineCourses;
+                        foreach ($productOfflineCourses as $productOfflineCourseIndex => $productOfflineCourse) {
+                            $transactionDetailOfflineCourse = new TransactionDetailOfflineCourse();
+                            $transactionDetailOfflineCourse->transaction_detail_id = $transactionDetail->id;
+                            $transactionDetailOfflineCourse->offline_course_id = $productOfflineCourse->offlineCourse->id;
+                            $transactionDetailOfflineCourse->offline_course_title = $productOfflineCourse->offlineCourse->title;
+                            $transactionDetailOfflineCourse->offline_course_description = $productOfflineCourse->offlineCourse->description;
+                            $transactionDetailOfflineCourse->offline_course_content = $productOfflineCourse->offlineCourse->content;
+                            $transactionDetailOfflineCourse->offline_course_quota = $productOfflineCourse->offlineCourse->quota;
+                            $transactionDetailOfflineCourse->offline_course_date_time_start = $productOfflineCourse->offlineCourse->date_time_start;
+                            $transactionDetailOfflineCourse->offline_course_date_time_end = $productOfflineCourse->offlineCourse->date_time_end;
+                            $transactionDetailOfflineCourse->offline_url_online_meet = $productOfflineCourse->offlineCourse->url_online_meet;
+                            $transactionDetailOfflineCourse->offline_course_price = $productOfflineCourse->offlineCourse->price;
+                            $transactionDetailOfflineCourse->offline_course_price_before_discount = $productOfflineCourse->offlineCourse->price_before_discount;
+                            $transactionDetailOfflineCourse->save();
+                        }
                     }
                 }
             }
@@ -95,7 +127,7 @@ class TransactionStatus extends Model
                 break;
         }
 
-        return "<div class='bg-$class rounded-pill p-2 text-white border border-0'>$this->name</div>";
+        return "<div class='badge badge-$class' style='font-size:15px;'>$this->name</div>";
     }
 
     public function transaction()

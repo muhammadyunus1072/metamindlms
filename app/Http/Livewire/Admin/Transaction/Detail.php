@@ -61,7 +61,7 @@ class Detail extends Component
 
     public function confirmDoneTransaction()
     {
-        $this->dispatchBrowserEvent('openConfirTransactionModal');
+        $this->dispatchBrowserEvent('openConfirmTransactionModal');
     }
 
     public function confirmTransaction()

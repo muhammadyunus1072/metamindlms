@@ -10,6 +10,7 @@ use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\Product;
 use App\Models\LessonFile;
+use App\Models\Transaction;
 use App\Models\CourseReview;
 use Illuminate\Http\Request;
 use App\Models\CourseSection;
@@ -44,33 +45,43 @@ class ECommerceController extends Controller
         return $data;
     }
 
-    private $filter_search = 'Offline';
+    // private $filter_search = 'Harusnya';
+
     public function index(Request $request) 
     {
-        // return Product::with([
-        //     'productCourses',
-        //     'productCourses.course' => function($query){
-        //         return $query->select('id', 'title', 'description');
-        //     },
-        //     'productOfflineCourses',
-        //     'productOfflineCourses.offlineCourse' => function($query){
-        //         return $query->select('id', 'title', 'description');
-        //     },
-        // ])
-        // ->whereNull('remarks_id')
-        // ->whereNull('remarks_type')
-        // ->when($this->filter_search, function ($query) {
-        //     $query->where(function ($query) {
-        //         $query->where('name', $this->filter_search)
-        //             ->orWhereHas('productCourses.course', function ($query) {
-        //                 $query->where('title', 'like', '%' . $this->filter_search . '%');
-        //             })
-        //             ->orWhereHas('productOfflineCourses.offlineCourse', function ($query) {
-        //                 $query->where('title', 'like', '%' . $this->filter_search . '%');
-        //             });
-        //     });
-        // })
-        // ->get();
+        // $start_date = Carbon::now()->subMonths(3)->format('Y-m-d');
+        // $end_date = Carbon::now()->format('Y-m-d');
+        // return Transaction::select('id', 'number', 'last_status_id')->where('user_id', info_user_id())->with([
+        //         'transactionDetails' => function($query){
+        //             return $query->select('transaction_id', 'product_id');
+        //         },
+        //         'transactionDetails.product' => function($query){
+        //             return $query->select('id', 'name', 'description');
+        //         },
+        //         'transactionDetails.product.productCourses' => function($query){
+        //             return $query->select('course_id', 'product_id');
+        //         },
+        //         'transactionDetails.product.productCourses.course' => function($query){
+        //             return $query->select('id', 'title', 'description');
+        //         },
+        //         'transactionDetails.product.productOfflineCourses' => function($query){
+        //             return $query->select('offline_course_id', 'product_id');
+        //         },
+        //         'transactionDetails.product.productOfflineCourses.offlineCourse' => function($query){
+        //             return $query->select('id', 'title', 'description');
+        //         },
+        //         'status',
+        //     ])
+        //     ->whereBetween('transactions.created_at', [$start_date . " 00:00:00", $end_date . " 23:59:59"])
+        //     ->when($this->filter_search, function ($query) {
+        //         $query->whereHas('transactionDetails.product.productCourses.course', function ($query) {
+        //             $query->where('title', 'like', '%' . $this->filter_search . '%');
+        //         })
+        //         ->orWhereHas('transactionDetails.product.productOfflineCourses.offlineCourse', function ($query) {
+        //             $query->where('title', 'like', '%' . $this->filter_search . '%');
+        //         });
+        //     })
+        //     ->get();
     
         $data = $this->get_etc();
 

@@ -20,6 +20,14 @@
     </div>
 
     <div class="container page__container">
-        @livewire('admin.transaction.index')
+        <div class="page-separator">
+            <div class="page-separator__text">Data Transaksi.</div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                @livewire('admin.transaction.filter')
+                @livewire('admin.transaction.datatable')
+            </div>
+        </div>
     </div>
 @stop

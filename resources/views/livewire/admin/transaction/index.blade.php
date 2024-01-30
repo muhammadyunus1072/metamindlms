@@ -47,12 +47,24 @@
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 {{$transaction->number}}
                             </li>
+                            
+                            @php
+                                $total = 0;
+                            @endphp
                             @foreach ($transaction->transactionDetails as $transactionDetail)
+                            @php
+                                $total += $transactionDetail->product_price;
+                            @endphp
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     {{$transactionDetail->product_name}}
                                     <p class="h6">{{App\Helpers\NumberFormatter::format($transactionDetail->product_price, 0, '.', '.')}}</p>
                                 </li>
                             @endforeach
+
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <p class="my-0 py-0 h3">TOTAL</p>
+                                <p class="my-0 py-0 h4">@currency($total)</p>
+                            </li>
                         </ul>
                     </a>
                 @empty

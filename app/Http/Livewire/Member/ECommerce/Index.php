@@ -23,16 +23,6 @@ class Index extends Component
         '',
     ];
 
-    public function mount()
-    {
-        $this->getData();
-    }
-
-    private function getData()
-    {
-        
-    }
-
     public function store($product_id, $is_buy_now)
     {
         try {

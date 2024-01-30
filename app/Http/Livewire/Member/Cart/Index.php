@@ -80,7 +80,7 @@ class Index extends Component
                     );
                     $this->emit('midtransCheckout', $snapToken);
                 } else {
-                    return redirect()->route('member.transaction.index');
+                    return redirect()->route('member.transaction.detail', ['id' => $transaction->id]);
                 }
             } else {
                 $this->emit('onSuccessSweetAlert', "Data Kursus gagal masuk keranjang.");

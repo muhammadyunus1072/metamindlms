@@ -85,6 +85,13 @@ class Detail extends Component
         $transaction->fill($validatedData);
 
         if ($transaction->save()) {
+
+            $transaction_status = new TransactionStatus();
+            $transaction_status->transaction_id = $transaction->id;
+            $transaction_status->name = TransactionStatus::STATUS_ORDER_CONFIRMATION_PENDING;
+            $transaction_status->description = TransactionStatus::STATUS_ORDER_CONFIRMATION_PENDING;
+            $transaction_status->save();
+
             $this->emit('onSuccessSweetAlert', 'Berhasil Menyimpan Bukti Bayar');
         } else {
             $this->emit('onFailSweetAlert', 'Gagal Menyimpan Bukti Bayar');

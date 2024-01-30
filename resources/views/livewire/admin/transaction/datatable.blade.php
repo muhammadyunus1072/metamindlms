@@ -1,0 +1,2 @@
+@extends('livewire.livewire-datatable')
+

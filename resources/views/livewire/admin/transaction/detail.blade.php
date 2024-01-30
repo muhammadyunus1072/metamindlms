@@ -78,6 +78,22 @@
                             </tbody>
                         </table>
                         <div class="row mx-2">
+                            @if($oldImage != null)
+                                <div class="col-md-12">
+                                    {{-- FILE --}}
+                                    <div class="form-group">
+                                        <label class="form-label w-100" for="image">Bukti Bayar :</label>
+                                        <a href="{{ $oldImage }}" target="_blank" download="bukti_bayar_{{ $transaction->number }}">
+                                            <img class="img-fluid" src="{{ $oldImage }}"
+                                                style="width: 300px; height:auto">
+                                        </a>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="col-md-12">
+                                    <h3 class="text-center">Belum Terdapat Bukti Bayar.</h3>
+                                </div>
+                            @endif
                             <div class="col-md-12">
                                 @if (
                                     $transaction->status->name != App\Models\TransactionStatus::STATUS_CANCEL &&
@@ -112,7 +128,7 @@
                 @this.cancelTransaction();
             }
         });
-        window.addEventListener('openConfirTransactionModal', event => {
+        window.addEventListener('openConfirmTransactionModal', event => {
             if (confirm('Selesaikan Transaksi?')) {
                 @this.confirmTransaction();
             }

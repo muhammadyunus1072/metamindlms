@@ -45,6 +45,15 @@
                                             </p>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td class="card-title text-left">
+                                            <p class="my-0 py-0">Status</p>
+                                        </td>
+                                        <td>:</td>
+                                        <td colspan="3" class="card-title text-center">
+                                            {!! $transaction->status->get_beautify() !!}
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                             <table class="table table-bordered table-nowrap col-12">
@@ -78,56 +87,57 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <div class="row mx-2">
-                                <div class="col-md-12">
 
-                                    {{-- FILE --}}
-                                    <div class="form-group">
-                                        <label class="form-label" for="image">Upload Bukti Bayar :</label>
-                                        <div class="custom-file">
-                                            <input type="file" wire:model.lazy="image"
-                                                class="custom-file-input  @error('image') is-invalid @enderror">
-                                            <label for="image" class="custom-file-label">
-                                                <div wire:loading.remove wire:target="image">
-                                                    @if ($image)
-                                                        {{ $image->getClientOriginalName() }}
-                                                    @else
-                                                        Pilih Gambar
-                                                    @endif
-                                                </div>
-                                                <div wire:loading wire:target="image">
-                                                    Uploading...
-                                                </div>
-                                            </label>
-                                            @error('image')
-                                                <div class="invalid-feedback">
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
+                            @if (
+                                $transaction->status->name != App\Models\TransactionStatus::STATUS_CANCEL &&
+                                    $transaction->status->name != App\Models\TransactionStatus::STATUS_DONE)
+                                <div class="row mx-2">
+                                    <div class="col-md-12">
+
+                                        {{-- FILE --}}
+                                        <div class="form-group">
+                                            <label class="form-label" for="image">Upload Bukti Bayar :</label>
+                                            <div class="custom-file">
+                                                <input type="file" wire:model.lazy="image"
+                                                    class="custom-file-input  @error('image') is-invalid @enderror">
+                                                <label for="image" class="custom-file-label">
+                                                    <div wire:loading.remove wire:target="image">
+                                                        @if ($image)
+                                                            {{ $image->getClientOriginalName() }}
+                                                        @else
+                                                            Pilih Gambar
+                                                        @endif
+                                                    </div>
+                                                    <div wire:loading wire:target="image">
+                                                        Uploading...
+                                                    </div>
+                                                </label>
+                                                @error('image')
+                                                    <div class="invalid-feedback">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
+                                            </div>
+
+                                            @if ($image && empty($errors->get('image')))
+                                                <img class="img-fluid" src="{{ $image->temporaryUrl() }}"
+                                                    style="width: 300px; height:auto">
+                                            @elseif($oldImage != null)
+                                                <img class="img-fluid" src="{{ $oldImage }}"
+                                                    style="width: 300px; height:auto">
+                                            @endif
                                         </div>
-
-                                        @if ($image && empty($errors->get('image')))
-                                            <img class="img-fluid" src="{{ $image->temporaryUrl() }}"
-                                                style="width: 300px; height:auto">
-                                        @elseif($oldImage != null)
-                                            <img class="img-fluid" src="{{ $oldImage }}"
-                                                style="width: 300px; height:auto">
-                                        @endif
                                     </div>
-                                </div>
-                                <div class="col-md-12">
-                                    @if (
-                                        $transaction->status->name != App\Models\TransactionStatus::STATUS_CANCEL &&
-                                            $transaction->status->name != App\Models\TransactionStatus::STATUS_DONE)
+                                    <div class="col-md-12">
                                         <button type="submit" class="btn btn-block btn-success mb-2">Simpan Bukti
                                             Bayar</button>
                                         <button type='button' class='btn btn-block btn-danger mb-3'
                                             wire:click="confirmCancelTransaction()">
                                             <i class='fa fa-trash mr-2'></i> Batalkan Transaksi
                                         </button>
-                                    @endif
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
                         </div>
                     </form>
                 </div>
