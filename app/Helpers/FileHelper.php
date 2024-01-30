@@ -5,7 +5,7 @@ namespace App\Helpers;
 class FileHelper
 {
     // const WEBSITE_USER = 'https://metamind-lms.smartisdev.com';
-    const WEBSITE_USER = 'https://metamind.imanity.tech/';
+    const WEBSITE_USER = 'https://metamind.imanity.tech';
 
     const U_IMAGE_PATH = 'attachments/images/';
     const U_FILE_PATH = 'attachments/files/';
