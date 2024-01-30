@@ -10,10 +10,14 @@ use App\Models\Transaction;
 use App\Models\PaymentMethod;
 use App\Helpers\MidtransPayment;
 use Illuminate\Support\Facades\DB;
+use Livewire\WithPagination;
 
 class Index extends Component
 {
-    public $products;
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+    public $length = 1;
+    public $filter_search;
 
     protected $listeners = [
         '',
@@ -26,7 +30,7 @@ class Index extends Component
 
     private function getData()
     {
-        $this->products = Product::with('productCourses', 'productOfflineCourses')->whereNull('remarks_id')->whereNull('remarks_type')->get();
+        
     }
 
     public function store($product_id, $is_buy_now)
@@ -55,6 +59,7 @@ class Index extends Component
             }
 
             $this->emit('onSuccessSweetAlert', "Kursus berhasil masuk keranjang anda.");
+            $this->emit('refreshNotification');
             if ($is_buy_now) {
                 return redirect()->route('member.cart.index');
             }
@@ -66,6 +71,31 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.member.e-commerce.index',);
+        return view('livewire.member.e-commerce.index', [
+            'products' => Product::with([
+                'productCourses',
+                'productCourses.course' => function($query){
+                    return $query->select('id', 'title', 'description');
+                },
+                'productOfflineCourses',
+                'productOfflineCourses.offlineCourse' => function($query){
+                    return $query->select('id', 'title', 'description');
+                },
+            ])
+            ->whereNull('remarks_id')
+            ->whereNull('remarks_type')
+            ->when($this->filter_search, function ($query) {
+                $query->where(function ($query) {
+                    $query->where('name', 'like', '%' . $this->filter_search . '%')
+                        ->orWhereHas('productCourses.course', function ($query) {
+                            $query->where('title', 'like', '%' . $this->filter_search . '%');
+                        })
+                        ->orWhereHas('productOfflineCourses.offlineCourse', function ($query) {
+                            $query->where('title', 'like', '%' . $this->filter_search . '%');
+                        });
+                });
+            })
+            ->paginate($this->length),
+        ]);
     }
 }

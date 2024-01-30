@@ -96,6 +96,7 @@ class Index extends Component
         $cart = Cart::find($cart_id);
         $cart->delete();
         $this->getData();
+        $this->emit('refreshNotification');
     }
 
     public function render()

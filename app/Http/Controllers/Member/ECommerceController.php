@@ -2,23 +2,25 @@
 
 namespace App\Http\Controllers\Member;
 
-use App\Http\Controllers\Controller;
-use App\Models\CategoryCourse;
-use App\Models\Course;
-use App\Models\CourseFavorite;
-use App\Models\CourseLearnDescription;
-use App\Models\CourseReview;
-use App\Models\CourseSection;
-use App\Models\Lesson;
-use App\Models\LessonFile;
-use App\Models\Level;
-use App\Models\User;
-use Carbon\Carbon;
 use Exception;
-use Illuminate\Database\Eloquent\Builder;
+use Carbon\Carbon;
+use App\Models\User;
+use App\Models\Level;
+use App\Models\Course;
+use App\Models\Lesson;
+use App\Models\Product;
+use App\Models\LessonFile;
+use App\Models\CourseReview;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\CourseSection;
+use App\Models\ProductCourse;
+use App\Models\CategoryCourse;
+use App\Models\CourseFavorite;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Models\CourseLearnDescription;
+use Illuminate\Database\Eloquent\Builder;
 
 class ECommerceController extends Controller
 {
@@ -42,8 +44,34 @@ class ECommerceController extends Controller
         return $data;
     }
 
+    private $filter_search = 'Offline';
     public function index(Request $request) 
     {
+        // return Product::with([
+        //     'productCourses',
+        //     'productCourses.course' => function($query){
+        //         return $query->select('id', 'title', 'description');
+        //     },
+        //     'productOfflineCourses',
+        //     'productOfflineCourses.offlineCourse' => function($query){
+        //         return $query->select('id', 'title', 'description');
+        //     },
+        // ])
+        // ->whereNull('remarks_id')
+        // ->whereNull('remarks_type')
+        // ->when($this->filter_search, function ($query) {
+        //     $query->where(function ($query) {
+        //         $query->where('name', $this->filter_search)
+        //             ->orWhereHas('productCourses.course', function ($query) {
+        //                 $query->where('title', 'like', '%' . $this->filter_search . '%');
+        //             })
+        //             ->orWhereHas('productOfflineCourses.offlineCourse', function ($query) {
+        //                 $query->where('title', 'like', '%' . $this->filter_search . '%');
+        //             });
+        //     });
+        // })
+        // ->get();
+    
         $data = $this->get_etc();
 
         $results_data = Course::select('courses.*', 'l.name as level_name')
