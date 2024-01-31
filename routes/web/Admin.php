@@ -170,6 +170,18 @@ Route::middleware('role:admin')->group(function () {
             Route::group(["controller" => ReportController::class], function () {
                 Route::get("/", "index")->name('index');
 
+                // Laporan Transaksi
+                Route::group(["prefix" => "transaction", "as" => "transaction."], function () {
+                    Route::get("/", "transaction")->name('index');
+                    Route::get("/json", "json_transaction")->name('json');
+                    Route::get("/export", "export_transaction")->name('export');
+
+                    Route::get('/member/get', 'select2_member')->name('get.member');
+                    Route::get('/product/get', 'select2_product')->name('get.product');
+                    Route::get('/course/get', 'select2_course')->name('get.course');
+                    Route::get('/offline_course/get', 'select2_offline_course')->name('get.offline_course');
+                });
+
                 Route::group(["prefix" => "course_member", "as" => "course_member."], function () {
                     Route::get("/", "course_member")->name('index');
                     Route::get("/json", "json_course_member")->name('json');

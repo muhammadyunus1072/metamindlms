@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Exports\CourseMember;
-use App\Exports\RecapCourse;
-use App\Http\Controllers\Controller;
-use App\Models\Course;
-use App\Models\CourseMemberLesson;
-use App\Models\CourseReview;
 use App\Models\User;
+use App\Models\Course;
+use App\Models\Product;
+use App\Exports\RecapCourse;
+use App\Models\CourseReview;
 use Illuminate\Http\Request;
+use App\Exports\CourseMember;
+use App\Models\OfflineCourse;
+use App\Models\CourseMemberLesson;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -18,6 +20,10 @@ class ReportController extends Controller
 {
     private $ctitle = "Report";
     private $routes_path;
+
+    private $title_transaction = "Transaksi";
+    private $view_path_transaction = "admin.pages.report.transaction.";
+    private $has_access_transaction = "report_transaction";
 
     private $title_course_member = "Kursus Member";
     private $view_path_course_member = "admin.pages.report.course_member.";
@@ -40,6 +46,7 @@ class ReportController extends Controller
         $data['ctitle'] = $this->ctitle;
         $data['croute'] = $this->routes_path;
 
+        $data['title_transaction'] = $this->title_transaction;
         $data['title_course_member'] = $this->title_course_member;
         $data['title_recap_course'] = $this->title_recap_course;
 
@@ -48,11 +55,20 @@ class ReportController extends Controller
     }
 
 
+    // Course Member
+    public function transaction(Request $request)
+    {
+        $data = $this->get_etc();
 
+        $list_rating = CourseReview::LIST_RATING;
+        $list_progress = CourseMemberLesson::LIST_PROGRESS;
 
-
-
-
+        return view($this->view_path_transaction . 'index', [
+            "data" => $data,
+            "list_rating" => $list_rating,
+            "list_progress" => $list_progress,
+        ]);
+    }
 
     // Course Member
     public function course_member(Request $request)
@@ -136,7 +152,81 @@ class ReportController extends Controller
     }
 
 
+    public function select2_member(Request $request)
+    {
+        $data = User::select(
+            'id',
+            "name AS text",
+        )
+            ->when($request->search, function ($query) use ($request) {
+                $query->where(function ($query) use ($request) {
+                    $query->where('name', 'like', "%$request->search%");
+                });
+            })
+            ->where('role', User::ROLE_MEMBER)
+            ->orderBy('text', 'ASC')
+            ->limit(100)
+            ->get()
+            ->toArray();
 
+        return json_encode($data);
+    }
+    public function select2_product(Request $request)
+    {
+        $data = Product::select(
+            'id',
+            "name AS text",
+        )
+            ->when($request->search, function ($query) use ($request) {
+                $query->where(function ($query) use ($request) {
+                    $query->where('name', 'like', "%$request->search%");
+                });
+            })
+            ->whereNull('remarks_id')
+            ->whereNull('remarks_Type')
+            ->orderBy('text', 'ASC')
+            ->limit(100)
+            ->get()
+            ->toArray();
+
+        return json_encode($data);
+    }
+    public function select2_course(Request $request)
+    {
+        $data = Course::select(
+            'id',
+            "title AS text",
+        )
+            ->when($request->search, function ($query) use ($request) {
+                $query->where(function ($query) use ($request) {
+                    $query->where('title', 'like', "%$request->search%");
+                });
+            })
+            ->orderBy('text', 'ASC')
+            ->limit(100)
+            ->get()
+            ->toArray();
+
+        return json_encode($data);
+    }
+    public function select2_offline_course(Request $request)
+    {
+        $data = OfflineCourse::select(
+            'id',
+            "title AS text",
+        )
+            ->when($request->search, function ($query) use ($request) {
+                $query->where(function ($query) use ($request) {
+                    $query->where('title', 'like', "%$request->search%");
+                });
+            })
+            ->orderBy('text', 'ASC')
+            ->limit(100)
+            ->get()
+            ->toArray();
+
+        return json_encode($data);
+    }
 
 
 

@@ -89,6 +89,12 @@
             <span class="ml-auto sidebar-menu-toggle-icon"></span>
         </a>
         <ul class="sidebar-submenu collapse sm-indent" id="report_menu">
+            <?php $name = 'transaction'; ?>
+            <li class="sidebar-menu-item {{ Request::segment(3) == $name ? 'active' : '' }}">
+                <a class="sidebar-menu-button" href="{{ route('admin.report.' . $name . '.index') }}">
+                    <span class="sidebar-menu-text">{{ master_sidebar($name) }}</span>
+                </a>
+            </li>
             <?php $name = 'course_member'; ?>
             <li class="sidebar-menu-item {{ Request::segment(3) == $name ? 'active' : '' }}">
                 <a class="sidebar-menu-button" href="{{ route('admin.report.' . $name . '.index') }}">

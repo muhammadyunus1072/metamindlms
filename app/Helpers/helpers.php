@@ -121,6 +121,7 @@ const MASTER_SIDEBAR = array(
     "transaction" => "Transaksi",
     "offline_course" => "Kursus Offline",
     "product" => "Paket",
+    "transaction" => "Transaksi",
     "course_member" => "Kursus Member",
     "recap_course" => "Rekap Kursus",
     "account_member" => "Akun Member",
