@@ -135,21 +135,25 @@ class Datatable extends Component
                 'render' => function($item){
                     $html = "";
                     foreach ($item->transactionDetails as $transactionDetail) {
-                        $html .= "<h6 class='h4 fw-bold py-0 my-0'>$transactionDetail->product_name</h6>";
-                        $html .= "<h4 class='card-title mt-0'>Kursus Online</h4>";
-                        $html .= "<ul class='list-group my-0 py-0 list-group-custom list-group-flush'>";
-                        foreach($transactionDetail->product->productCourses as $productCourse){
-                            $courseName = $productCourse->course->title;
-                            $html .= "<li class='list-group-item py-1 my-1'> - $courseName</li>";
+                        $html .= "<h6 class='h5 fw-bold py-0 my-0'>$transactionDetail->product_name</h6>";
+                        if($transactionDetail->product->productCourses->count() > 0){
+                            $html .=  "<h4 class='card-title mt-0'>Kursus Online</h4>
+                                <ul class='list-group my-0 py-0 list-group-custom list-group-flush'>";
+                            foreach($transactionDetail->product->productCourses as $productCourse){
+                                $courseName = $productCourse->course->title;
+                                $html .= "<li class='list-group-item py-1 my-1'> - $courseName</li>";
+                            }
+                            $html .= "</ul>";
                         }
-                        $html .= "</ul>";
-                        $html .= "<h4 class='card-title mt-0'>Kursus Offline</h4>";
-                        $html .= "<ul class='list-group my-0 py-0 list-group-custom list-group-flush'>";
-                        foreach($transactionDetail->product->productOfflineCourses as $productOfflineCourse){
-                            $offlineCourseName = $productOfflineCourse->offlineCourse->title;
-                            $html .= "<li class='list-group-item py-1 my-1'> - $offlineCourseName</li>";
+                        if($transactionDetail->product->productOfflineCourses->count() > 0){
+                            $html .=  "<h4 class='card-title mt-0'>Kursus Offline</h4>
+                            <ul class='list-group my-0 py-0 list-group-custom list-group-flush'>";
+                            foreach($transactionDetail->product->productOfflineCourses as $productOfflineCourse){
+                                $offlineCourseName = $productOfflineCourse->offlineCourse->title;
+                                $html .= "<li class='list-group-item py-1 my-1'> - $offlineCourseName</li>";
+                            }
+                            $html .= "</ul>";
                         }
-                        $html .= "</ul>";
                     }
                     return $html;
                 }
