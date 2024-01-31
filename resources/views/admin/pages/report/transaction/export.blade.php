@@ -44,37 +44,56 @@
             </tr>
             <tr>
                 <td colspan="8" style="font-weight: bold;">
-                    Member : @foreach ($request['members'] as $member)
+                    Member : @forelse ($request['members'] as $member)
                         {{$member['name'] .", "}}
-                    @endforeach
+                        @empty
+                        -
+                    @endforelse
                 </td>
             </tr>
             <tr>
                 <td colspan="8" style="font-weight: bold;">
-                    Kursus Online : @foreach ($request['courses'] as $course)
+                    Kursus Online : @forelse ($request['courses'] as $course)
                         {{$course['title'] .", "}}
-                    @endforeach
+                        @empty
+                        -
+                    @endforelse
                 </td>
             </tr>
             <tr>
                 <td colspan="8" style="font-weight: bold;">
-                    Kursus Offline : @foreach ($request['offline_courses'] as $offline_course)
+                    Kursus Offline : @forelse ($request['offline_courses'] as $offline_course)
                         {{$offline_course['title'] .", "}}
-                    @endforeach
+                        @empty
+                        -
+                    @endforelse
                 </td>
             </tr>
             <tr>
                 <td colspan="8" style="font-weight: bold;">
-                    Produk : @foreach ($request['products'] as $product)
+                    Produk : @forelse ($request['products'] as $product)
                         {{$product['name'] .", "}}
-                    @endforeach
+                        @empty
+                        -
+                    @endforelse
                 </td>
             </tr>
             <tr>
                 <td colspan="8" style="font-weight: bold;">
-                    Status : @foreach ($request['statuses'] as $status)
+                    Metode Pembayaran : @forelse ($request['payment_methods'] as $payment_methods)
+                        {{$payment_methods['name'] ." - ". $payment_methods['description'] .", "}}
+                        @empty
+                        -
+                    @endforelse
+                </td>
+            </tr>
+            <tr>
+                <td colspan="8" style="font-weight: bold;">
+                    Status : @forelse ($request['statuses'] as $status)
                         {{$status .", "}}
-                    @endforeach
+                        @empty
+                        -
+                    @endforelse
                 </td>
             </tr>
 
@@ -90,6 +109,7 @@
                 <th style="font-weight: bold;">Produk</th>
                 <th style="font-weight: bold;">Detail Produk</th>
                 <th style="font-weight: bold;">Total</th>
+                <th style="font-weight: bold;">Metode Pembayaran</th>
                 <th style="font-weight: bold;">Status</th>
             </tr>
         </thead>
@@ -125,6 +145,7 @@
                         {{ $html }}
                     </td>
                     <td>{{ $item->transaction_details_sum_product_price }}</td>
+                    <td>{{ $item->payment_method_name ." - ". $item->payment_method_description }}</td>
                     <td>{{ $item->status->name }}</td>
                 </tr>
             @endforeach

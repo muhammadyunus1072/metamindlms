@@ -180,6 +180,7 @@ Route::middleware('role:admin')->group(function () {
                     Route::get('/product/get', 'select2_product')->name('get.product');
                     Route::get('/course/get', 'select2_course')->name('get.course');
                     Route::get('/offline_course/get', 'select2_offline_course')->name('get.offline_course');
+                    Route::get('/payment_method/get', 'select2_payment_method')->name('get.payment_method');
                 });
 
                 Route::group(["prefix" => "course_member", "as" => "course_member."], function () {

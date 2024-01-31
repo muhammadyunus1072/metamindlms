@@ -10,6 +10,7 @@ use App\Models\CourseReview;
 use Illuminate\Http\Request;
 use App\Exports\CourseMember;
 use App\Models\OfflineCourse;
+use App\Models\PaymentMethod;
 use App\Models\CourseMemberLesson;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -218,6 +219,25 @@ class ReportController extends Controller
             ->when($request->search, function ($query) use ($request) {
                 $query->where(function ($query) use ($request) {
                     $query->where('title', 'like', "%$request->search%");
+                });
+            })
+            ->orderBy('text', 'ASC')
+            ->limit(100)
+            ->get()
+            ->toArray();
+
+        return json_encode($data);
+    }
+    public function select2_payment_method(Request $request)
+    {
+        $data = PaymentMethod::select(
+            'id',
+            DB::raw("CONCAT(name,' - ',description) AS text"),
+        )
+            ->when($request->search, function ($query) use ($request) {
+                $query->where(function ($query) use ($request) {
+                    $query->where('name', 'like', "%$request->search%")
+                     ->orWhere('description', 'like', "%$request->search%");
                 });
             })
             ->orderBy('text', 'ASC')

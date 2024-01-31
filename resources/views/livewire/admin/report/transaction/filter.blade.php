@@ -25,7 +25,7 @@
         </select>
     </div>
     <div class="col-md-12 mb-2" wire:ignore>
-        <label>Kursus Online</label>
+        <label>Kursus Offline</label>
         <select class="form-control" id="select2-offline-course" multiple="multiple">
         </select>
     </div>
@@ -40,6 +40,11 @@
     <div class="col-md-3 mb-2" wire:ignore>
         <label>Product</label>
         <select class="form-control" id="select2-product" multiple="multiple">
+        </select>
+    </div>
+    <div class="col-md-3 mb-2" wire:ignore>
+        <label>Metode Pembayaran</label>
+        <select class="form-control" id="select2-payment-method" multiple="multiple">
         </select>
     </div>
     {{-- Export Data --}}
@@ -62,36 +67,11 @@
         $('#select2-status').select2({
             placeholder: "Seluruh Status",
         });
-        // $('.select2-status').select2({
-        //         minimumInputLength: 1,
-        //         width: '100%',
-        //         theme: 'bootstrap4',
-        //         placeholder: "Cari dan Pilih Status",
-        //         ajax: {
-        //             dataType: "json",
-        //             type: "GET",
-        //             data: function(params) {
-        //                 return {
-        //                     search: params.term,
-        //                 };
-        //             },
-        //             processResults: function(data) {
-        //                 return {
-        //                     results: $.map(data, function(item) {
-        //                         return {
-        //                             "id": item.id,
-        //                             "text": item.text,
-        //                         }
-        //                     })
-        //                 };
-        //             },
-        //         }
-        //     });
 
-            $("#select2-status").on('change', async function(e) {
-                let data = $('#select2-status').val();
-                @this.statuses = data;
-            });
+        $("#select2-status").on('change', async function(e) {
+            let data = $('#select2-status').val();
+            @this.statuses = data;
+        });
         // Select2 Member
         $('#select2-member').select2({
             minimumInputLength: 1,
@@ -162,7 +142,7 @@
             minimumInputLength: 1,
             width: '100%',
             theme: 'bootstrap4',
-            placeholder: "Cari dan Pilih Course",
+            placeholder: "Cari dan Pilih Kursus Online",
             ajax: {
                 url: "{{ route('admin.report.transaction.get.course') }}",
                 dataType: "json",
@@ -194,7 +174,7 @@
             minimumInputLength: 1,
             width: '100%',
             theme: 'bootstrap4',
-            placeholder: "Cari dan Pilih Offline Course",
+            placeholder: "Cari dan Pilih Kursus Offline",
             ajax: {
                 url: "{{ route('admin.report.transaction.get.offline_course') }}",
                 dataType: "json",
@@ -220,6 +200,38 @@
         $("#select2-offline-course").on('change', async function(e) {
             let data = $('#select2-offline-course').val();
             @this.offline_courses = data;
+        });
+        // Select2 Payment Method
+        $('#select2-payment-method').select2({
+            minimumInputLength: 1,
+            width: '100%',
+            theme: 'bootstrap4',
+            placeholder: "Cari dan Pilih Metode Pembayaran",
+            ajax: {
+                url: "{{ route('admin.report.transaction.get.payment_method') }}",
+                dataType: "json",
+                type: "GET",
+                data: function(params) {
+                    return {
+                        search: params.term,
+                    };
+                },
+                processResults: function(data) {
+                    return {
+                        results: $.map(data, function(item) {
+                            return {
+                                "id": item.id,
+                                "text": item.text,
+                            }
+                        })
+                    };
+                },
+            }
+        });
+
+        $("#select2-payment-method").on('change', async function(e) {
+            let data = $('#select2-payment-method').val();
+            @this.payment_methods = data;
         });
     </script>
 @endpush

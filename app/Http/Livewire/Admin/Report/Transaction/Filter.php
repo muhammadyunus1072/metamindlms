@@ -16,6 +16,7 @@ class Filter extends Component
     public $products;
     public $courses;
     public $offline_courses;
+    public $payment_methods;
 
     public function mount()
     {
@@ -35,6 +36,7 @@ class Filter extends Component
             'products' => $this->products,
             'courses' => $this->courses,
             'offline_courses' => $this->offline_courses,
+            'payment_methods' => $this->payment_methods,
         ]);
     }
 

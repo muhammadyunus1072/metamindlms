@@ -34,6 +34,7 @@ class Datatable extends Component
     public $members;
     public $courses;
     public $offline_courses;
+    public $payment_methods;
 
     protected $listeners = [
         'export',
@@ -53,20 +54,22 @@ class Datatable extends Component
         $fileName = 'Data Rekap Transaksi ' . Carbon::parse($this->start_date)->format('Y-m-d') . ' sd ' . Carbon::parse($this->end_date)->format('Y-m-d');
 
         $data = $this->getProcessedQuery()->get();
-        $members = User::select('name')->whereIn('id', $this->members)->get();
-        $statuses = $this->statuses;
-        $products = Product::select('name')->whereIn('id', $this->products)->get();
-        $courses = Course::select('title')->whereIn('id', $this->courses)->get();
-        $offline_courses = OfflineCourse::select('title')->whereIn('id', $this->offline_courses)->get();
+        $members = $this->members ? User::select('name')->whereIn('id', $this->members)->get() : [];
+        $statuses = $this->statuses ? $this->statuses : [];
+        $products = $this->products ? Product::select('name')->whereIn('id', $this->products)->get() : [];
+        $courses = $this->courses ? Course::select('title')->whereIn('id', $this->courses)->get() : [];
+        $offline_courses = $this->offline_courses ? OfflineCourse::select('title')->whereIn('id', $this->offline_courses)->get() : [];
+        $payment_methods = $this->payment_methods ? PaymentMethod::select('name', 'description')->whereIn('id', $this->payment_methods)->get() : [];
         return Excel::download(new CollectionExportExcel(
             [
                 'start_date' => $this->start_date,
                 'end_date' => $this->end_date,
                 'members' => $members,
-                'statuses' => $this->statuses,
+                'statuses' => $statuses,
                 'products' => $products,
                 'courses' => $courses,
                 'offline_courses' => $offline_courses,
+                'payment_methods' => $payment_methods,
                 'keyword' => $this->search,
                 'title' => 'Data Rekap Transaksi',
             ], 
@@ -77,7 +80,6 @@ class Datatable extends Component
 
     public function addFilter($filter)
     {
-        $this->emit('consoleLog', $filter);
         foreach ($filter as $key => $value) {
             $this->$key = $value;
         }
@@ -117,13 +119,13 @@ class Datatable extends Component
                 'sortable' => false,
                 'searchable' => false,
                 'render' => function($item){
-                    $products = ""; 
+                    $products = "<ul class='list-group list-group-custom list-group-flush'>"; 
                     foreach ($item->transactionDetails as $index => $transactionDetail) {
                         $is_comma = ($item->transactionDetails->count() - 1 > $index) ? ", " : "";
-                        $products .= $transactionDetail->product_name . $is_comma;
+                        $products .= "<li class='list-group-item py-1 my-1'> $transactionDetail->product_name</li>";
                     }
 
-                    return $products;
+                    return $products ."</ul>";
                 }
             ],
             [
@@ -133,19 +135,19 @@ class Datatable extends Component
                 'render' => function($item){
                     $html = "";
                     foreach ($item->transactionDetails as $transactionDetail) {
-                        $html .= "<h6 class='h4 fw-bold'>$transactionDetail->product_name</h6>";
-                        $html .= "<h4 class='h5 fw-bold mt-2'>Kursus Online</h4>";
-                        $html .= "<ul class='list-group list-group-custom list-group-flush'>";
+                        $html .= "<h6 class='h4 fw-bold py-0 my-0'>$transactionDetail->product_name</h6>";
+                        $html .= "<h4 class='card-title mt-0'>Kursus Online</h4>";
+                        $html .= "<ul class='list-group my-0 py-0 list-group-custom list-group-flush'>";
                         foreach($transactionDetail->product->productCourses as $productCourse){
                             $courseName = $productCourse->course->title;
-                            $html .= "<li class='list-group-item'> - $courseName</li>";
+                            $html .= "<li class='list-group-item py-1 my-1'> - $courseName</li>";
                         }
                         $html .= "</ul>";
-                        $html .= "<h4 class='card-title mt-2'>Kursus Offline</h4>";
-                        $html .= "<ul class='list-group list-group-custom list-group-flush'>";
+                        $html .= "<h4 class='card-title mt-0'>Kursus Offline</h4>";
+                        $html .= "<ul class='list-group my-0 py-0 list-group-custom list-group-flush'>";
                         foreach($transactionDetail->product->productOfflineCourses as $productOfflineCourse){
                             $offlineCourseName = $productOfflineCourse->offlineCourse->title;
-                            $html .= "<li class='list-group-item'> - $offlineCourseName</li>";
+                            $html .= "<li class='list-group-item py-1 my-1'> - $offlineCourseName</li>";
                         }
                         $html .= "</ul>";
                     }
@@ -158,6 +160,14 @@ class Datatable extends Component
                 'searchable' => false,
                 'render' => function($item){
                     return NumberFormatter::format($item->transaction_details_sum_product_price);
+                }
+            ],
+            [
+                'name' => 'Metode Pembayaran',
+                'sortable' => false,
+                'searchable' => false,
+                'render' => function($item){
+                    return $item->payment_method_name ." - ". $item->payment_method_description;
                 }
             ],
             [
@@ -216,6 +226,9 @@ class Datatable extends Component
                 $query->whereHas('transactionDetails.product.productOfflineCourses.offlineCourse', function ($query) {
                     $query->whereIn('id', $this->offline_courses);
                 });
+            })
+            ->when($this->payment_methods, function ($query) {
+                $query->whereIn('payment_method_id', $this->payment_methods);
             })
             ->when($this->search, function ($query) {
                 $query->where('transactions.number', 'like', '%'.$this->search.'%');
