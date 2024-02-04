@@ -55,7 +55,6 @@ return new class extends Migration
         $table->dateTime("offline_course_date_time_start")->nullable()->comment('Tanggal Mulai Kegiatan');
         $table->dateTime("offline_course_date_time_end")->nullable()->comment('Tanggal Akhir Kegiatan');
         $table->text("offline_url_online_meet")->nullable()->comment('URL Online Meet');
-
         $table->double("offline_course_price")->comment('Harga');
         $table->double("offline_course_price_before_discount")->nullable()->comment('Harga Sebelum Diskon');
 

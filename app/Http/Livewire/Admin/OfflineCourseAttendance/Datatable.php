@@ -35,8 +35,7 @@ class Datatable extends Component
                 'render' => function ($item) {
                     $encryptedId = Crypt::encryptString($item->id);
 
-                    $destroyUrl = route('admin.offline_course_attendance.destroy', $encryptedId);
-                    $destroyHtml = "<form action='$destroyUrl' method='POST' wire:submit.prevent=\"delete('$encryptedId')\">"
+                    $destroyHtml = "<form method='POST' wire:submit.prevent=\"delete('$encryptedId')\">"
                         . method_field('DELETE') . csrf_field() .
                         "<button type='submit' class='btn btn-danger ml-1'
                             onclick=\"return confirm('Delete Data?')\">

@@ -50,7 +50,7 @@
                                             <p class="my-0 py-0">Status</p>
                                         </td>
                                         <td>:</td>
-                                        <td colspan="3" class="card-title text-center">
+                                        <td colspan="3" class="card-title">
                                             {!! $transaction->status->get_beautify() !!}
                                         </td>
                                     </tr>
@@ -64,9 +64,9 @@
                                                 <p class="my-0 py-0">{{ $transactionDetail->product_name }}</p>
                                             </td>
                                             <td class="card-title text-right">
-                                                @if ($transactionDetail->product_price)
+                                                @if ($transactionDetail->product_price_before_discount)
                                                     <p class="my-0 py-0 d-inline mr-2">
-                                                        <del>@currency($transactionDetail->product_price)</del>
+                                                        <del>@currency($transactionDetail->product_price_before_discount)</del>
                                                     </p>
                                                 @endif
                                                 <p class="my-0 py-0 d-inline">

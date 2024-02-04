@@ -20,37 +20,63 @@
                         <ul class="pricing card-body list-unstyled mb-0">
                             <li class="fs-3 border-bottom py-2 card-title"><strong>{{ $product->name }}</strong></li>
                             <li class="border-bottom py-2">{{ $product->description }}</li>
-                            <li class="bg-light row justify-content-end align-items-end mb-2">
-                                <div class="col-auto">
-                                    <h3>Harga: @currency($product->price)</h3>
+
+                            {{-- OFFLINE COURSE --}}
+                            @if (count($product->productOfflineCourses) > 0)
+                                <div class='row ml-1 mt-2'>
+                                    <h5>Kursus Offline</h5>
+                                    @foreach ($product->productOfflineCourses as $product_offline_course)
+                                        <div class="col-md-12 row">
+                                            <div class='col font-italic'>
+                                                {{ $product_offline_course->offlineCourse->title }}
+                                            </div>
+                                            <div class='col-auto'>
+                                                <a class="btn btn-info btn-sm"
+                                                    href="{{ route('offline_course.show', Crypt::encrypt($product_offline_course->offlineCourse->id)) }}"
+                                                    target="_blank">
+                                                    Lihat Kursus
+                                                </a>
+                                            </div>
+                                        </div>
+                                    @endforeach
                                 </div>
+                            @endif
+
+                            {{-- ONLINE COURSE --}}
+                            @if (count($product->productCourses) > 0)
+                                <div class='row ml-1 mt-2'>
+                                    <h5>Kursus Online</h5>
+                                    @foreach ($product->productCourses as $product_course)
+                                        <div class="col-md-12 row">
+                                            <div class='col font-italic'>
+                                                {{ $product_course->course->title }}
+                                            </div>
+                                            <div class='col-auto'>
+                                                <a class="btn btn-info btn-sm"
+                                                    href="{{ route('course.show', ['id' => enc($product_course->course->id)]) }}"
+                                                    target="_blank">
+                                                    Lihat Kursus
+                                                </a>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
+
+                            {{-- PRICE --}}
+                            <li class="bg-light row justify-content-end align-items-end mt-3 py-2">
                                 @if ($product->price_before_discount)
                                     <div class="col-auto">
                                         <del>
-                                            <p class="h5">(Dari: @currency($product->price_before_discount) )</p>
+                                            <h5 class='m-0 p-0'>@currency($product->price_before_discount)</h5>
                                         </del>
                                     </div>
                                 @endif
+                                <div class="col-auto">
+                                    <h3 class='m-0 p-0'>@currency($product->price)</h3>
+                                </div>
                             </li>
 
-                            <li class="fs-3 border-bottom py-2 card-title"><strong>Kursus Offline</strong></li>
-                            @foreach ($product->productOfflineCourses as $product_offline_course)
-                                <li class="fs-1 border-bottom py-2 d-flex justify-content-between w-75">
-                                    <strong>{{ $product_offline_course->offlineCourse->title }}</strong>
-                                    <a class="btn btn-info px-3 py-2" href="{{ route('offline_course.show', Crypt::encrypt($product_offline_course->offlineCourse->id)) }}" target="_blank">
-                                        Detail
-                                    </a>
-                                </li>
-                            @endforeach
-                            <li class="fs-3 border-bottom py-2 card-title"><strong>Kursus Online</strong></li>
-                            @foreach ($product->productCourses as $product_course)
-                                <li class="fs-1 border-bottom py-2 d-flex justify-content-between w-75">
-                                    <strong>{{ $product_course->course->title }}</strong>
-                                    <a class="btn btn-info px-3 py-2" href="{{route('course.show', ['id' => enc($product_course->course->id)])}}" target="_blank">
-                                        Detail
-                                    </a>
-                                </li>
-                            @endforeach
                             <li class="pt-3">
                                 <button class="btn btn-primary px-3 py-2"
                                     wire:click="store('{{ $product->id }}', false)">Tambah Keranjang</button>
@@ -68,7 +94,7 @@
 
     <div class="row justify-content-end mt-3">
         <div class="col">
-            <em>Total Produk / Paket: {{ $products->total() }}</em>
+            <em>Total Data: {{ $products->total() }}</em>
         </div>
         <div class="col-auto">
             {{ $products->links() }}

@@ -1,5 +1,5 @@
 <div class="row mb-2">
-
+    {{-- FILTER --}}
     <div class="col-md-3 mb-2">
         <div class="form-group">
             <label class="form-label">Tanggal Mulai</label>
@@ -12,23 +12,6 @@
             <input type="date" class="form-control" wire:model="end_date" />
         </div>
     </div>
-
-    <div class="col-md-6 mb-2" wire:ignore>
-        <label>Member</label>
-        <select class="form-control" id="select2-member" multiple="multiple">
-        </select>
-    </div>
-
-    <div class="col-md-12 mb-2" wire:ignore>
-        <label>Kursus Online</label>
-        <select class="form-control" id="select2-course" multiple="multiple">
-        </select>
-    </div>
-    <div class="col-md-12 mb-2" wire:ignore>
-        <label>Kursus Offline</label>
-        <select class="form-control" id="select2-offline-course" multiple="multiple">
-        </select>
-    </div>
     <div class="col-md-3 mb-2" wire:ignore>
         <label>Status</label>
         <select class="form-control" id="select2-status" multiple="multiple">
@@ -38,23 +21,38 @@
         </select>
     </div>
     <div class="col-md-3 mb-2" wire:ignore>
+        <label>Metode Pembayaran</label>
+        <select class="form-control" id="select2-payment-method" multiple="multiple">
+        </select>
+    </div>
+    <div class="col-md-3 mb-2" wire:ignore>
+        <label>Member</label>
+        <select class="form-control" id="select2-member" multiple="multiple">
+        </select>
+    </div>
+    <div class="col-md-3 mb-2" wire:ignore>
         <label>Product</label>
         <select class="form-control" id="select2-product" multiple="multiple">
         </select>
     </div>
     <div class="col-md-3 mb-2" wire:ignore>
-        <label>Metode Pembayaran</label>
-        <select class="form-control" id="select2-payment-method" multiple="multiple">
+        <label>Kursus Online</label>
+        <select class="form-control" id="select2-course" multiple="multiple">
         </select>
     </div>
-    {{-- Export Data --}}
+    <div class="col-md-3 mb-2" wire:ignore>
+        <label>Kursus Offline</label>
+        <select class="form-control" id="select2-offline-course" multiple="multiple">
+        </select>
+    </div>
+
+    {{-- EXPORT --}}
     <div class="row col-12 mt-2">
         <div class="col-auto">
             <label>Export Data:</label>
         </div>
         <div class="col-auto">
-            <button class="btn btn-outline-success btn-sm"
-                wire:click="$emit('export')">
+            <button class="btn btn-outline-success btn-sm" wire:click="$emit('export')">
                 <i class="fa fa-file-excel"></i>
                 Export Excel
             </button>

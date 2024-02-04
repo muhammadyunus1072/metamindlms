@@ -29,6 +29,7 @@ class Detail extends Component
         $this->transaction_id = $transaction_id;
         $this->getData();
     }
+
     private function getData()
     {
         $this->transaction = Transaction::where('id', $this->transaction_id)
@@ -58,6 +59,7 @@ class Detail extends Component
     {
         $this->dispatchBrowserEvent('openConfirmCancellationModal');
     }
+
     public function cancelTransaction()
     {
         $transaction_status = new TransactionStatus();
@@ -85,13 +87,15 @@ class Detail extends Component
         $transaction->fill($validatedData);
 
         if ($transaction->save()) {
+            if ($transaction->status->name != TransactionStatus::STATUS_ORDER_CONFIRMATION_PENDING) {
+                $transaction_status = new TransactionStatus();
+                $transaction_status->transaction_id = $transaction->id;
+                $transaction_status->name = TransactionStatus::STATUS_ORDER_CONFIRMATION_PENDING;
+                $transaction_status->description = TransactionStatus::STATUS_ORDER_CONFIRMATION_PENDING;
+                $transaction_status->save();
 
-            $transaction_status = new TransactionStatus();
-            $transaction_status->transaction_id = $transaction->id;
-            $transaction_status->name = TransactionStatus::STATUS_ORDER_CONFIRMATION_PENDING;
-            $transaction_status->description = TransactionStatus::STATUS_ORDER_CONFIRMATION_PENDING;
-            $transaction_status->save();
-
+                $this->getData();
+            }
             $this->emit('onSuccessSweetAlert', 'Berhasil Menyimpan Bukti Bayar');
         } else {
             $this->emit('onFailSweetAlert', 'Gagal Menyimpan Bukti Bayar');

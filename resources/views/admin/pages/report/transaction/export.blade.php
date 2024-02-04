@@ -26,79 +26,79 @@
     <table class="table-border" style="width: 100%">
         <thead>
             <tr>
-                <td colspan="8" style="text-align: center; font-weight: bold;">
+                <td colspan="9" style="text-align: center; font-weight: bold;">
                     {{ $request['title'] }}
                 </td>
             </tr>
 
             <tr>
-                <td colspan="8" style="font-weight: bold;">
+                <td colspan="9" style="font-weight: bold;">
                     Tanggal :{{ Carbon\Carbon::parse($request['start_date'])->format('Y-m-d') }} s/d
                     {{ Carbon\Carbon::parse($request['end_date'])->format('Y-m-d') }}
                 </td>
             </tr>
             <tr>
-                <td colspan="4" style="font-weight: bold;">
+                <td colspan="9" style="font-weight: bold;">
                     Kata Kunci :{{ $request['keyword'] }}
                 </td>
             </tr>
             <tr>
-                <td colspan="8" style="font-weight: bold;">
+                <td colspan="9" style="font-weight: bold;">
                     Member : @forelse ($request['members'] as $member)
-                        {{$member['name'] .", "}}
-                        @empty
+                        {{ $member['name'] . ', ' }}
+                    @empty
                         -
                     @endforelse
                 </td>
             </tr>
             <tr>
-                <td colspan="8" style="font-weight: bold;">
+                <td colspan="9" style="font-weight: bold;">
                     Kursus Online : @forelse ($request['courses'] as $course)
-                        {{$course['title'] .", "}}
-                        @empty
+                        {{ $course['title'] . ', ' }}
+                    @empty
                         -
                     @endforelse
                 </td>
             </tr>
             <tr>
-                <td colspan="8" style="font-weight: bold;">
+                <td colspan="9" style="font-weight: bold;">
                     Kursus Offline : @forelse ($request['offline_courses'] as $offline_course)
-                        {{$offline_course['title'] .", "}}
-                        @empty
+                        {{ $offline_course['title'] . ', ' }}
+                    @empty
                         -
                     @endforelse
                 </td>
             </tr>
             <tr>
-                <td colspan="8" style="font-weight: bold;">
+                <td colspan="9" style="font-weight: bold;">
                     Produk : @forelse ($request['products'] as $product)
-                        {{$product['name'] .", "}}
-                        @empty
+                        {{ $product['name'] . ', ' }}
+                    @empty
                         -
                     @endforelse
                 </td>
             </tr>
             <tr>
-                <td colspan="8" style="font-weight: bold;">
+                <td colspan="9" style="font-weight: bold;">
                     Metode Pembayaran : @forelse ($request['payment_methods'] as $payment_methods)
-                        {{$payment_methods['name'] ." - ". $payment_methods['description'] .", "}}
-                        @empty
+                        {{ $payment_methods['name'] . ' - ' . $payment_methods['description'] . ', ' }}
+                    @empty
                         -
                     @endforelse
                 </td>
             </tr>
             <tr>
-                <td colspan="8" style="font-weight: bold;">
+                <td colspan="9" style="font-weight: bold;">
                     Status : @forelse ($request['statuses'] as $status)
-                        {{$status .", "}}
-                        @empty
+                        {{ $status . ', ' }}
+                    @empty
                         -
                     @endforelse
                 </td>
             </tr>
 
             <tr>
-                <td colspan="8" style="border: 0px; padding:8px">
+                <td colspan="9" style="border: 0px; padding:8px">
             </tr>
 
             <tr>
@@ -122,9 +122,9 @@
                     <td>{{ $item->user->name }}</td>
                     <td>
                         @php
-                            $products = ""; 
+                            $products = '';
                             foreach ($item->transactionDetails as $indexTransactionDetail => $transactionDetail) {
-                                $is_comma = ($item->transactionDetails->count() - 1 > $indexTransactionDetail) ? ", " : "";
+                                $is_comma = $item->transactionDetails->count() - 1 > $indexTransactionDetail ? ', ' : '';
                                 $products .= $transactionDetail->product_name . $is_comma;
                             }
                         @endphp
@@ -132,20 +132,20 @@
                     </td>
                     <td>
                         @php
-                            $html = "";
+                            $html = '';
                             foreach ($item->transactionDetails as $transactionDetail) {
-                                foreach($transactionDetail->product->productCourses as $productCourse){
-                                    $html .= $productCourse->course->title .", ";
+                                foreach ($transactionDetail->courses as $course) {
+                                    $html .= $course->course_title . ', ';
                                 }
-                                foreach($transactionDetail->product->productOfflineCourses as $productOfflineCourse){
-                                    $html .= $productOfflineCourse->offlineCourse->title .", ";
+                                foreach ($transactionDetail->offlineCourses as $course) {
+                                    $html .= $course->offline_course_title . ', ';
                                 }
                             }
                         @endphp
                         {{ $html }}
                     </td>
                     <td>{{ $item->transaction_details_sum_product_price }}</td>
-                    <td>{{ $item->payment_method_name ." - ". $item->payment_method_description }}</td>
+                    <td>{{ $item->payment_method_name . ' - ' . $item->payment_method_description }}</td>
                     <td>{{ $item->status->name }}</td>
                 </tr>
             @endforeach

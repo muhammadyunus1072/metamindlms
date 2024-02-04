@@ -26,8 +26,19 @@ class TransactionDetail extends Model
     {
         return $this->belongsTo(Product::class, 'product_id', 'id');
     }
+
     public function transaction()
     {
         return $this->belongsTo(Transaction::class, 'transaction_id', 'id');
+    }
+
+    public function courses()
+    {
+        return $this->hasMany(TransactionDetailCourse::class, 'transaction_detail_id', 'id');
+    }
+
+    public function offlineCourses()
+    {
+        return $this->hasMany(TransactionDetailOfflineCourse::class, 'transaction_detail_id', 'id');
     }
 }

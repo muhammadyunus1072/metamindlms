@@ -18,8 +18,8 @@ class MidtransPaymentMethodSeeder extends Seeder
         //-----------Level-----------
         //---------------------------
         PaymentMethod::create([
-            "name" => PaymentMethod::MIDTRANS_PAYMENT_METHOD,
-            "description" => PaymentMethod::MIDTRANS_PAYMENT_METHOD,
+            "name" => "Midtrans",
+            "description" => "Midtrans",
             "is_editable" => false,
         ]);
     }

@@ -31,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrapFive();
 
         Blade::directive('currency', function ($expression) {
-            return "<?php echo App\Helpers\NumberFormatter::format($expression); ?>";
+            return "Rp <?php echo App\Helpers\NumberFormatter::format($expression); ?>";
         });
 
         Facades\View::composer('auth.register', function (View $view) {

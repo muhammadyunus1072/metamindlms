@@ -22,7 +22,6 @@ class Filter extends Component
     {
         $this->end_date = Carbon::now()->format('Y-m-d');
         $this->start_date = Carbon::now()->subMonths(1)->format('Y-m-d');
-        $this->jenis_tanggal = 'rentang-waktu';
     }
 
     public function updated()
@@ -30,7 +29,6 @@ class Filter extends Component
         $this->emit('addFilter', [
             'end_date' => $this->end_date,
             'start_date' => $this->start_date,
-            'jenis_tanggal' => $this->jenis_tanggal,
             'statuses' => $this->statuses,
             'members' => $this->members,
             'products' => $this->products,

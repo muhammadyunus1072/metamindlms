@@ -142,11 +142,6 @@ Route::middleware('role:admin')->group(function () {
                 Route::get('/offline-course/get', [OfflineCourseController::class, 'searchOfflineCourse'])->name('get.offline_course');
             });
 
-            // Master Data Kursus Offline Pendaftaran
-            Route::group(["controller" => OfflineCourseAttendanceController::class, "prefix" => "offline_course_attendance", "as" => "offline_course_attendance."], function () {
-                Route::delete("destroy/{id}", "destroy")->name('destroy');
-            });
-
             // Master Data Kursus Offline Kehadiran
             Route::group(["controller" => OfflineCourseRegistrarController::class, "prefix" => "offline_course_registrar", "as" => "offline_course_registrar."], function () {
                 Route::delete("destroy/{id}", "destroy")->name('destroy');
