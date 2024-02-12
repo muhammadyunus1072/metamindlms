@@ -189,7 +189,7 @@ class Datatable extends Component
 
     public function getQuery(): Builder
     {
-
+        $this->emit('consoleLog', "coba");
         $this->getTotalHeader();
 
         return Transaction::select(
