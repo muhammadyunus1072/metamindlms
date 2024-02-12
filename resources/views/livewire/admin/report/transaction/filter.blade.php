@@ -59,7 +59,7 @@
         </div>
     </div>
     {{-- Card Total --}}
-    <div class="row col-12 my-4 d-flex justify-content-evenly align-items-stretch">
+    <div class="row col-12 my-4 d-flex justify-content-around align-items-stretch">
         <div class="col-md-5 mb-2">
             <div class="card">
                 <div class="card-header text-center" style="color:white;">
