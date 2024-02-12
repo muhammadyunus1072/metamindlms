@@ -53,7 +53,7 @@ class Detail extends Component
                 $transaction->snap_token = $snapToken;
                 $transaction->save();
             }
-            $this->snap_token = $transaction->snap_token;
+            $this->snapToken = $transaction->snap_token;
         }else{
             $this->oldImage = $transaction->getImage();
         }
@@ -79,7 +79,7 @@ class Detail extends Component
     }
 
     public function checkout(){
-        $this->emit('midtransCheckout', $snapToken);
+        $this->emit('midtransCheckout', $this->snapToken);
     }
 
     public function confirmCancelTransaction()
