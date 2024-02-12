@@ -175,11 +175,21 @@ class Datatable extends Component
                     return $item->status->get_beautify();
                 },
             ],
+            [
+                'name' => 'Data',
+                'sortable' => false,
+                'searchable' => false,
+                'render' => function ($item) {
+                    return $item;
+                },
+            ],
         ];
     }
 
     public function getQuery(): Builder
     {
+
+        $this->getTotalHeader();
 
         return Transaction::select(
             'transactions.*',
@@ -227,6 +237,85 @@ class Datatable extends Component
                 $query->where('transactions.number', 'like', '%' . $this->search . '%');
             })
             ->orderBy('transactions.created_at', 'DESC');
+    }
+
+    public function getTotalHeader()
+    {
+        $transactions = TransactionDetail::
+            leftJoin('transaction_statuses', 'transactions.last_status_id', '=', 'transaction_statuses.id')
+            ->whereBetween('transactions.created_at', [$this->start_date . " 00:00:00", $this->end_date . " 23:59:59"])
+            ->when($this->statuses, function ($query) {
+                $query->whereHas('transactions.status', function ($query) {
+                    $query->whereIn('name', $this->statuses);
+                });
+            })
+            ->when($this->members, function ($query) {
+                $query->whereHas('transactions.user', function ($query) {
+                    $query->whereIn('id', $this->members);
+                });
+            })
+            ->when($this->products, function ($query) {
+                $query->whereIn('product_id', $this->products);
+            })
+            ->when($this->courses, function ($query) {
+                $query->whereHas('courses', function ($query) {
+                    $query->whereIn('course_id', $this->courses);
+                });
+            })
+            ->when($this->offline_courses, function ($query) {
+                $query->whereHas('offlineCourses', function ($query) {
+                    $query->whereIn('offline_course_id', $this->offline_courses);
+                });
+            })
+            ->when($this->payment_methods, function ($query) {
+                $query->whereHas('transactions', function ($query) {
+                    $query->whereIn('payment_method_id', $this->payment_methods);
+                });
+            })
+            ->when($this->search, function ($query) {
+                $query->whereHas('transactions', function ($query) {
+                    $query->where('number', 'like', '%' . $this->search . '%');
+                });
+            })
+            ->sum('product_price');
+        $total_transaction = Transaction::
+            leftJoin('transaction_statuses', 'transactions.last_status_id', '=', 'transaction_statuses.id')
+            ->whereBetween('transactions.created_at', [$this->start_date . " 00:00:00", $this->end_date . " 23:59:59"])
+            ->when($this->statuses, function ($query) {
+                $query->whereHas('status', function ($query) {
+                    $query->whereIn('name', $this->statuses);
+                });
+            })
+            ->when($this->members, function ($query) {
+                $query->whereHas('user', function ($query) {
+                    $query->whereIn('id', $this->members);
+                });
+            })
+            ->when($this->products, function ($query) {
+                $query->whereHas('transactionDetails', function ($query) {
+                    $query->whereIn('product_id', $this->products);
+                });
+            })
+            ->when($this->courses, function ($query) {
+                $query->whereHas('transactionDetails.courses', function ($query) {
+                    $query->whereIn('course_id', $this->courses);
+                });
+            })
+            ->when($this->offline_courses, function ($query) {
+                $query->whereHas('transactionDetails.offlineCourses', function ($query) {
+                    $query->whereIn('offline_course_id', $this->offline_courses);
+                });
+            })
+            ->when($this->payment_methods, function ($query) {
+                $query->whereIn('payment_method_id', $this->payment_methods);
+            })
+            ->when($this->search, function ($query) {
+                $query->where('transactions.number', 'like', '%' . $this->search . '%');
+            })
+            ->count();
+
+
+        $this->emit('setTotalHeader', $total_price, $total_transaction);
     }
 
     public function getView(): string

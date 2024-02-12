@@ -83,7 +83,7 @@
                                                 <td colspan="2">
                                                     <h6 class="my-0 py-0 ml-3 fw-bold">Kursus Online</h6>
 
-                                                    <ul class="list-group list-group-custom list-group-flush my-0 py-0 ml-3 w-75">
+                                                    <ul class="list-group list-group-custom list-group-flush my-0 py-0 ml-3">
                                                     @foreach ($transactionDetail->courses as $course)
                                                         <li class="list-group-item d-flex justify-content-between my-0 py-0">
                                                             <p class="my-0 py-0">
@@ -103,7 +103,7 @@
                                                 <td colspan="2">
                                                     <h6 class="my-0 py-0 ml-3 fw-bold">Kursus Offline</h6>
 
-                                                    <ul class="list-group list-group-custom list-group-flush my-0 py-0 ml-3 w-75">
+                                                    <ul class="list-group list-group-custom list-group-flush my-0 py-0 ml-3">
                                                     @foreach ($transactionDetail->offlineCourses as $offlineCourse)
                                                         <li class="list-group-item d-flex justify-content-between my-0 py-0">
                                                             <p class="my-0 py-0">

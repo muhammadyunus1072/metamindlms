@@ -44,6 +44,15 @@
                                         </p>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td class="card-title text-left">
+                                        <p class="my-0 py-0">Status</p>
+                                    </td>
+                                    <td>:</td>
+                                    <td colspan="3" class="card-title">
+                                        {!! $transaction->status->get_beautify() !!}
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                         <table class="table table-bordered table-nowrap col-12">
@@ -64,6 +73,46 @@
                                             </p>
                                         </td>
                                     </tr>
+                                    @if (count($transactionDetail->courses))
+                                            <tr>
+                                                <td colspan="2">
+                                                    <h6 class="my-0 py-0 ml-3 fw-bold">Kursus Online</h6>
+
+                                                    <ul class="list-group list-group-custom list-group-flush my-0 py-0 ml-3">
+                                                    @foreach ($transactionDetail->courses as $course)
+                                                        <li class="list-group-item d-flex justify-content-between my-0 py-0">
+                                                            <p class="my-0 py-0">
+                                                                 - {{ $course->course_title }}
+                                                            </p>
+                                                            <p class="my-0 py-0">
+                                                                @currency($course->course_price)
+                                                            </p>
+                                                        </li>
+                                                    @endforeach
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        @endif
+                                        @if (count($transactionDetail->offlineCourses))
+                                            <tr>
+                                                <td colspan="2">
+                                                    <h6 class="my-0 py-0 ml-3 fw-bold">Kursus Offline</h6>
+
+                                                    <ul class="list-group list-group-custom list-group-flush my-0 py-0 ml-3">
+                                                    @foreach ($transactionDetail->offlineCourses as $offlineCourse)
+                                                        <li class="list-group-item d-flex justify-content-between my-0 py-0">
+                                                            <p class="my-0 py-0">
+                                                                 - {{ $offlineCourse->offline_course_title }}
+                                                            </p>
+                                                            <p class="my-0 py-0">
+                                                                @currency($offlineCourse->offline_course_price)
+                                                            </p>
+                                                        </li>
+                                                    @endforeach
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        @endif
                                 @endforeach
                                 <tr>
                                     <td class="card-title text-right">
