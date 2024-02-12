@@ -85,6 +85,9 @@
 
 @push('js')
     <script>
+        document.addEventListener('livewire:load', function() {
+            Livewire.emit('getTotalHeader');
+        });
         $('#select2-status').select2({
             placeholder: "Seluruh Status",
         });

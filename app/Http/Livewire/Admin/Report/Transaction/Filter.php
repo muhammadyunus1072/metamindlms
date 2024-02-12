@@ -33,15 +33,12 @@ class Filter extends Component
 
     public function setTotalHeader($total_price, $total_transaction)
     {
-        $this->emit('consoleLog', "$total_price - $total_transaction");
         $this->total_price = number_format($total_price, 0, '.', '.');
         $this->total_transaction = number_format($total_transaction, 0, '.', '.');
     }
 
     public function updated()
     {
-        $this->emit('onSuccessSweetAlert', "filter");
-
         $this->emit('addFilter', [
             'end_date' => $this->end_date,
             'start_date' => $this->start_date,
