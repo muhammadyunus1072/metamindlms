@@ -87,7 +87,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            @if($transaction->payment_method_id == PaymentMethod::MIDTRANS_ID)
+                            @if($transaction->payment_method_id == App\Models\PaymentMethod::MIDTRANS_ID)
                                 <div class="col-md-12">
                                     <button type="button" class="btn btn-block btn-success mb-2" wire:click="checkout">Bayar</button>
                                 </div>
