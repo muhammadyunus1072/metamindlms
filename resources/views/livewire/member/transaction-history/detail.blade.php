@@ -85,7 +85,14 @@
 
                                                     <ul class="list-group list-group-custom list-group-flush my-0 py-0 ml-3">
                                                     @foreach ($transactionDetail->courses as $course)
-                                                        <li class="list-group-item my-0 py-0 ml-3"> - {{ $course->course_title }}</li>
+                                                        <li class="list-group-item my-0 py-0 ml-3">
+                                                            <p class="text-left d-inline">
+                                                                 - {{ $course->course_title }}
+                                                            </p>
+                                                            <p class="text-right d-inline">
+                                                                @currency($course->course_price)
+                                                            </p>
+                                                        </li>
                                                     @endforeach
                                                     </ul>
                                                 </td>
@@ -98,7 +105,14 @@
 
                                                     <ul class="list-group list-group-custom list-group-flush my-0 py-0 ml-3">
                                                     @foreach ($transactionDetail->offlineCourses as $offlineCourse)
-                                                        <li class="list-group-item my-0 py-0 ml-3"> - {{ $offlineCourse->offline_course_title }}</li>
+                                                        <li class="list-group-item my-0 py-0 ml-3">
+                                                            <p class="text-left d-inline">
+                                                                 - {{ $offlineCourse->offline_course_title }}
+                                                            </p>
+                                                            <p class="text-right d-inline">
+                                                                @currency($offlineCourse->offline_course_price)
+                                                            </p>
+                                                        </li>
                                                     @endforeach
                                                     </ul>
                                                 </td>
