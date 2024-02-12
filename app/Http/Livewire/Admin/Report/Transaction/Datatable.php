@@ -242,7 +242,7 @@ class Datatable extends Component
 
     public function getTotalHeader()
     {
-        $transactions = TransactionDetail::
+        $total_price = TransactionDetail::
             join('transactions as t', 'transaction_details.transaction_id', '=', 't.id')
             ->leftJoin('transaction_statuses', 't.last_status_id', '=', 'transaction_statuses.id')
             ->whereBetween('t.created_at', [$this->start_date . " 00:00:00", $this->end_date . " 23:59:59"])
