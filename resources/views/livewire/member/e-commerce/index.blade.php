@@ -13,6 +13,25 @@
     </div>
 
     <div class="mb-lg-8pt">
+        <div class="d-flex flex-column flex-sm-row align-items-sm-center mb-24pt"
+        style="white-space: nowrap;">
+            <div class="form-group flex mr-3 mb-2 mb-sm-0">
+                    <div class="row">
+                        <div class="col-lg">
+                            <div class="search-form form-control-rounded search-form--dark">
+                                <input type="text"
+                                        class="form-control"
+                                        placeholder="Cari Kursus"
+                                        name="text_filter"
+                                        wire:model="filter_search">
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-lg-8pt">
         <div class="row d-flex-justify-content-evenly">
             @foreach ($products as $product)
                 <div class="col-md-12">
