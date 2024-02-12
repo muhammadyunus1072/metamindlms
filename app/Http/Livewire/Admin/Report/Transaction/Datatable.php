@@ -316,7 +316,7 @@ class Datatable extends Component
             })
             ->count();
 
-
+        $this->emit('consoleLog', "$total_price - $total_transaction");
         $this->emit('setTotalHeader', $total_price, $total_transaction);
     }
 
