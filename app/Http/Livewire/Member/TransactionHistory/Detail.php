@@ -35,14 +35,9 @@ class Detail extends Component
 
     private function getData()
     {
-        $transaction = Transaction::where('id', $this->transaction_id)
-            ->where('user_id', info_user_id())
-            ->with(
-                'transactionDetails',
-                'status',
-            )
-            ->withSum('transactionDetails', 'product_price')
-            ->first();
+        $query = Transaction::where('id', $this->transaction_id)
+            ->where('user_id', info_user_id());
+        $transaction = $query->first();
         if ($transaction->payment_method_id == PaymentMethod::MIDTRANS_ID) {
             if(!$transaction->snap_token){
                 $snapToken = MidtransPayment::getSnapToken(
@@ -62,6 +57,13 @@ class Detail extends Component
         }else{
             $this->oldImage = $transaction->getImage();
         }
+        $transaction = $query
+        ->with(
+            'transactionDetails',
+            'status',
+        )
+        ->withSum('transactionDetails', 'product_price')
+        ->first();
         $this->transaction = $transaction;
         $this->total = $transaction->transaction_details_sum_product_price;
     }
