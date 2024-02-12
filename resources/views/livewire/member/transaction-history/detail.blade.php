@@ -81,7 +81,7 @@
                                         @if (count($transactionDetail->courses))
                                             <tr>
                                                 <td colspan="2">
-                                                    <h4 class="my-0 py-0 ml-3 fw-bold">Kursus Online</h4>
+                                                    <h6 class="my-0 py-0 ml-3 fw-bold">Kursus Online</h6>
 
                                                     <ul class="list-group list-group-custom list-group-flush my-0 py-0 ml-3">
                                                     @foreach ($transactionDetail->courses as $course)
@@ -94,7 +94,7 @@
                                         @if (count($transactionDetail->offlineCourses))
                                             <tr>
                                                 <td colspan="2">
-                                                    <h4 class="my-0 py-0 ml-3 fw-bold">Kursus Offline</h4>
+                                                    <h6 class="my-0 py-0 ml-3 fw-bold">Kursus Offline</h6>
 
                                                     <ul class="list-group list-group-custom list-group-flush my-0 py-0 ml-3">
                                                     @foreach ($transactionDetail->offlineCourses as $offlineCourse)
