@@ -114,6 +114,9 @@
             </tr>
         </thead>
         <tbody>
+            @php
+                $total = 0;
+            @endphp
             @foreach ($collection as $index => $item)
                 <tr>
                     <td>{{ $index + 1 }}</td>
@@ -144,12 +147,27 @@
                         @endphp
                         {{ $html }}
                     </td>
-                    <td>{{ $item->transaction_details_sum_product_price }}</td>
+                    <td>
+                        {{ $item->transaction_details_sum_product_price }}
+                        @php
+                            $total += $item->transaction_details_sum_product_price;
+                        @endphp
+                    </td>
                     <td>{{ $item->payment_method_name . ' - ' . $item->payment_method_description }}</td>
                     <td>{{ $item->status->name }}</td>
                 </tr>
             @endforeach
         </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="6" class="text-center">
+                    TOTAL
+                </th>
+                <th>
+                    {{$total}}
+                </th>
+            </tr>
+        </tfoot>
     </table>
 </body>
 
