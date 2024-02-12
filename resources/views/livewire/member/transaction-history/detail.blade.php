@@ -87,56 +87,61 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            @if($transaction->payment_method_id == PaymentMethod::MIDTRANS_ID)
+                                <div class="col-md-12">
+                                    <button type="button" class="btn btn-block btn-success mb-2" wire:click="checkout">Bayar</button>
+                                </div>
+                            @else
+                                @if (
+                                    $transaction->status->name != App\Models\TransactionStatus::STATUS_CANCEL &&
+                                        $transaction->status->name != App\Models\TransactionStatus::STATUS_DONE)
+                                    <div class="row mx-2">
+                                        <div class="col-md-12">
 
-                            @if (
-                                $transaction->status->name != App\Models\TransactionStatus::STATUS_CANCEL &&
-                                    $transaction->status->name != App\Models\TransactionStatus::STATUS_DONE)
-                                <div class="row mx-2">
-                                    <div class="col-md-12">
+                                            {{-- FILE --}}
+                                            <div class="form-group">
+                                                <label class="form-label" for="image">Upload Bukti Bayar :</label>
+                                                <div class="custom-file">
+                                                    <input type="file" wire:model.lazy="image"
+                                                        class="custom-file-input  @error('image') is-invalid @enderror">
+                                                    <label for="image" class="custom-file-label">
+                                                        <div wire:loading.remove wire:target="image">
+                                                            @if ($image)
+                                                                {{ $image->getClientOriginalName() }}
+                                                            @else
+                                                                Pilih Gambar
+                                                            @endif
+                                                        </div>
+                                                        <div wire:loading wire:target="image">
+                                                            Uploading...
+                                                        </div>
+                                                    </label>
+                                                    @error('image')
+                                                        <div class="invalid-feedback">
+                                                            {{ $message }}
+                                                        </div>
+                                                    @enderror
+                                                </div>
 
-                                        {{-- FILE --}}
-                                        <div class="form-group">
-                                            <label class="form-label" for="image">Upload Bukti Bayar :</label>
-                                            <div class="custom-file">
-                                                <input type="file" wire:model.lazy="image"
-                                                    class="custom-file-input  @error('image') is-invalid @enderror">
-                                                <label for="image" class="custom-file-label">
-                                                    <div wire:loading.remove wire:target="image">
-                                                        @if ($image)
-                                                            {{ $image->getClientOriginalName() }}
-                                                        @else
-                                                            Pilih Gambar
-                                                        @endif
-                                                    </div>
-                                                    <div wire:loading wire:target="image">
-                                                        Uploading...
-                                                    </div>
-                                                </label>
-                                                @error('image')
-                                                    <div class="invalid-feedback">
-                                                        {{ $message }}
-                                                    </div>
-                                                @enderror
+                                                @if ($image && empty($errors->get('image')))
+                                                    <img class="img-fluid" src="{{ $image->temporaryUrl() }}"
+                                                        style="width: 300px; height:auto">
+                                                @elseif($oldImage != null)
+                                                    <img class="img-fluid" src="{{ $oldImage }}"
+                                                        style="width: 300px; height:auto">
+                                                @endif
                                             </div>
-
-                                            @if ($image && empty($errors->get('image')))
-                                                <img class="img-fluid" src="{{ $image->temporaryUrl() }}"
-                                                    style="width: 300px; height:auto">
-                                            @elseif($oldImage != null)
-                                                <img class="img-fluid" src="{{ $oldImage }}"
-                                                    style="width: 300px; height:auto">
-                                            @endif
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button type="submit" class="btn btn-block btn-success mb-2">Simpan Bukti
+                                                Bayar</button>
+                                            <button type='button' class='btn btn-block btn-danger mb-3'
+                                                wire:click="confirmCancelTransaction()">
+                                                <i class='fa fa-trash mr-2'></i> Batalkan Transaksi
+                                            </button>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
-                                        <button type="submit" class="btn btn-block btn-success mb-2">Simpan Bukti
-                                            Bayar</button>
-                                        <button type='button' class='btn btn-block btn-danger mb-3'
-                                            wire:click="confirmCancelTransaction()">
-                                            <i class='fa fa-trash mr-2'></i> Batalkan Transaksi
-                                        </button>
-                                    </div>
-                                </div>
+                                @endif
                             @endif
                         </div>
                     </form>
@@ -155,6 +160,22 @@
 
 @push('js')
     <script>
+        document.addEventListener('livewire:load', function() {
+            window.livewire.on('midtransCheckout', (snapToken) => {
+                console.log(snapToken)
+                // window.snap.pay(snapToken, {
+                //     onSuccess: function(result) {
+                //         window.location.href = "{{ route('member.transaction.index') }}";
+                //     },
+                //     onError: function(result) {
+                //         Livewire.emit('onFailSweetAlert', 'Pembayaran Gagal!');
+                //     },
+                //     onClose: function() {
+                //         Livewire.emit('onFailSweetAlert', 'Pembayaran Ditutup!');
+                //     }
+                // })
+            });
+        });
         window.addEventListener('openConfirmCancellationModal', event => {
             if (confirm('Batalkan Transaksi?')) {
                 @this.cancelTransaction();

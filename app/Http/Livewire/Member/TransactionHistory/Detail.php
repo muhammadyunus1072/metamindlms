@@ -24,6 +24,8 @@ class Detail extends Component
 
     protected $rules = [];
 
+    public $snapToken;
+
     public function mount($transaction_id)
     {
         $this->transaction_id = $transaction_id;
@@ -40,8 +42,20 @@ class Detail extends Component
             )
             ->withSum('transactionDetails', 'product_price')
             ->first();
-
-        $this->oldImage = $this->transaction->getImage();
+        if ($this->transaction->payment_method_id == PaymentMethod::MIDTRANS_ID) {
+            $this->snapToken = MidtransPayment::getSnapToken(
+                $transaction->id,
+                $transaction->transactionDetails->sum('product_price'),
+                [
+                    'first_name' => $transaction->user->name,
+                    'last_name' => '',
+                    'email' => $transaction->user->email,
+                    'phone' => $transaction->user->phone,
+                ]
+            );
+        }else{
+            $this->oldImage = $this->transaction->getImage();
+        }
         $this->total = $this->transaction->transaction_details_sum_product_price;
     }
 
@@ -53,6 +67,10 @@ class Detail extends Component
                 'image' => 'image|max:2048',
             ]);
         }
+    }
+
+    public function checkout(){
+        $this->emit('midtransCheckout', $snapToken);
     }
 
     public function confirmCancelTransaction()

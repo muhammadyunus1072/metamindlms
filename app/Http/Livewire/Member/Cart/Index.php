@@ -68,21 +68,7 @@ class Index extends Component
             if ($transaction->save()) {
                 DB::commit();
                 return redirect()->route('member.transaction.detail', ['id' => $transaction->id]);
-                // if ($transaction->payment_method_id == PaymentMethod::MIDTRANS_ID) {
-                //     $snapToken = MidtransPayment::getSnapToken(
-                //         $transaction->id,
-                //         $transaction->transactionDetails->sum('product_price'),
-                //         [
-                //             'first_name' => $transaction->user->name,
-                //             'last_name' => '',
-                //             'email' => $transaction->user->email,
-                //             'phone' => $transaction->user->phone,
-                //         ]
-                //     );
-                //     $this->emit('midtransCheckout', $snapToken);
-                // } else {
-                //     return redirect()->route('member.transaction.detail', ['id' => $transaction->id]);
-                // }
+                
             } else {
                 $this->emit('onSuccessSweetAlert', "Data Kursus gagal masuk keranjang.");
             }
