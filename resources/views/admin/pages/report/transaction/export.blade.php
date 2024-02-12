@@ -160,13 +160,10 @@
         </tbody>
         <tfoot>
             <tr>
-
-            </tr>
-            <tr>
-                <th colspan="6">
+                <th colspan="6" style="font-weight: bold;">
                     TOTAL
                 </th>
-                <th>
+                <th style="font-weight: bold;">
                     {{$total}}
                 </th>
             </tr>
