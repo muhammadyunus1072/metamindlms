@@ -61,7 +61,7 @@
     {{-- Card Total --}}
     <div class="row col-12 d-flex align-items-stretch my-4 justify-content-evenly">
         <div class="col-md-3 mb-2">
-            <div class="card bg-primary">
+            <div class="card">
                 <div class="card-header text-center" style="color:white;">
                     <h6>Total Nilai</h6>
                 </div>
@@ -71,7 +71,7 @@
             </div>
         </div>
         <div class="col-md-3 mb-2">
-            <div class="card bg-danger">
+            <div class="card">
                 <div class="card-header text-center" style="color:white;">
                     <h6>Jumlah Transaksi</h6>
                 </div>
