@@ -34,7 +34,7 @@ class Detail extends Component
 
     private function getData()
     {
-        $this->transaction = Transaction::where('id', $this->transaction_id)
+        $transaction = Transaction::where('id', $this->transaction_id)
             ->where('user_id', info_user_id())
             ->with(
                 'transactionDetails',
@@ -42,21 +42,27 @@ class Detail extends Component
             )
             ->withSum('transactionDetails', 'product_price')
             ->first();
-        if ($this->transaction->payment_method_id == PaymentMethod::MIDTRANS_ID) {
-            $this->snapToken = MidtransPayment::getSnapToken(
-                $transaction->id,
-                $transaction->transactionDetails->sum('product_price'),
-                [
-                    'first_name' => $transaction->user->name,
-                    'last_name' => '',
-                    'email' => $transaction->user->email,
-                    'phone' => $transaction->user->phone,
-                ]
-            );
+        if ($transaction->payment_method_id == PaymentMethod::MIDTRANS_ID) {
+            if(!$transaction->snap_token){
+                $snapToken = MidtransPayment::getSnapToken(
+                    $transaction->id,
+                    $transaction->transactionDetails->sum('product_price'),
+                    [
+                        'first_name' => $transaction->user->name,
+                        'last_name' => '',
+                        'email' => $transaction->user->email,
+                        'phone' => $transaction->user->phone,
+                    ]
+                );
+                $transaction->snap_token = $snapToken;
+                $transaction->save();
+            }
+            $this->snap_token = $transaction->snap_token;
         }else{
-            $this->oldImage = $this->transaction->getImage();
+            $this->oldImage = $transaction->getImage();
         }
-        $this->total = $this->transaction->transaction_details_sum_product_price;
+        $this->transaction = $transaction;
+        $this->total = $transaction->transaction_details_sum_product_price;
     }
 
     public function updated($propertyName)
