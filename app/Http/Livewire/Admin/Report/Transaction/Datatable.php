@@ -193,7 +193,7 @@ class Datatable extends Component
         $this->emit('onSuccessSweetAlert', "filter");
         // $this->getTotalHeader();
 
-        return Transaction::select(
+        $query = Transaction::select(
             'transactions.*',
             'transaction_statuses.name as status_name'
         )
@@ -239,6 +239,8 @@ class Datatable extends Component
                 $query->where('transactions.number', 'like', '%' . $this->search . '%');
             })
             ->orderBy('transactions.created_at', 'DESC');
+
+        return $query;
     }
 
     public function getTotalHeader()
