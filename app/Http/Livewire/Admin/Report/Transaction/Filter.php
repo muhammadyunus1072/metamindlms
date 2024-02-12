@@ -54,6 +54,7 @@ class Filter extends Component
 
     public function render()
     {
+        $this->emit('consoleLog', "filter");
         return view('livewire.admin.report.transaction.filter');
     }
 }
