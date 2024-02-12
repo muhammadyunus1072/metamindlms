@@ -40,6 +40,8 @@ class Filter extends Component
 
     public function updated()
     {
+        $this->emit('onSuccessSweetAlert', "filter");
+
         $this->emit('addFilter', [
             'end_date' => $this->end_date,
             'start_date' => $this->start_date,
@@ -54,7 +56,6 @@ class Filter extends Component
 
     public function render()
     {
-        $this->emit('onSuccessSweetAlert', "filter");
         return view('livewire.admin.report.transaction.filter');
     }
 }

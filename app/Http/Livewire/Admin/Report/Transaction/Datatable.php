@@ -190,6 +190,7 @@ class Datatable extends Component
     public function getQuery(): Builder
     {
         $this->emit('setTotalHeader', 2000000, 2);
+        $this->emit('onSuccessSweetAlert', "filter");
         // $this->getTotalHeader();
 
         return Transaction::select(
