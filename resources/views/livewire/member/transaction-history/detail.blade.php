@@ -1,3 +1,7 @@
+@push('css')
+    <script type="text/javascript" src="{{ config('midtrans.snap_url') }}"
+        data-client-key="{{ config('midtrans.client_key') }}"></script>
+@endpush
 <div class="page-section">
 
     <div class="page-separator">
