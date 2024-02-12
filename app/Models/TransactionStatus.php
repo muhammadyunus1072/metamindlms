@@ -39,71 +39,20 @@ class TransactionStatus extends Model
             if($model->name  === self::STATUS_DONE) {
                 $transactionDetails = $model->transaction->transactionDetails;
                 foreach ($transactionDetails as $transactionDetailIndex => $transactionDetail) {
-                    if($transactionDetail->product_remarks_type === Course::class){
-                        $productCourses = $transactionDetail->product->productCourses;
-                        foreach ($productCourses as $productCourseIndex => $productCourse) {
-                            $transactionDetailCourse = new TransactionDetailCourse();
-                            $transactionDetailCourse->transaction_detail_id = $transactionDetail->id;
-                            $transactionDetailCourse->course_id = $productCourse->course->id;
-                            $transactionDetailCourse->course_title = $productCourse->course->title;
-                            $transactionDetailCourse->course_description = $productCourse->course->description;
-                            $transactionDetailCourse->course_about = $productCourse->course->about;
-                            $transactionDetailCourse->course_url_image = $productCourse->course->url_image;
-                            $transactionDetailCourse->course_url_icon = $productCourse->course->url_icon;
-                            $transactionDetailCourse->course_url_video = $productCourse->course->url_video;
-                            $transactionDetailCourse->course_price = $productCourse->course->price;
-                            $transactionDetailCourse->course_price_before_discount = $productCourse->course->price_before_discount;
-                            $transactionDetailCourse->save();
-                        }
-                    }else if($transactionDetail->product_remarks_type === OfflineCourse::class) {
-                        $productOfflineCourses = $transactionDetail->product->productOfflineCourses;
-                        foreach ($productOfflineCourses as $productOfflineCourseIndex => $productOfflineCourse) {
-                            $transactionDetailOfflineCourse = new TransactionDetailOfflineCourse();
-                            $transactionDetailOfflineCourse->transaction_detail_id = $transactionDetail->id;
-                            $transactionDetailOfflineCourse->offline_course_id = $productOfflineCourse->offlineCourse->id;
-                            $transactionDetailOfflineCourse->offline_course_title = $productOfflineCourse->offlineCourse->title;
-                            $transactionDetailOfflineCourse->offline_course_description = $productOfflineCourse->offlineCourse->description;
-                            $transactionDetailOfflineCourse->offline_course_content = $productOfflineCourse->offlineCourse->content;
-                            $transactionDetailOfflineCourse->offline_course_quota = $productOfflineCourse->offlineCourse->quota;
-                            $transactionDetailOfflineCourse->offline_course_date_time_start = $productOfflineCourse->offlineCourse->date_time_start;
-                            $transactionDetailOfflineCourse->offline_course_date_time_end = $productOfflineCourse->offlineCourse->date_time_end;
-                            $transactionDetailOfflineCourse->offline_url_online_meet = $productOfflineCourse->offlineCourse->url_online_meet;
-                            $transactionDetailOfflineCourse->offline_course_price = $productOfflineCourse->offlineCourse->price;
-                            $transactionDetailOfflineCourse->offline_course_price_before_discount = $productOfflineCourse->offlineCourse->price_before_discount;
-                            $transactionDetailOfflineCourse->save();
-                        }
-                    }else{
-                        $productCourses = $transactionDetail->product->productCourses;
-                        foreach ($productCourses as $productCourseIndex => $productCourse) {
-                            $transactionDetailCourse = new TransactionDetailCourse();
-                            $transactionDetailCourse->transaction_detail_id = $transactionDetail->id;
-                            $transactionDetailCourse->course_id = $productCourse->course->id;
-                            $transactionDetailCourse->course_title = $productCourse->course->title;
-                            $transactionDetailCourse->course_description = $productCourse->course->description;
-                            $transactionDetailCourse->course_about = $productCourse->course->about;
-                            $transactionDetailCourse->course_url_image = $productCourse->course->url_image;
-                            $transactionDetailCourse->course_url_icon = $productCourse->course->url_icon;
-                            $transactionDetailCourse->course_url_video = $productCourse->course->url_video;
-                            $transactionDetailCourse->course_price = $productCourse->course->price;
-                            $transactionDetailCourse->course_price_before_discount = $productCourse->course->price_before_discount;
-                            $transactionDetailCourse->save();
-                        }
-                        $productOfflineCourses = $transactionDetail->product->productOfflineCourses;
-                        foreach ($productOfflineCourses as $productOfflineCourseIndex => $productOfflineCourse) {
-                            $transactionDetailOfflineCourse = new TransactionDetailOfflineCourse();
-                            $transactionDetailOfflineCourse->transaction_detail_id = $transactionDetail->id;
-                            $transactionDetailOfflineCourse->offline_course_id = $productOfflineCourse->offlineCourse->id;
-                            $transactionDetailOfflineCourse->offline_course_title = $productOfflineCourse->offlineCourse->title;
-                            $transactionDetailOfflineCourse->offline_course_description = $productOfflineCourse->offlineCourse->description;
-                            $transactionDetailOfflineCourse->offline_course_content = $productOfflineCourse->offlineCourse->content;
-                            $transactionDetailOfflineCourse->offline_course_quota = $productOfflineCourse->offlineCourse->quota;
-                            $transactionDetailOfflineCourse->offline_course_date_time_start = $productOfflineCourse->offlineCourse->date_time_start;
-                            $transactionDetailOfflineCourse->offline_course_date_time_end = $productOfflineCourse->offlineCourse->date_time_end;
-                            $transactionDetailOfflineCourse->offline_url_online_meet = $productOfflineCourse->offlineCourse->url_online_meet;
-                            $transactionDetailOfflineCourse->offline_course_price = $productOfflineCourse->offlineCourse->price;
-                            $transactionDetailOfflineCourse->offline_course_price_before_discount = $productOfflineCourse->offlineCourse->price_before_discount;
-                            $transactionDetailOfflineCourse->save();
-                        }
+                    $courses = $transactionDetail->courses;
+                    foreach ($courses as $courseIndex => $course) {
+                        $courseMember = new CourseMember();
+                        $courseMember->course_id = $course->course_id;
+                        $courseMember->member_id = $transactionDetail->transaction->user_id;
+                        $courseMember->course_price = $course->course_price;
+                        $courseMember->save();
+                    }
+                    $offlineCourses = $transactionDetail->offlineCourses;
+                    foreach ($offlineCourses as $offlineCourseIndex => $offlineCourse) {
+                        $offlineCourseRegistrar = new OfflineCourseRegistrar();
+                        $offlineCourseRegistrar->offline_course_id = $offlineCourse->offline_course_id;
+                        $offlineCourseRegistrar->user_id = $transactionDetail->transaction->user_id;
+                        $offlineCourseRegistrar->save();
                     }
                 }
             }
