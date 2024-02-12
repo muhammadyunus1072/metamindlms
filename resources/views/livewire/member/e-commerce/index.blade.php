@@ -21,8 +21,7 @@
                             <div class="search-form form-control-rounded search-form--dark">
                                 <input type="text"
                                         class="form-control"
-                                        placeholder="Cari Kursus"
-                                        name="text_filter"
+                                        placeholder="Cari Produk / Paket"
                                         wire:model="filter_search">
                             </div>
                         </div>
