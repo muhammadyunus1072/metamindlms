@@ -78,6 +78,32 @@
                                                 </p>
                                             </td>
                                         </tr>
+                                        @if (count($transactionDetail->courses))
+                                            <tr>
+                                                <td colspan="2">
+                                                    <h4 class="my-0 py-0 ml-3 fw-bold">Kursus Online</h4>
+
+                                                    <ul class="list-group list-group-custom list-group-flush my-0 py-0 ml-3">
+                                                    @foreach ($transactionDetail->courses as $course)
+                                                        <li class="list-group-item my-0 py-0 ml-3"> - {{ $course->course_title }}</li>
+                                                    @endforeach
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        @endif
+                                        @if (count($transactionDetail->offlineCourses))
+                                            <tr>
+                                                <td colspan="2">
+                                                    <h4 class="my-0 py-0 ml-3 fw-bold">Kursus Offline</h4>
+
+                                                    <ul class="list-group list-group-custom list-group-flush my-0 py-0 ml-3">
+                                                    @foreach ($transactionDetail->offlineCourses as $offlineCourse)
+                                                        <li class="list-group-item my-0 py-0 ml-3"> - {{ $offlineCourse->offline_course_title }}</li>
+                                                    @endforeach
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        @endif
                                     @endforeach
                                     <tr>
                                         <td class="card-title text-right">
