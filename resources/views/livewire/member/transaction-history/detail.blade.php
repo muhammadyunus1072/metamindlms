@@ -85,7 +85,7 @@
 
                                                     <ul class="list-group list-group-custom list-group-flush my-0 py-0 ml-3 w-75">
                                                     @foreach ($transactionDetail->courses as $course)
-                                                        <li class="list-group-item d-flex justify-content-evenly my-0 py-0">
+                                                        <li class="list-group-item d-flex justify-content-between my-0 py-0">
                                                             <p class="my-0 py-0">
                                                                  - {{ $course->course_title }}
                                                             </p>
@@ -105,7 +105,7 @@
 
                                                     <ul class="list-group list-group-custom list-group-flush my-0 py-0 ml-3 w-75">
                                                     @foreach ($transactionDetail->offlineCourses as $offlineCourse)
-                                                        <li class="list-group-item d-flex justify-content-evenly my-0 py-0">
+                                                        <li class="list-group-item d-flex justify-content-between my-0 py-0">
                                                             <p class="my-0 py-0">
                                                                  - {{ $offlineCourse->offline_course_title }}
                                                             </p>
