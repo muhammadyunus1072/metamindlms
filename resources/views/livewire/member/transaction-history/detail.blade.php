@@ -91,14 +91,16 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            @if($transaction->payment_method_id == App\Models\PaymentMethod::MIDTRANS_ID)
-                                <div class="col-md-12">
-                                    <button type="button" class="btn btn-block btn-success mb-2" wire:click="checkout">Bayar</button>
-                                </div>
-                            @else
+                            
                                 @if (
                                     $transaction->status->name != App\Models\TransactionStatus::STATUS_CANCEL &&
                                         $transaction->status->name != App\Models\TransactionStatus::STATUS_DONE)
+
+                                    @if($transaction->payment_method_id == App\Models\PaymentMethod::MIDTRANS_ID)
+                                        <div class="col-md-12">
+                                            <button type="button" class="btn btn-block btn-success mb-2" wire:click="checkout">Bayar</button>
+                                        </div>
+                                    @else
                                     <div class="row mx-2">
                                         <div class="col-md-12">
 
@@ -145,8 +147,8 @@
                                             </button>
                                         </div>
                                     </div>
+                                    @endif
                                 @endif
-                            @endif
                         </div>
                     </form>
                 </div>
