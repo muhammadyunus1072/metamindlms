@@ -70,7 +70,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-5mb-2">
+        <div class="col-md-5 mb-2">
             <div class="card">
                 <div class="card-header text-center" style="color:white;">
                     <h6>Jumlah Transaksi</h6>
