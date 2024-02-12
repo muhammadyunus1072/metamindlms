@@ -189,8 +189,8 @@ class Datatable extends Component
 
     public function getQuery(): Builder
     {
-        $this->emit('consoleLog', "coba");
-        $this->getTotalHeader();
+        $this->emit('setTotalHeader', 2000000, 2);
+        // $this->getTotalHeader();
 
         return Transaction::select(
             'transactions.*',
