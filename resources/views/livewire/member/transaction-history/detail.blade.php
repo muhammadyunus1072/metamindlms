@@ -162,18 +162,17 @@
     <script>
         document.addEventListener('livewire:load', function() {
             window.livewire.on('midtransCheckout', (snapToken) => {
-                console.log(snapToken)
-                // window.snap.pay(snapToken, {
-                //     onSuccess: function(result) {
-                //         window.location.href = "{{ route('member.transaction.index') }}";
-                //     },
-                //     onError: function(result) {
-                //         Livewire.emit('onFailSweetAlert', 'Pembayaran Gagal!');
-                //     },
-                //     onClose: function() {
-                //         Livewire.emit('onFailSweetAlert', 'Pembayaran Ditutup!');
-                //     }
-                // })
+                window.snap.pay(snapToken, {
+                    onSuccess: function(result) {
+                        window.location.href = "{{ route('member.transaction.index') }}";
+                    },
+                    onError: function(result) {
+                        Livewire.emit('onFailSweetAlert', 'Pembayaran Gagal!');
+                    },
+                    onClose: function() {
+                        Livewire.emit('onFailSweetAlert', 'Pembayaran Ditutup!');
+                    }
+                })
             });
         });
         window.addEventListener('openConfirmCancellationModal', event => {
